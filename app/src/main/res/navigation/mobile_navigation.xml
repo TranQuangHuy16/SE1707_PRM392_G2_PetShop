@@ -28,4 +28,16 @@
         android:name="com.example.se1707_prm392_g2_petshop.ui.cart.CartFragment"
         android:label="Cart"
         tools:layout="@layout/fragment_cart" />
+
+    <!-- 🟢 Splash Fragment -->
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.se1707_prm392_g2_petshop.ui.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+        <!-- 👉 Action: sau vài giây chuyển sang Home -->
+        <action
+            android:id="@+id/action_splashFragment_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 </navigation>

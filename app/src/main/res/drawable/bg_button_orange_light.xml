@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Khi nhấn -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <!-- trắng đậm hơn (ít trong hơn) khi nhấn -->
+            <solid android:color="#E6FFFFFF"/> <!-- #E6 = 90% opacity -->
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Trạng thái bình thường -->
+    <item>
+        <shape android:shape="rectangle">
+            <!-- trắng trong suốt nhẹ -->
+            <solid android:color="#33FFFFFF"/> <!-- #33 = 20% opacity -->
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+</selector>
