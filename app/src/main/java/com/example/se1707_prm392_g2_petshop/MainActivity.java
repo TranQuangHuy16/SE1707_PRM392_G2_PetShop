@@ -1,7 +1,10 @@
 package com.example.se1707_prm392_g2_petshop;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 
+import com.example.se1707_prm392_g2_petshop.ui.auth.welcome.WelcomeActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,25 +17,22 @@ import com.example.se1707_prm392_g2_petshop.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding binding;
+    private static final int SPLASH_DELAY = 3000; // 3 giây
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_profile, R.id.navigation_notifications, R.id.navigation_cart)
-                .build();
+        setContentView(R.layout.activity_main); // layout splash nếu có (logo, tên app, v.v.)
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(binding.navView, navController);
+        // Sử dụng Handler để delay 3 giây rồi chuyển màn hình
+        new Handler().postDelayed(() -> {
+            // Chuyển sang WelcomeActivity
+            Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
+            startActivity(intent);
+            finish(); // đóng MainActivity để không quay lại splash khi bấm Back
+        }, SPLASH_DELAY);
     }
 
 }

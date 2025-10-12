@@ -13,6 +13,27 @@
         android:theme="@style/Theme.SE1707_PRM392_G2_PetShop"
         tools:targetApi="31">
         <activity
+            android:name=".ui.auth.welcome.WelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.signup.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.login.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.forgotpassword.VerifyForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.forgotpassword.ResetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.auth.forgotpassword.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.user.main.UserMainActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name">
