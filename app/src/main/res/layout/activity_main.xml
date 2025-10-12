@@ -18,9 +18,5 @@
         android:translationX="6dp"
         android:translationY="6dp"
         android:fontFamily="@font/bubblegumsans_regular" />
-
-
-
-
 </FrameLayout>
 

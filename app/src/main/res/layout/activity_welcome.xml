@@ -3,16 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.welcome.WelcomeFragment">
-
-    <!-- Ảnh nền nằm dưới cùng -->
-    <ImageView
-        android:id="@+id/bgImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/welcome_bg"
-        android:alpha="0.9" />
+    android:background="@drawable/welcome_bg"
+    tools:context=".ui.auth.welcome.WelcomeActivity">
 
     <!-- Toàn bộ nội dung cuộn được nằm trên -->
     <ScrollView
@@ -23,11 +15,11 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <!-- Tiêu đề -->
+        <!-- Tiêu đề -->
             <TextView
                 android:id="@+id/tvWelcome"
                 android:layout_width="wrap_content"
@@ -35,7 +27,7 @@
                 android:layout_marginTop="48dp"
                 android:text="Welcome to"
                 android:textColor="#000000"
-                android:textSize="28sp"
+                android:textSize="38sp"
                 android:textStyle="bold" />
 
             <!-- Tên ứng dụng -->
@@ -44,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Pet Shop"
+                android:text="Pet Food Shop"
                 android:textColor="#FFFFFF"
                 android:textSize="22sp"
                 android:textStyle="bold" />
@@ -64,7 +56,7 @@
             <ImageView
                 android:id="@+id/imgDog"
                 android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_height="480dp"
                 android:layout_marginTop="24dp"
                 android:contentDescription="@string/app_name"
                 android:scaleType="centerCrop" />
