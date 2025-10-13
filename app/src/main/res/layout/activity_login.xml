@@ -40,7 +40,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/etUsername"
+                android:id="@+id/edtUsername"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="6dp"
@@ -60,7 +60,7 @@
                 android:layout_marginTop="12dp" />
 
             <EditText
-                android:id="@+id/etPassword"
+                android:id="@+id/edtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginTop="6dp"

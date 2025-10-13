@@ -36,6 +36,12 @@ android {
 
 dependencies {
 
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)

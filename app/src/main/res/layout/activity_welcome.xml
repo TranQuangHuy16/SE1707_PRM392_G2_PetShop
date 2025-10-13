@@ -167,10 +167,10 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tvSignIn"
+                    android:id="@+id/tvSignUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Sign in"
+                    android:text=" Sign up"
                     android:textColor="#1D4ED8"
                     android:textSize="14sp"
                     android:textStyle="bold" />
