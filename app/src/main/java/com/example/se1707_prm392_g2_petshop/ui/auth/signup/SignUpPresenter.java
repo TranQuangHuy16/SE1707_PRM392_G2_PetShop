@@ -2,7 +2,9 @@ package com.example.se1707_prm392_g2_petshop.ui.auth.signup;
 
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.RegisterRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.AuthResponse;
+import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginContract;
 
@@ -26,13 +28,32 @@ public class SignUpPresenter implements SignUpContract.Presenter{
                 if (response.isSuccessful() && response.body() != null) {
                     view.onLoginGoogleSuccess(response.body());
                 } else {
-                    view.onLoginFailure("Username or password is incorrect");
+                    view.onFailure("Username or password is incorrect");
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                view.onLoginError(t.getMessage());
+                view.onError(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void reigster(RegisterRequest request) {
+        repository.register(request).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    view.onRegisterSuccess();
+                } else {
+                    view.onFailure(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                view.onError(t.getMessage());
             }
         });
     }

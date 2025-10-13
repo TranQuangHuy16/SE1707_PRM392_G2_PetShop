@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,7 +16,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.RegisterRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.AuthResponse;
+import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
@@ -79,6 +82,22 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
             finish();
         });
 
+        // register
+        binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String username = binding.etUsername.getText().toString().trim();
+                String email = binding.etEmail.getText().toString().trim();
+                String password = binding.etPassword.getText().toString().trim();
+                String phone = binding.etPhone.getText().toString().trim();
+                String fullName = binding.etFullName.getText().toString().trim();
+
+                RegisterRequest user = new RegisterRequest(username, password, fullName, email, phone);
+
+                presenter.reigster(user);
+            }
+        });
+
         // 👇 Đăng nhập bằng Google
         binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
     }
@@ -121,12 +140,18 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
     }
 
     @Override
-    public void onLoginFailure(String message) {
+    public void onRegisterSuccess() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onFailure(String message) {
         showToast(message);
     }
 
     @Override
-    public void onLoginError(String message) {
+    public void onError(String message) {
         Log.e(TAG, "onLoginError: " + message);
         showToast("Error: " + message);
     }
