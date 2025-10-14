@@ -20,4 +20,7 @@ public interface AuthApi {
 
     @POST(ConstantApi.REGISTER)
     Call<User> register(@Body RegisterRequest request);
+
+    @POST(ConstantApi.LOGOUT)
+    Call<Void> logout();
 }

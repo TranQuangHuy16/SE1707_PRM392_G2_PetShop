@@ -5,5 +5,5 @@ public class ConstantApi {
     public static final String REGISTER = "Auth/register";
     public static final String LOGIN = "Auth/login";
     public static final String LOGIN_GOOGLE = "Auth/login-by-google";
-
+    public static final String LOGOUT = "Auth/logout";
 }

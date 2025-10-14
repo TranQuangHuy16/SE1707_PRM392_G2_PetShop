@@ -8,4 +8,10 @@ public class JwtUtil {
         editor.putString("jwt_token", jwtToken);
         editor.apply();
     }
+
+    public static void RemoveJwtTokenFromSharedPreferences(SharedPreferences sharedPreferences) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove("jwt_token");
+        editor.apply();
+    }
 }

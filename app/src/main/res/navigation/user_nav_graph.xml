@@ -12,12 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="com.example.se1707_prm392_g2_petshop.ui.user.main.profile.ProfileFragment"
-        android:label="Profile"
-        tools:layout="@layout/fragment_profile" />
-
-    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.se1707_prm392_g2_petshop.ui.user.main.notifications.NotificationsFragment"
         android:label="Notifications"
@@ -28,5 +22,10 @@
         android:name="com.example.se1707_prm392_g2_petshop.ui.user.main.cart.CartFragment"
         android:label="Cart"
         tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.example.se1707_prm392_g2_petshop.ui.user.main.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

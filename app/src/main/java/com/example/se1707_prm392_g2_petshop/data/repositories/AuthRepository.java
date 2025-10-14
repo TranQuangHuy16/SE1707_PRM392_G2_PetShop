@@ -27,4 +27,8 @@ public class AuthRepository {
     public Call<User> register(RegisterRequest request) {
         return authApi.register(request);
     }
+
+    public Call<Void> logout() {
+        return authApi.logout();
+    }
 }
