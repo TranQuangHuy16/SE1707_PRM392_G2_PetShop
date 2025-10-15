@@ -20,6 +20,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
+import com.example.se1707_prm392_g2_petshop.ui.auth.forgotpassword.ForgotPasswordActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.signup.SignUpActivity;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -99,6 +100,12 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         // 👇 Login bằng Google
         binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
+
+        binding.tvForgotPassword.setOnClickListener(v -> {
+            // Xử lý sự kiện quên mật khẩu
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void signInWithGoogle() {

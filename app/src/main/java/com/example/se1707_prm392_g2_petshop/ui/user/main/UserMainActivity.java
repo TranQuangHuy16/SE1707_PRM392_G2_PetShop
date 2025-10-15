@@ -19,8 +19,8 @@ public class UserMainActivity extends AppCompatActivity {
         binding = ActivityUserMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // ✅ Gắn Toolbar làm ActionBar
-        setSupportActionBar(binding.toolbar);
+//        // ✅ Gắn Toolbar làm ActionBar
+//        setSupportActionBar(binding.toolbar);
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_activity_user_main);
@@ -33,7 +33,7 @@ public class UserMainActivity extends AppCompatActivity {
                 R.id.navigation_profile
         ).build();
 
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 

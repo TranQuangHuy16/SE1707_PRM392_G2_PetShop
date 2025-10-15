@@ -4,6 +4,9 @@ import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.RegisterRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.RequestOtpRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.ResetPasswordRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.VerifyOtpRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.AuthResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 
@@ -30,5 +33,20 @@ public class AuthRepository {
 
     public Call<Void> logout() {
         return authApi.logout();
+    }
+
+    // ✅ 1. Request OTP
+    public Call<Boolean> forgotPasswordRequest(RequestOtpRequest request) {
+        return authApi.forgotPasswordRequest(request);
+    }
+
+    // ✅ 2. Verify OTP
+    public Call<Boolean> forgotPasswordVerify(VerifyOtpRequest request) {
+        return authApi.forgotPasswordVerify(request);
+    }
+
+    // ✅ 3. Reset Password
+    public Call<User> resetPassword(ResetPasswordRequest request) {
+        return authApi.resetPassword(request);
     }
 }
