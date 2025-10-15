@@ -6,13 +6,15 @@ public class User {
     private String fullName;
     private String email;
     private String phone;
+    private String imgUrl;
 
-    public User(String username, String password, String fullName, String email, String phone) {
+    public User(String username, String password, String fullName, String email, String phone, String imgAvatarl) {
         this.username = username;
         this.password = password;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
+        this.imgUrl = imgAvatarl;
     }
 
     public String getUsername() {
@@ -53,5 +55,13 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getImgAvatarl() {
+        return imgUrl;
+    }
+
+    public void setImgAvatarl(String imgAvatarl) {
+        this.imgUrl = imgAvatarl;
     }
 }

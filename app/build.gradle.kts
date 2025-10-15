@@ -35,7 +35,7 @@ android {
 }
 
 dependencies {
-
+    implementation("com.cloudinary:cloudinary-android:3.1.2")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
     implementation("com.jakewharton.threetenabp:threetenabp:1.4.4")
