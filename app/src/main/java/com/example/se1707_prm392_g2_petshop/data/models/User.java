@@ -1,6 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.models;
 
 public class User {
+    private int userId;
     private String username;
     private String password;
     private String fullName;
@@ -15,6 +16,24 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.imgUrl = imgAvatarl;
+    }
+
+    public User(int userId, String username, String password, String fullName, String email, String phone, String imgUrl) {
+        this.userId = userId;
+        this.username = username;
+        this.password = password;
+        this.fullName = fullName;
+        this.email = email;
+        this.phone = phone;
+        this.imgUrl = imgUrl;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
