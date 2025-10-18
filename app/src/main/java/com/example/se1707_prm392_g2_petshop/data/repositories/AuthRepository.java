@@ -1,6 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.repositories;
 
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginFacebookRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.RegisterRequest;
@@ -25,6 +26,10 @@ public class AuthRepository {
 
     public Call<AuthResponse> loginByGoogle(LoginGooleRequest request) {
         return authApi.loginByGoogle(request);
+    }
+
+    public Call<AuthResponse> loginByFacebook(LoginFacebookRequest request) {
+        return authApi.loginByFacebook(request);
     }
 
     public Call<User> register(RegisterRequest request) {

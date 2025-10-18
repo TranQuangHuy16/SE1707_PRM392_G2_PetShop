@@ -5,6 +5,7 @@ public class ConstantApi {
     public static final String REGISTER = "Auth/register";
     public static final String LOGIN = "Auth/login";
     public static final String LOGIN_GOOGLE = "Auth/login-by-google";
+    public static final String LOGIN_FACEBOOK= "Auth/login-by-facebook";
     public static final String LOGOUT = "Auth/logout";
     public static final String FORGOTPASSWORD_REQUEST = "Auth/forgot-password/request";
     public static final String FORGOTPASSWORD_VERIFY = "Auth/forgot-password/verify";

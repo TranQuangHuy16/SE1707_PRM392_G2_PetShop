@@ -2,7 +2,11 @@ package com.example.se1707_prm392_g2_petshop.ui.auth.login;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -13,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginFacebookRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.AuthResponse;
@@ -23,12 +28,21 @@ import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
 import com.example.se1707_prm392_g2_petshop.ui.auth.forgotpassword.ForgotPasswordActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.signup.SignUpActivity;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements LoginContract.View {
 
@@ -37,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private LoginPresenter presenter;
 
     private GoogleSignInClient googleSignInClient;
+
+    private CallbackManager callbackManager;
 
     private final ActivityResultLauncher<Intent> googleSignInLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
@@ -64,7 +80,28 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         setupPresenter();
         setupGoogleSignIn();
+
+        setupFacebookLogin();
+
         setupListeners();
+
+        // 👇 DÁN ĐOẠN CODE NÀY VÀO CUỐI HÀM ONCREATE
+        try {
+            PackageInfo info = getPackageManager().getPackageInfo(
+                    "com.example.se1707_prm392_g2_petshop", // Tên package của bạn
+                    PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                // In Key Hash ra Logcat
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        // 👆 KẾT THÚC ĐOẠN CODE CẦN DÁN
     }
 
     private void setupPresenter() {
@@ -79,6 +116,46 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 .requestEmail()
                 .build();
         googleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    private void setupFacebookLogin() {
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                // Đăng nhập Facebook thành công
+                Log.d(TAG, "Facebook Login Success. Token: " + loginResult.getAccessToken().getToken());
+
+                // Lấy Access Token
+                String accessToken = loginResult.getAccessToken().getToken();
+
+                // 👇 (GIẢ ĐỊNH) Gọi Presenter của bạn với Facebook token
+                // Bạn sẽ cần tạo lớp LoginFacebookRequest và phương thức presenter.loginWithFacebook
+                // presenter.loginWithFacebook(new LoginFacebookRequest(accessToken));
+
+                // TODO: Xử lý token này, gửi lên server của bạn
+//                showToast("Facebook Login Success! (Chưa cài đặt server call)");
+                presenter.loginWithFacebook(new LoginFacebookRequest(accessToken));
+
+                // Ví dụ: gọi hàm onLoginGoogleSuccess để test (nhưng bạn nên tạo hàm riêng)
+                // presenter.loginWithGoogle(new LoginGooleRequest(accessToken)); // CHỈ ĐỂ TEST
+            }
+
+            @Override
+            public void onCancel() {
+                // Người dùng hủy
+                Log.w(TAG, "Facebook Login Cancelled.");
+                showToast("Login cancelled.");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                // Lỗi
+                Log.e(TAG, "Facebook Login Error", error);
+                showToast("Facebook login failed: " + error.getMessage());
+            }
+        });
     }
 
     private void setupListeners() {
@@ -101,6 +178,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         // 👇 Login bằng Google
         binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
 
+        binding.btnFacebook.setOnClickListener(v -> signInWithFacebook());
+
         binding.tvForgotPassword.setOnClickListener(v -> {
             // Xử lý sự kiện quên mật khẩu
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
@@ -111,6 +190,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private void signInWithGoogle() {
         Intent signInIntent = googleSignInClient.getSignInIntent();
         googleSignInLauncher.launch(signInIntent);
+    }
+
+    private void signInWithFacebook() {
+        // Yêu cầu quyền email và public_profile
+        LoginManager.getInstance().logInWithReadPermissions(
+                this,
+                Arrays.asList("email", "public_profile")
+        );
     }
 
     private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -132,6 +219,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // Chuyển kết quả về cho Facebook SDK
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -148,6 +243,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     @Override
     public void onLoginGoogleSuccess(AuthResponse response) {
         Log.d(TAG, "onLoginGoogleSuccess: " + response.getAccessToken());
+        SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
+        JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
+        startActivity(new Intent(this, UserMainActivity.class));
+        finish();
+    }
+
+    @Override
+    public void onLoginFacebookSuccess(AuthResponse response) {
         SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
         JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
         startActivity(new Intent(this, UserMainActivity.class));

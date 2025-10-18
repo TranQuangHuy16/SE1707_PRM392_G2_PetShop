@@ -1,5 +1,6 @@
 package com.example.se1707_prm392_g2_petshop.ui.auth.login;
 
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginFacebookRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.AuthResponse;
@@ -45,6 +46,25 @@ public class LoginPresenter implements LoginContract.Presenter{
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     view.onLoginGoogleSuccess(response.body());
+                } else {
+                    view.onLoginFailure("Username or password is incorrect");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AuthResponse> call, Throwable t) {
+                view.onLoginError(t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void loginWithFacebook(LoginFacebookRequest request) {
+        repository.loginByFacebook(request).enqueue(new Callback<AuthResponse>() {
+            @Override
+            public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    view.onLoginFacebookSuccess(response.body());
                 } else {
                     view.onLoginFailure("Username or password is incorrect");
                 }
