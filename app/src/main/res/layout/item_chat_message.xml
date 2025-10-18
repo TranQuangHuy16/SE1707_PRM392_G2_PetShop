@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingVertical="4dp">
+
+    <!-- Tin nhắn của người khác -->
+    <LinearLayout
+        android:id="@+id/layoutOther"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/bg_message_other_modern"
+        android:gravity="start"
+        android:padding="12dp">
+
+        <TextView
+            android:id="@+id/tvOtherMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello!"
+            android:textColor="#000000"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Tin nhắn của bản thân -->
+    <LinearLayout
+        android:id="@+id/layoutMe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_gravity="end"
+        android:background="@drawable/bg_message_me_modern"
+        android:padding="12dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/tvMyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hi there!"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+</LinearLayout>
