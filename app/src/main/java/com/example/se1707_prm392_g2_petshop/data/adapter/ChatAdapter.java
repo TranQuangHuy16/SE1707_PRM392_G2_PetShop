@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.models.Message;
+import com.example.se1707_prm392_g2_petshop.data.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,9 +59,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         if (message.getSenderId() == currentUserId) {
             holder.layoutMe.setVisibility(View.VISIBLE);
             holder.tvMyMessage.setText(message.getMessageText());
+            holder.tvMyTimestamp.setText(DateTimeUtils.getFormattedTime(message.getSendAt()));
         } else {
             holder.layoutOther.setVisibility(View.VISIBLE);
             holder.tvOtherMessage.setText(message.getMessageText());
+            holder.tvOtherTimestamp.setText(DateTimeUtils.getFormattedTime(message.getSendAt()));
+
         }
     }
 
@@ -72,7 +76,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
 
     public static class ChatViewHolder extends RecyclerView.ViewHolder {
         LinearLayout layoutMe, layoutOther;
-        TextView tvMyMessage, tvOtherMessage;
+        TextView tvMyMessage, tvOtherMessage, tvOtherTimestamp, tvMyTimestamp;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -80,6 +84,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             layoutOther = itemView.findViewById(R.id.layoutOther);
             tvMyMessage = itemView.findViewById(R.id.tvMyMessage);
             tvOtherMessage = itemView.findViewById(R.id.tvOtherMessage);
+            tvOtherTimestamp = itemView.findViewById(R.id.tvOtherTimestamp);
+            tvMyTimestamp = itemView.findViewById(R.id.tvMyTimestamp);
         }
     }
 }
