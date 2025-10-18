@@ -47,6 +47,9 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     private Chat currentChat;
     private ImageView btnBack, imgAvatar;
     private TextView tvName;
+    private final android.os.Handler handler = new android.os.Handler();
+    private final int REFRESH_INTERVAL = 5000; // 5 giây
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +136,8 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         } else {
             presenter.getUserById(currentChat.getCustomerId());
         }
+
+        startMessageRefresh();
     }
 
     @Override
@@ -171,4 +176,35 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     public void onFailure(String message) {
         // TODO: Hiển thị lỗi mạng
     }
+
+    private void startMessageRefresh() {
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (currentChat != null) {
+                    presenter.getRommByCustomerId(currentUserId); // gọi lại API để cập nhật tin nhắn mới
+                }
+                handler.postDelayed(this, REFRESH_INTERVAL);
+            }
+        }, REFRESH_INTERVAL);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startMessageRefresh();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        handler.removeCallbacksAndMessages(null);
+    }
+
 }
