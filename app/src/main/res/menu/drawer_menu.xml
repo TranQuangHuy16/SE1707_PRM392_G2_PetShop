@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_my_order"
+            android:icon="@drawable/ic_order"
+            android:title="My Order" />
+        <item
+            android:id="@+id/nav_my_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="My Profile" />
+        <item
+            android:id="@+id/nav_address"
+            android:icon="@drawable/ic_location"
+            android:title="Delivery Address" />
+        <item
+            android:id="@+id/nav_payment"
+            android:icon="@drawable/ic_wallet"
+            android:title="Payment methods" />
+        <item
+            android:id="@+id/nav_contact"
+            android:icon="@drawable/ic_letter"
+            android:title="Contact us" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_help"
+            android:icon="@drawable/ic_information"
+            android:title="Helps &amp; FAQs" />
+    </group>
+
+</menu>

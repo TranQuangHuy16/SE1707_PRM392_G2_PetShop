@@ -19,4 +19,19 @@ public class ConstantApi {
     public static final String GET_ROOM_BY_CUSTOMER_ID = "Chat/{customerId}";
     public static final String SEND_MESSAGE = "Chat/send-message";
     public static final String GET_ROOMS = "Chat/messages/{chatRoomId}";
+
+    //Category
+    public static final String GET_ALL_CATEGORIES = "Categories";
+    public static final String GET_CATEGORY_BY_ID = "Categories/{id}";
+    public static final String CREATE_CATEGORY = "Categories";
+    public static final String UPDATE_CATEGORY = "Categories/{id}";
+    public static final String DELETE_CATEGORY = "Categories/{id}";
+
+    //Product
+    public static final String GET_ALL_PRODUCTS = "Products";
+    public static final String GET_PRODUCT_BY_ID = "Products/{id}";
+    public static final String CREATE_PRODUCT = "Products";
+    public static final String UPDATE_PRODUCT = "Products/{id}";
+    public static final String DELETE_PRODUCT = "Products/{id}";
+    public static final String GET_PRODUCTS_BY_CATEGORY_ID = "Products/category/{categoryId}";
 }
