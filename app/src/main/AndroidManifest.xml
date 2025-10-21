@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -16,29 +18,40 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SE1707_PRM392_G2_PetShop"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.map.MapActivity"
+            android:exported="false" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
-        <meta-data android:name="com.facebook.sdk.ClientToken" android:value="@string/facebook_client_token"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/facebook_client_token" />
+        <meta-data
+            android:name="MAPBOX_ACCESS_TOKEN"
+            android:value="pk.eyJ1IjoiaG9hbmcyMDA0IiwiYSI6ImNtZ3hoajE3aDFlMnMybXE0ams1eGpydjkifQ.KOzE_wkTAk-vSDoJzXiJbA" />
 
-        <activity android:name="com.facebook.FacebookActivity"
+        <activity
+            android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
-
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.chat.ChatActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ui.auth.welcome.WelcomeActivity"
             android:exported="false" />
