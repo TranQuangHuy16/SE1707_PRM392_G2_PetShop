@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Build;
 
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
+import com.example.se1707_prm392_g2_petshop.data.api.CategoryApi;
 import com.example.se1707_prm392_g2_petshop.data.api.ChatApi;
+import com.example.se1707_prm392_g2_petshop.data.api.ProductApi;
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
 import com.example.se1707_prm392_g2_petshop.data.constants.Constant;
 import com.google.gson.Gson;
@@ -61,5 +63,13 @@ public class RetrofitClient {
 
     public static UserApi getUserApi(Context context) {
         return getInstance(context).create(UserApi.class);
+    }
+
+    public static ProductApi getProductApi(Context context) {
+        return getInstance(context).create(ProductApi.class);
+    }
+
+    public static CategoryApi getCategoryApi(Context context) {
+        return getInstance(context).create(CategoryApi.class);
     }
 }
