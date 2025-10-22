@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
 }
@@ -39,6 +40,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
 
 dependencies {
@@ -49,6 +53,9 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("com.facebook.android:facebook-login:17.0.0")
+    implementation("com.mapbox.maps:android-ndk27:11.15.3")
+
+
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -60,6 +67,8 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.activity)
     implementation(libs.scenecore)
+    implementation(libs.play.services.maps)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -6,6 +6,7 @@ import android.os.Build;
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
 import com.example.se1707_prm392_g2_petshop.data.api.CategoryApi;
 import com.example.se1707_prm392_g2_petshop.data.api.ChatApi;
+import com.example.se1707_prm392_g2_petshop.data.api.UserAddressApi;
 import com.example.se1707_prm392_g2_petshop.data.api.ProductApi;
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
 import com.example.se1707_prm392_g2_petshop.data.constants.Constant;
@@ -65,6 +66,8 @@ public class RetrofitClient {
         return getInstance(context).create(UserApi.class);
     }
 
+    public static UserAddressApi getUserAddressApi(Context context) {
+        return getInstance(context).create(UserAddressApi.class);
     public static ProductApi getProductApi(Context context) {
         return getInstance(context).create(ProductApi.class);
     }

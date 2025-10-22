@@ -20,6 +20,8 @@ public class ConstantApi {
     public static final String SEND_MESSAGE = "Chat/send-message";
     public static final String GET_ROOMS = "Chat/messages/{chatRoomId}";
 
+    // User Address
+    public static final String GET_USER_ADDRESSES = "UserAddress/default/{userId}";
     //Category
     public static final String GET_ALL_CATEGORIES = "Categories";
     public static final String GET_CATEGORY_BY_ID = "Categories/{id}";
