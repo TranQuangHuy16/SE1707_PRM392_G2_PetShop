@@ -22,4 +22,18 @@ public class ConstantApi {
 
     // User Address
     public static final String GET_USER_ADDRESSES = "UserAddress/default/{userId}";
+    //Category
+    public static final String GET_ALL_CATEGORIES = "Categories";
+    public static final String GET_CATEGORY_BY_ID = "Categories/{id}";
+    public static final String CREATE_CATEGORY = "Categories";
+    public static final String UPDATE_CATEGORY = "Categories/{id}";
+    public static final String DELETE_CATEGORY = "Categories/{id}";
+
+    //Product
+    public static final String GET_ALL_PRODUCTS = "Products";
+    public static final String GET_PRODUCT_BY_ID = "Products/{id}";
+    public static final String CREATE_PRODUCT = "Products";
+    public static final String UPDATE_PRODUCT = "Products/{id}";
+    public static final String DELETE_PRODUCT = "Products/{id}";
+    public static final String GET_PRODUCTS_BY_CATEGORY_ID = "Products/category/{categoryId}";
 }
