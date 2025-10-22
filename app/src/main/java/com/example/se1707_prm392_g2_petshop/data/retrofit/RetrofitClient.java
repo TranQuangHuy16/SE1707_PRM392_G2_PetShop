@@ -68,6 +68,7 @@ public class RetrofitClient {
 
     public static UserAddressApi getUserAddressApi(Context context) {
         return getInstance(context).create(UserAddressApi.class);
+    }
     public static ProductApi getProductApi(Context context) {
         return getInstance(context).create(ProductApi.class);
     }

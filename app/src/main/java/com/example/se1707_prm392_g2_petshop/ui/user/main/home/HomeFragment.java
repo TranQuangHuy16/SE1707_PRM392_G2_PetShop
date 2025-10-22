@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getContext(), MapActivity.class);
             startActivity(intent);
         });
+    }
     private void setupCategoryRV() {
         binding.rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(category -> {
