@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:gravity="center"
+    android:background="@drawable/bg_button_orange_light"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/img_admin_avatar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_profile"
+        android:background="@drawable/bg_avatar_circle"
+        android:padding="8dp" />
+
+    <TextView
+        android:id="@+id/tv_admin_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin User"
+        android:textColor="@color/orange"
+        android:textStyle="bold"
+        android:fontFamily="@font/bubblegumsans_regular"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"/>
+
+    <TextView
+        android:id="@+id/tv_admin_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="admin@petshop.com"
+        android:textColor="@color/gray"
+        android:textSize="14sp"/>
+</LinearLayout>

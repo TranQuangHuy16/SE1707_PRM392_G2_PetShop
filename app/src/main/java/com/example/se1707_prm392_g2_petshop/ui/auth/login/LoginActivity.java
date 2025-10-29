@@ -25,6 +25,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
+import com.example.se1707_prm392_g2_petshop.ui.admin.AdminActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.forgotpassword.ForgotPasswordActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.signup.SignUpActivity;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
@@ -59,12 +60,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                 Log.d("LoginActivity", "Result code: " + result.getResultCode());
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-//                    try {
-//                        GoogleSignInAccount account = task.getResult(ApiException.class);
-//                        Log.d("LoginActivity", "Success: " + account.getEmail());
-//                    } catch (ApiException e) {
-//                        Log.e("LoginActivity", "Error code: " + e.getStatusCode(), e);
-//                    }
                     handleGoogleSignInResult(task);
                 } else {
                     Log.w("LoginActivity", "Cancelled or no data");
@@ -80,28 +75,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
         setupPresenter();
         setupGoogleSignIn();
-
         setupFacebookLogin();
-
         setupListeners();
-
-        // 👇 DÁN ĐOẠN CODE NÀY VÀO CUỐI HÀM ONCREATE
-        try {
-            PackageInfo info = getPackageManager().getPackageInfo(
-                    "com.example.se1707_prm392_g2_petshop", // Tên package của bạn
-                    PackageManager.GET_SIGNATURES);
-            for (Signature signature : info.signatures) {
-                MessageDigest md = MessageDigest.getInstance("SHA");
-                md.update(signature.toByteArray());
-                // In Key Hash ra Logcat
-                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-            }
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        // 👆 KẾT THÚC ĐOẠN CODE CẦN DÁN
     }
 
     private void setupPresenter() {
@@ -124,34 +99,18 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                // Đăng nhập Facebook thành công
-                Log.d(TAG, "Facebook Login Success. Token: " + loginResult.getAccessToken().getToken());
-
-                // Lấy Access Token
                 String accessToken = loginResult.getAccessToken().getToken();
-
-                // 👇 (GIẢ ĐỊNH) Gọi Presenter của bạn với Facebook token
-                // Bạn sẽ cần tạo lớp LoginFacebookRequest và phương thức presenter.loginWithFacebook
-                // presenter.loginWithFacebook(new LoginFacebookRequest(accessToken));
-
-                // TODO: Xử lý token này, gửi lên server của bạn
-//                showToast("Facebook Login Success! (Chưa cài đặt server call)");
                 presenter.loginWithFacebook(new LoginFacebookRequest(accessToken));
-
-                // Ví dụ: gọi hàm onLoginGoogleSuccess để test (nhưng bạn nên tạo hàm riêng)
-                // presenter.loginWithGoogle(new LoginGooleRequest(accessToken)); // CHỈ ĐỂ TEST
             }
 
             @Override
             public void onCancel() {
-                // Người dùng hủy
                 Log.w(TAG, "Facebook Login Cancelled.");
                 showToast("Login cancelled.");
             }
 
             @Override
             public void onError(FacebookException error) {
-                // Lỗi
                 Log.e(TAG, "Facebook Login Error", error);
                 showToast("Facebook login failed: " + error.getMessage());
             }
@@ -175,13 +134,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
             }
         });
 
-        // 👇 Login bằng Google
         binding.btnGoogle.setOnClickListener(v -> signInWithGoogle());
 
         binding.btnFacebook.setOnClickListener(v -> signInWithFacebook());
 
         binding.tvForgotPassword.setOnClickListener(v -> {
-            // Xử lý sự kiện quên mật khẩu
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
         });
@@ -193,11 +150,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     }
 
     private void signInWithFacebook() {
-        // Yêu cầu quyền email và public_profile
-        LoginManager.getInstance().logInWithReadPermissions(
-                this,
-                Arrays.asList("email", "public_profile")
-        );
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
     }
 
     private void handleGoogleSignInResult(Task<GoogleSignInAccount> completedTask) {
@@ -209,8 +162,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
                     showToast("Google ID Token is null!");
                     return;
                 }
-                Log.d(TAG, "Google SignIn ID Token: " + idToken);
-                // Gọi API backend để xác thực
                 presenter.loginWithGoogle(new LoginGooleRequest(idToken));
             }
         } catch (ApiException e) {
@@ -221,40 +172,42 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        // Chuyển kết quả về cho Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void showToast(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
+    
+    private void navigateToNextScreen(AuthResponse response) {
+        SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
+        JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
+
+        String role = JwtUtil.getRoleFromToken(response.getAccessToken());
+
+        if ("Admin".equalsIgnoreCase(role)) {
+            startActivity(new Intent(this, AdminActivity.class));
+        } else {
+            startActivity(new Intent(this, UserMainActivity.class));
+        }
+        finish();
+    }
 
     // ✅ Implement interface LoginContract.View
     @Override
     public void onLoginSuccess(AuthResponse response) {
-        SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
-        JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
-        startActivity(new Intent(this, UserMainActivity.class));
-        finish();
+        navigateToNextScreen(response);
     }
 
     @Override
     public void onLoginGoogleSuccess(AuthResponse response) {
-        Log.d(TAG, "onLoginGoogleSuccess: " + response.getAccessToken());
-        SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
-        JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
-        startActivity(new Intent(this, UserMainActivity.class));
-        finish();
+        navigateToNextScreen(response);
     }
 
     @Override
     public void onLoginFacebookSuccess(AuthResponse response) {
-        SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
-        JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
-        startActivity(new Intent(this, UserMainActivity.class));
-        finish();
+        navigateToNextScreen(response);
     }
 
     @Override
