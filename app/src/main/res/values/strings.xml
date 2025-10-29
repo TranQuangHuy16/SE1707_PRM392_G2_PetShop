@@ -9,4 +9,5 @@
     <string name="facebook_app_id">1171120911436752</string>
     <string name="fb_login_protocol_scheme">fb1171120911436752</string>
     <string name="facebook_client_token">7fedf294c56f2cb10592d6486ca18613</string>
+    <string name="back">Back</string>
 </resources>

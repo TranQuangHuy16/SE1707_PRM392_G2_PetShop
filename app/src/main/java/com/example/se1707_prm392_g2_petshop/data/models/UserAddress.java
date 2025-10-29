@@ -11,14 +11,27 @@ public class UserAddress {
     private String ward;
     private String postalCode;
     private boolean isDefault;
-    private Double latitude;
-    private Double longitude;
+    private double latitude;
+    private double longitude;
 
     // Navigation properties
     private User user;
     private List<Order> orders;
+    public UserAddress(int addressId, int userId,
+                       String addressLine, String city, String district, String ward, String postalCode,
+                       boolean isDefault, double latitude, double longitude) {
+        this.addressId = addressId;
+        this.userId = userId;
+        this.addressLine = addressLine;
+        this.city = city;
+        this.district = district;
+        this.ward = ward;
+        this.postalCode = postalCode;
+        this.isDefault = isDefault;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
-    // Getters and Setters
     public int getAddressId() {
         return addressId;
     }
@@ -83,35 +96,20 @@ public class UserAddress {
         isDefault = aDefault;
     }
 
-    public Double getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public Double getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
 }
+

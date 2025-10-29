@@ -19,6 +19,7 @@ import com.example.se1707_prm392_g2_petshop.data.adapter.CategoryAdapter;
 import com.example.se1707_prm392_g2_petshop.data.adapter.ProductAdapter;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentHomeBinding;
 import com.example.se1707_prm392_g2_petshop.ui.chat.ChatActivity;
+import com.example.se1707_prm392_g2_petshop.ui.map.MapActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
@@ -40,6 +41,12 @@ public class HomeFragment extends Fragment {
 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
+        FloatingActionButton fabChat = root.findViewById(R.id.fab_chat);
+        FloatingActionButton fabMap = root.findViewById(R.id.fab_map);
+
+        seUpFabChat(fabChat);
+        setUpFabMap(fabMap);
+        
         setupCategoryRV();
         setupFeaturedProductRV();
         observeViewModel();
@@ -59,6 +66,12 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    private void setUpFabMap(FloatingActionButton fabMap) {
+        fabMap.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), MapActivity.class);
+            startActivity(intent);
+        });
+    }
     private void setupCategoryRV() {
         binding.rvCategories.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         categoryAdapter = new CategoryAdapter(category -> {
