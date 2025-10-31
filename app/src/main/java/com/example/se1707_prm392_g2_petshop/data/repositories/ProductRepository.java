@@ -11,6 +11,7 @@ import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateProductRequ
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,6 +56,63 @@ public class ProductRepository {
             }
         });
         return data;
+    }
+
+    public LiveData<List<Product>> getAllAdminProducts(Integer categoryId) {
+        MutableLiveData<List<Product>> allProductsLiveData = new MutableLiveData<>();
+
+        // 1. Xác định API để gọi cho sản phẩm ACTIVE
+        Call<List<Product>> activeCall;
+        if (categoryId == null) {
+            activeCall = productApi.getAllProducts();
+        } else {
+            activeCall = productApi.getProductsByCategoryId(categoryId);
+        }
+
+        activeCall.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> activeResponse) {
+                List<Product> activeProducts = new ArrayList<>();
+                if (activeResponse.isSuccessful() && activeResponse.body() != null) {
+                    activeProducts.addAll(activeResponse.body());
+                }
+
+                // 2. Xác định API để gọi cho sản phẩm INACTIVE
+                Call<List<Product>> inactiveCall;
+                if (categoryId == null) {
+                    inactiveCall = productApi.getAllProductsNotActive();
+                } else {
+                    inactiveCall = productApi.getProductsByCategoryIdNotActive(categoryId);
+                }
+
+                inactiveCall.enqueue(new Callback<List<Product>>() {
+                    @Override
+                    public void onResponse(Call<List<Product>> call, Response<List<Product>> inactiveResponse) {
+                        List<Product> combinedList = new ArrayList<>(activeProducts);
+                        if (inactiveResponse.isSuccessful() && inactiveResponse.body() != null) {
+                            // 3. Gộp danh sách inactive vào
+                            combinedList.addAll(inactiveResponse.body());
+                        }
+                        // 4. Cập nhật LiveData với danh sách đã gộp
+                        allProductsLiveData.setValue(combinedList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Product>> call, Throwable t) {
+                        // Nếu gọi API inactive lỗi, vẫn trả về danh sách active đã lấy được
+                        allProductsLiveData.setValue(activeProducts);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+                // Nếu gọi API active lỗi ngay từ đầu, trả về null
+                allProductsLiveData.setValue(null);
+            }
+        });
+
+        return allProductsLiveData;
     }
 
     public LiveData<Product> getProductById(int id) {

@@ -16,7 +16,7 @@
         mapbox:mapbox_cameraZoom="12" />
 
     <!-- 🔙 Nút back nổi góc trên trái -->
-    <ImageButton
+    <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btnBack"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -26,6 +26,6 @@
         android:padding="8dp"
         android:src="@drawable/ic_arrow_back"
         android:contentDescription="@string/back"
-        android:tint="@android:color/white" />
+        android:tint="@color/white"/>
 
 </FrameLayout>

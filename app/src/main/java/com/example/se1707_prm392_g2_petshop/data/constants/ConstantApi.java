@@ -13,6 +13,7 @@ public class ConstantApi {
 
     //Users
     public static final String GET_USER_BY_ID = "Users/{id}";
+    public static final String GET_ALL_USERS = "Users/all";
 
     // Chat
     public static final String CREATE_ROOM = "Chat/create-room";
@@ -31,9 +32,14 @@ public class ConstantApi {
 
     //Product
     public static final String GET_ALL_PRODUCTS = "Products";
+    public static final String GET_ALL_PRODUCTS_NOT_ACTIVE = "Products/notactive";
     public static final String GET_PRODUCT_BY_ID = "Products/{id}";
     public static final String CREATE_PRODUCT = "Products";
     public static final String UPDATE_PRODUCT = "Products/{id}";
     public static final String DELETE_PRODUCT = "Products/{id}";
     public static final String GET_PRODUCTS_BY_CATEGORY_ID = "Products/category/{categoryId}";
+    public static final String GET_PRODUCTS_BY_CATEGORY_ID_NOT_ACTIVE = "Products/category/notactive/{categoryId}";
+
+    //Orders
+
 }

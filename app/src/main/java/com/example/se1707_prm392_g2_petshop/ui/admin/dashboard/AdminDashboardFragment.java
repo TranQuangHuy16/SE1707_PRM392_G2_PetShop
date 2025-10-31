@@ -1,26 +1,32 @@
 package com.example.se1707_prm392_g2_petshop.ui.admin.dashboard;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.se1707_prm392_g2_petshop.R;
+import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
+import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
+import com.example.se1707_prm392_g2_petshop.data.repositories.ProductRepository;
+import com.example.se1707_prm392_g2_petshop.data.repositories.OrderRepository;
+import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.google.android.material.card.MaterialCardView;
 
 public class AdminDashboardFragment extends Fragment implements AdminDashboardContract.View {
-
     private AdminDashboardContract.Presenter mPresenter;
     private NavController navController;
     private MaterialCardView btnManageProducts, btnManageUsers, btnViewOrders;
+    private TextView tvTotalUsers, tvTotalProducts, tvTotalOrders;
 
     @Nullable
     @Override
@@ -32,8 +38,6 @@ public class AdminDashboardFragment extends Fragment implements AdminDashboardCo
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Lấy NavController từ View
-        setNavController();
         // Khởi tạo Presenter
         setupPresenter();
         // Khởi tạo các thành phần giao diện
@@ -43,17 +47,23 @@ public class AdminDashboardFragment extends Fragment implements AdminDashboardCo
         // Bắt đầu hoạt động của Presenter
         mPresenter.start();
     }
-    private void setNavController() {
-        navController = Navigation.findNavController(requireView());
-    }
 
     private void setupPresenter() {
-        mPresenter = new AdminDashboardPresenter(this);
+        UserApi userApi = RetrofitClient.getUserApi(requireContext());
+        mPresenter = new AdminDashboardPresenter(
+                this,
+                UserRepository.getInstance(requireContext()),
+                ProductRepository.getInstance(requireContext())
+//                ,OrderRepository.getInstance(requireContext())
+        );
     }
     private void setupViews(View view) {
         btnManageProducts = view.findViewById(R.id.btn_manage_products);
         btnManageUsers = view.findViewById(R.id.btn_manage_users);
         btnViewOrders = view.findViewById(R.id.btn_view_orders);
+        tvTotalUsers = view.findViewById(R.id.tv_total_users);
+        tvTotalProducts = view.findViewById(R.id.tv_total_products);
+        tvTotalOrders = view.findViewById(R.id.tv_total_orders);
     }
 
     private void setupListeners() {
@@ -70,16 +80,50 @@ public class AdminDashboardFragment extends Fragment implements AdminDashboardCo
 
     @Override
     public void navigateToManageProducts() {
-        navController.navigate(R.id.action_adminDashboardFragment_to_manageProductsFragment);
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_adminDashboardFragment_to_manageProductsFragment);
     }
 
     @Override
     public void navigateToManageUsers() {
-        navController.navigate(R.id.action_adminDashboardFragment_to_manageUsersFragment);
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_adminDashboardFragment_to_manageUsersFragment);
     }
 
     @Override
     public void navigateToViewOrders() {
-        navController.navigate(R.id.action_adminDashboardFragment_to_viewOrdersFragment);
+        NavHostFragment.findNavController(this)
+                .navigate(R.id.action_adminDashboardFragment_to_viewOrdersFragment);
+    }
+
+    @Override
+    public void showTotalUsers(int count) {
+        tvTotalUsers.setText(String.valueOf(count));
+    }
+
+    @Override
+    public void showTotalProducts(int count) {
+        tvTotalProducts.setText(String.valueOf(count));
+    }
+
+    @Override
+    public void showTotalOrders(int count) {
+        tvTotalOrders.setText("666");
+    }
+
+    @Override
+    public void showLoading() {
+    // Nếu cần thêm logic hiển thị loading
+        // thêm ProgressBar vào layout của Fragment
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

@@ -6,10 +6,17 @@ public interface AdminDashboardContract {
         void navigateToManageProducts();
         void navigateToManageUsers();
         void navigateToViewOrders();
+        void showTotalUsers(int count);
+        void showTotalProducts(int count);
+        void showTotalOrders(int count);
+        void showLoading();
+        void hideLoading();
+        void showError(String message);
     }
 
     interface Presenter {
         void start();
+        void loadDashboardData();
         void onManageProductsClicked();
         void onManageUsersClicked();
         void onViewOrdersClicked();

@@ -45,12 +45,17 @@
                 android:layout_marginBottom="16dp"/>
 
             <Button
-                android:id="@+id/btn_logout"
+                android:id="@+id/btnLogout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:background="@drawable/bg_button_orange"
-                android:textColor="@color/white"/>
+                android:layout_height="48dp"
+                android:layout_marginBottom="108dp"
+                android:backgroundTint="#FFA726"
+                android:drawableStart="@drawable/ic_logout"
+                android:drawablePadding="8dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Log Out"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

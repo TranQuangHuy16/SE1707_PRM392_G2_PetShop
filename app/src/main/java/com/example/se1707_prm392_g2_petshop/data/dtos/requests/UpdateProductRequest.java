@@ -4,12 +4,12 @@ public class UpdateProductRequest {
     public int categoryId;
     public String productName;
     public String description ;
-    public int price;
+    public double price;
     public int stock;
     public String imageUrl;
     public boolean isActive;
 
-    public UpdateProductRequest(int categoryId, String productName, String description, int price, int stock, String imageUrl, boolean isActive) {
+    public UpdateProductRequest(int categoryId, String productName, String description, double price, int stock, String imageUrl, boolean isActive) {
         this.categoryId = categoryId;
         this.productName = productName;
         this.description = description;
@@ -43,11 +43,11 @@ public class UpdateProductRequest {
         this.description = description;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -39,10 +40,14 @@ public class RetrofitClient {
                         .create();
             }
 
+            // Create Logging Interceptor
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
             // Create OkHttpClient with an interceptor for authentication
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new AuthInterceptor(context)) // Thêm interceptor ở đây
+                    .addInterceptor(loggingInterceptor) // Thêm logging interceptor
                     .build();
 
             instance = new Retrofit.Builder()
