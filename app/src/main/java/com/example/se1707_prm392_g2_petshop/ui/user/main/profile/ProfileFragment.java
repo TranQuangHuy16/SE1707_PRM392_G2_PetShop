@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,13 +34,18 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_profile, container, false);
-        binding = FragmentProfileBinding.inflate(getLayoutInflater());
+        binding = FragmentProfileBinding.inflate(inflater, container, false);
 
         setupPresenter();
+        setupMenuItems();
         setupListeners();
 
         return binding.getRoot();
+    }
+
+    private void setupMenuItems() {
+        binding.itemOrder.tvTitle.setText("My Orders");
+        binding.itemOrder.imgIcon.setImageResource(R.drawable.ic_order);
     }
 
     private void setupPresenter() {
@@ -51,6 +57,19 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
 
 
     private void setupListeners() {
+        binding.itemOrder.getRoot().setOnClickListener(v -> {
+            Log.d("ProfileFragment", "My Orders clicked!");
+            try {
+                Intent intent = new Intent(requireContext(), 
+                    com.example.se1707_prm392_g2_petshop.ui.order.OrderListActivity.class);
+                startActivity(intent);
+                Log.d("ProfileFragment", "OrderListActivity started");
+            } catch (Exception e) {
+                Log.e("ProfileFragment", "Error starting OrderListActivity", e);
+                Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         binding.btnLogout.setOnClickListener(v -> {
             SharedPreferences prefs = requireContext().getSharedPreferences("auth_prefs", (int) Context.MODE_PRIVATE);
 //            SharedPreferences.Editor editor = prefs.edit();
