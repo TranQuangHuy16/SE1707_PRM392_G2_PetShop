@@ -8,16 +8,6 @@ public class Order {
     private int orderId;
     private int userId;
     private Integer addressId;
-    private String orderDate;
-    private double totalAmount;
-    private String status;
-    private boolean isActive;
-    private User user;
-    private List<OrderDetail> orderDetails;
-
-    public Order() {}
-
-    // Getters and Setters
     private Date orderDate;
     private double totalAmount;
     private String status;
@@ -26,7 +16,7 @@ public class Order {
 
     public Order() {}
 
-    public Order(int orderId, int userId, Integer addressId, Date orderDate, 
+    public Order(int orderId, int userId, Integer addressId, Date orderDate,
                  double totalAmount, String status) {
         this.orderId = orderId;
         this.userId = userId;
@@ -60,11 +50,6 @@ public class Order {
         this.addressId = addressId;
     }
 
-    public String getOrderDate() {
-        return orderDate;
-    }
-
-    public void setOrderDate(String orderDate) {
     public Date getOrderDate() {
         return orderDate;
     }
@@ -89,20 +74,6 @@ public class Order {
         this.status = status;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     public UserAddress getAddress() {
         return address;
     }

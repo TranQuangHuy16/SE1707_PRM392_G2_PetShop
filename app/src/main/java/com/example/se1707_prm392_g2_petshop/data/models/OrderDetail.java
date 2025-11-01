@@ -2,16 +2,6 @@ package com.example.se1707_prm392_g2_petshop.data.models;
 
 public class OrderDetail {
     private int orderDetailId;
-    private int orderId;
-    private int productId;
-    private int quantity;
-    private double unitPrice;
-
-    // Navigation properties
-    private Order order;
-    private Product product;
-
-    // Getters and Setters
     private int productId;
     private String productName;
     private String productImageUrl;
@@ -38,14 +28,6 @@ public class OrderDetail {
 
     public void setOrderDetailId(int orderDetailId) {
         this.orderDetailId = orderDetailId;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
     }
 
     public int getProductId() {
@@ -88,20 +70,6 @@ public class OrderDetail {
         this.unitPrice = unitPrice;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
     public double getTotalPrice() {
         return totalPrice;
     }

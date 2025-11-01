@@ -78,7 +78,7 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         imgAvatar = findViewById(R.id.imgAvatar);
         tvName = findViewById(R.id.tvName);
         recyclerChat.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new ChatAdapter(this, currentUserId);
+        adapter = new    ChatAdapter(this, currentUserId);
         recyclerChat.setAdapter(adapter);
 
         btnBack.setOnClickListener(new View.OnClickListener() {
