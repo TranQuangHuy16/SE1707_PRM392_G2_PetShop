@@ -21,7 +21,7 @@ public class UserAddressRepository {
     private static volatile UserAddressRepository instance;
     private UserAddressApi userAddressApi;
 
-    private UserAddressRepository(Context context) {
+    public UserAddressRepository(Context context) {
         this.userAddressApi = RetrofitClient.getInstance(context).create(UserAddressApi.class);
     }
 

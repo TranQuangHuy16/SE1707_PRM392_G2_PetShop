@@ -35,6 +35,7 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 scenecore = { group = "androidx.xr.scenecore", name = "scenecore", version.ref = "scenecore" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+appcompat-resources = { group = "androidx.appcompat", name = "appcompat-resources", version.ref = "appcompat" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

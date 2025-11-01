@@ -57,6 +57,7 @@ dependencies {
 
 
     implementation(libs.appcompat)
+    implementation(libs.appcompat.resources)
     implementation(libs.material)
     implementation(libs.constraintlayout)
     implementation(libs.lifecycle.livedata.ktx)

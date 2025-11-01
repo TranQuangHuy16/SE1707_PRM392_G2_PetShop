@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+
 import com.example.se1707_prm392_g2_petshop.data.models.UserAddress
 import com.example.se1707_prm392_g2_petshop.data.repositories.UserAddressRepository
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient
@@ -45,7 +46,7 @@ class MapActivity : AppCompatActivity(), MapContract.View {
 
         // Gọi API địa chỉ
         val api = RetrofitClient.getUserAddressApi(this)
-        val repository = UserAddressRepository(api)
+        val repository = UserAddressRepository(this)
         presenter = MapPresenter(this, repository)
         presenter.loadDefaultAddress(1)
     }
