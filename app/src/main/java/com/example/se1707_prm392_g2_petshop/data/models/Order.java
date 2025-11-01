@@ -1,5 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.models;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Order {
@@ -16,6 +18,24 @@ public class Order {
     public Order() {}
 
     // Getters and Setters
+    private Date orderDate;
+    private double totalAmount;
+    private String status;
+    private UserAddress address;
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+
+    public Order() {}
+
+    public Order(int orderId, int userId, Integer addressId, Date orderDate, 
+                 double totalAmount, String status) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.addressId = addressId;
+        this.orderDate = orderDate;
+        this.totalAmount = totalAmount;
+        this.status = status;
+    }
+
     public int getOrderId() {
         return orderId;
     }
@@ -45,6 +65,11 @@ public class Order {
     }
 
     public void setOrderDate(String orderDate) {
+    public Date getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Date orderDate) {
         this.orderDate = orderDate;
     }
 
@@ -78,6 +103,12 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
+    public UserAddress getAddress() {
+        return address;
+    }
+
+    public void setAddress(UserAddress address) {
+        this.address = address;
     }
 
     public List<OrderDetail> getOrderDetails() {
@@ -86,5 +117,18 @@ public class Order {
 
     public void setOrderDetails(List<OrderDetail> orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public String getStatusDisplay() {
+        switch (status) {
+            case "Pending":
+                return "Chờ thanh toán";
+            case "Paid":
+                return "Đã thanh toán";
+            case "Cancelled":
+                return "Đã hủy";
+            default:
+                return status;
+        }
     }
 }

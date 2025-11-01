@@ -10,12 +10,17 @@ import com.example.se1707_prm392_g2_petshop.data.api.UserAddressApi;
 import com.example.se1707_prm392_g2_petshop.data.api.ProductApi;
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
 import com.example.se1707_prm392_g2_petshop.data.constants.Constant;
+import com.example.se1707_prm392_g2_petshop.data.api.CartApi;
+import com.example.se1707_prm392_g2_petshop.data.api.PaymentApi;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -26,23 +31,38 @@ public class RetrofitClient {
     private static Retrofit instance;
     public static Retrofit getInstance(Context context) {
         if (instance == null) {
-            // Define a custom DateTimeFormatter for LocalDateTime
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            }
+            // Custom deserializer for Date to handle .NET DateTime format
+            JsonDeserializer<Date> dateDeserializer = (json, type, ctx) -> {
+                try {
+                    String dateString = json.getAsString();
+                    // Handle .NET DateTime format: "2025-10-30T15:32:26.2898371"
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSS", Locale.US);
+                    return sdf.parse(dateString);
+                } catch (Exception e) {
+                    try {
+                        // Fallback to ISO 8601 format with timezone
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                        return sdf.parse(json.getAsString());
+                    } catch (Exception ex) {
+                        return null;
+                    }
+                }
+            };
 
-            Gson gson = null;
+            GsonBuilder gsonBuilder = new GsonBuilder()
+                    .registerTypeAdapter(Date.class, dateDeserializer);
+
+            // Add LocalDateTime deserializer for Android O and above
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                gson = new GsonBuilder()
-                        .registerTypeAdapter(LocalDateTime.class,
-                                (JsonDeserializer<LocalDateTime>) (json, type, ctx) ->
-                                        LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME))
-                        .create();
+                gsonBuilder.registerTypeAdapter(LocalDateTime.class,
+                        (JsonDeserializer<LocalDateTime>) (json, typeOfT, context1) ->
+                                LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             }
 
             // Create Logging Interceptor
             HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            Gson gson = gsonBuilder.create();
 
             // Create OkHttpClient with an interceptor for authentication
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -80,5 +100,13 @@ public class RetrofitClient {
 
     public static CategoryApi getCategoryApi(Context context) {
         return getInstance(context).create(CategoryApi.class);
+    }
+
+    public static CartApi getCartApi(Context context) {
+        return getInstance(context).create(CartApi.class);
+    }
+
+    public static PaymentApi getPaymentApi(Context context) {
+        return getInstance(context).create(PaymentApi.class);
     }
 }

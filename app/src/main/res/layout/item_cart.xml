@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <ImageView
+            android:id="@+id/img_cart_product"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/product_img"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_cart_product_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="Ollie Baked Beef Dish"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img_cart_product"
+            app:layout_constraintTop_toTopOf="@id/img_cart_product" />
+
+        <TextView
+            android:id="@+id/tv_cart_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/orange"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="$ 39.99"
+            app:layout_constraintStart_toStartOf="@id/tv_cart_product_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_cart_product_name" />
+
+        <LinearLayout
+            android:id="@+id/layout_quantity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="@id/tv_cart_product_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_cart_product_price">
+
+            <ImageButton
+                android:id="@+id/btn_decrease"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_button_orange_light"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_minus"
+                android:contentDescription="Decrease quantity" />
+
+            <TextView
+                android:id="@+id/tv_quantity"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="1" />
+
+            <ImageButton
+                android:id="@+id/btn_increase"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@drawable/bg_button_orange"
+                android:src="@drawable/ic_plus"
+                android:scaleType="centerCrop"
+                android:contentDescription="Increase quantity" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cart_item_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:text="$ 119.97"
+            app:layout_constraintBottom_toBottomOf="@id/layout_quantity"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/layout_quantity" />
+
+        <ImageButton
+            android:id="@+id/btn_remove"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@android:color/holo_red_dark"
+            android:contentDescription="Remove item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -12,6 +12,26 @@ public class OrderDetail {
     private Product product;
 
     // Getters and Setters
+    private int productId;
+    private String productName;
+    private String productImageUrl;
+    private int quantity;
+    private double unitPrice;
+    private double totalPrice;
+
+    public OrderDetail() {}
+
+    public OrderDetail(int orderDetailId, int productId, String productName,
+                       String productImageUrl, int quantity, double unitPrice, double totalPrice) {
+        this.orderDetailId = orderDetailId;
+        this.productId = productId;
+        this.productName = productName;
+        this.productImageUrl = productImageUrl;
+        this.quantity = quantity;
+        this.unitPrice = unitPrice;
+        this.totalPrice = totalPrice;
+    }
+
     public int getOrderDetailId() {
         return orderDetailId;
     }
@@ -34,6 +54,22 @@ public class OrderDetail {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductImageUrl() {
+        return productImageUrl;
+    }
+
+    public void setProductImageUrl(String productImageUrl) {
+        this.productImageUrl = productImageUrl;
     }
 
     public int getQuantity() {
@@ -66,5 +102,11 @@ public class OrderDetail {
 
     public void setProduct(Product product) {
         this.product = product;
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

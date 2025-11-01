@@ -11,4 +11,12 @@
     <color name="gray">#FF808080</color>
     <color name="light_gray">#FFC0C0C0</color>
     <color name="bg_button_orange_light">#FFFAF0E6</color>
+    <color name="orange">#FFFF6B35</color>
+    <color name="gray">#FF9E9E9E</color>
+    <color name="light_gray">#FFE0E0E0</color>
+    <color name="bg_light">#FFF5F5F5</color>
+    
+    <color name="status_pending">#FFFF9800</color>
+    <color name="status_paid">#FF4CAF50</color>
+    <color name="status_cancelled">#FFF44336</color>
 </resources>
