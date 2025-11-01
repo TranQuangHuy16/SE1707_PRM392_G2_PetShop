@@ -1,10 +1,13 @@
 package com.example.se1707_prm392_g2_petshop.data.models;
 
+import com.example.se1707_prm392_g2_petshop.data.models.ModelEnums.UserRoleEnum;
+
 public class User {
     private int userId;
     private String username;
     private String password;
     private String fullName;
+    private int role;
     private String email;
     private String phone;
     private String imgUrl;
@@ -18,15 +21,20 @@ public class User {
         this.imgUrl = imgAvatarl;
     }
 
-    public User(int userId, String username, String password, String fullName, String email, String phone, String imgUrl) {
+    public User(int userId, String username, String password, String fullName, int role, String email, String phone, String imgUrl) {
         this.userId = userId;
         this.username = username;
         this.password = password;
         this.fullName = fullName;
+        this.role = role;
         this.email = email;
         this.phone = phone;
         this.imgUrl = imgUrl;
     }
+
+    public int getRole() { return role; }
+
+    public void setRole(int role) { this.role = role; }
 
     public int getUserId() {
         return userId;

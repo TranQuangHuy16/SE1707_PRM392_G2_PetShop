@@ -10,25 +10,13 @@ import org.json.JSONObject;
 public class JwtUtil {
     public static String getUserIdFromToken(Context context) {
         try {
-            // 1️⃣ Lấy token từ SharedPreferences
             SharedPreferences prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
             String jwtToken = prefs.getString("jwt_token", null);
             if (jwtToken == null) {
-                return null; // Chưa đăng nhập
+                return null;
             }
-
-            // 2️⃣ Giải mã phần payload của token
-            String[] parts = jwtToken.split("\\.");
-            if (parts.length < 2) return null;
-
-            String payload = parts[1];
-            String decodedPayload = new String(android.util.Base64.decode(payload, android.util.Base64.URL_SAFE));
-            org.json.JSONObject jsonObject = new org.json.JSONObject(decodedPayload);
-
-            // 3️⃣ Trích xuất userId từ "nameid"
-            return jsonObject.optString("nameid", null);
-
-        } catch (org.json.JSONException | IllegalArgumentException e) {
+            return getClaimFromToken(jwtToken, "nameid");
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -36,21 +24,36 @@ public class JwtUtil {
 
     public static String getSubFromToken(Context context) {
         try {
-            // 1️⃣ Lấy token từ SharedPreferences
             SharedPreferences prefs = context.getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
             String jwtToken = prefs.getString("jwt_token", null);
             if (jwtToken == null) {
-                return null; // Chưa đăng nhập
+                return null;
             }
+            return getClaimFromToken(jwtToken, "sub");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
+    public static String getRoleFromToken(String jwtToken) {
+        // Corrected based on backend code: the claim key is "role".
+        return getClaimFromToken(jwtToken, "role");
+    }
+
+    private static String getClaimFromToken(String jwtToken, String claimKey) {
+        try {
+            if (jwtToken == null) {
+                return null;
+            }
             String[] parts = jwtToken.split("\\.");
-            if (parts.length < 2) return null;
-
+            if (parts.length < 2) {
+                return null;
+            }
             String payload = parts[1];
             String decodedPayload = new String(Base64.decode(payload, Base64.URL_SAFE));
             JSONObject jsonObject = new JSONObject(decodedPayload);
-
-            return jsonObject.getString("sub");  // "sub" là UserID
+            return jsonObject.optString(claimKey, null);
         } catch (JSONException | IllegalArgumentException e) {
             e.printStackTrace();
             return null;

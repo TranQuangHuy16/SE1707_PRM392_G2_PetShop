@@ -74,6 +74,8 @@
             android:name=".ui.user.main.UserMainActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.admin.AdminActivity"
+            android:exported="true" />
             android:name=".ui.order.OrderListActivity"
             android:exported="false" />
         <activity

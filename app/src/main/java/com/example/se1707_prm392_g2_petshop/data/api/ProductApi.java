@@ -20,6 +20,9 @@ public interface ProductApi {
     @GET(ConstantApi.GET_ALL_PRODUCTS)
     Call<List<Product>> getAllProducts();
 
+    @GET(ConstantApi.GET_ALL_PRODUCTS_NOT_ACTIVE)
+    Call<List<Product>> getAllProductsNotActive();
+
     @GET(ConstantApi.GET_PRODUCT_BY_ID)
     Call<Product> getProductById(@Path("id") int id);
 
@@ -35,4 +38,6 @@ public interface ProductApi {
     @GET(ConstantApi.GET_PRODUCTS_BY_CATEGORY_ID)
     Call<List<Product>> getProductsByCategoryId(@Path("categoryId") int categoryId);
 
+    @GET(ConstantApi.GET_PRODUCTS_BY_CATEGORY_ID_NOT_ACTIVE)
+    Call<List<Product>> getProductsByCategoryIdNotActive(@Path("categoryId") int categoryId);
 }

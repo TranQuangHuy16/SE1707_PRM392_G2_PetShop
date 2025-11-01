@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -58,11 +59,15 @@ public class RetrofitClient {
                                 LocalDateTime.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             }
 
+            // Create Logging Interceptor
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             Gson gson = gsonBuilder.create();
 
             // Create OkHttpClient with an interceptor for authentication
             OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(new AuthInterceptor(context)) // Thêm interceptor ở đây
+                    .addInterceptor(loggingInterceptor) // Thêm logging interceptor
                     .build();
 
             instance = new Retrofit.Builder()

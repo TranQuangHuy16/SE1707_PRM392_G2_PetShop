@@ -1,5 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.models;
 
+import java.util.List;
+
 public class UserAddress {
     private int addressId;
     private int userId;
@@ -12,6 +14,9 @@ public class UserAddress {
     private double latitude;
     private double longitude;
 
+    // Navigation properties
+    private User user;
+    private List<Order> orders;
     public UserAddress(int addressId, int userId,
                        String addressLine, String city, String district, String ward, String postalCode,
                        boolean isDefault, double latitude, double longitude) {
