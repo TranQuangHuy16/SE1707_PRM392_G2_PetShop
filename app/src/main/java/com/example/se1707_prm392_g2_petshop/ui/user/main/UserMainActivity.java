@@ -36,6 +36,24 @@ public class UserMainActivity extends AppCompatActivity {
                 .findFragmentById(R.id.nav_host_fragment_activity_user_main);
         NavController navController = navHostFragment.getNavController();
 
+        // Handle drawer menu item clicks
+        drawerNavView.setNavigationItemSelectedListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.nav_my_order) {
+                android.content.Intent intent = new android.content.Intent(this, 
+                    com.example.se1707_prm392_g2_petshop.ui.order.OrderListActivity.class);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+            // Let NavigationUI handle other items
+            boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
+            if (handled) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+            }
+            return handled;
+        });
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home,
                 R.id.navigation_notifications,
@@ -53,7 +71,8 @@ public class UserMainActivity extends AppCompatActivity {
 
 //        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-        NavigationUI.setupWithNavController(drawerNavView, navController);
+        // Don't use NavigationUI.setupWithNavController for drawer because we have custom listener above
+        // NavigationUI.setupWithNavController(drawerNavView, navController);
     }
 
 

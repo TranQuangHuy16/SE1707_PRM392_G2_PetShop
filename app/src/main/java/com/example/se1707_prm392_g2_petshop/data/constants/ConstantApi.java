@@ -22,6 +22,8 @@ public class ConstantApi {
 
     // User Address
     public static final String GET_USER_ADDRESSES = "UserAddress/default/{userId}";
+    public static final String GET_ALL_USER_ADDRESSES = "UserAddress";
+
     //Category
     public static final String GET_ALL_CATEGORIES = "Categories";
     public static final String GET_CATEGORY_BY_ID = "Categories/{id}";
@@ -36,4 +38,29 @@ public class ConstantApi {
     public static final String UPDATE_PRODUCT = "Products/{id}";
     public static final String DELETE_PRODUCT = "Products/{id}";
     public static final String GET_PRODUCTS_BY_CATEGORY_ID = "Products/category/{categoryId}";
+
+    // Cart
+    public static final String GET_MY_CART = "Carts/my-cart";
+    public static final String ADD_TO_CART = "Carts/add";
+    public static final String UPDATE_CART_ITEM = "Carts/items/{cartItemId}";
+    public static final String REMOVE_CART_ITEM = "Carts/items/{cartItemId}";
+    public static final String CLEAR_CART = "Carts/clear";
+
+    // Payment
+    public static final String GET_MY_PAYMENTS = "Payments/my-payments";
+    public static final String GET_PAYMENT_BY_ID = "Payments/{id}";
+    public static final String GET_PAYMENT_BY_ORDER_ID = "Payments/order/{orderId}";
+    public static final String CREATE_PAYMENT = "Payments";
+
+    // ZaloPay
+    public static final String ZALOPAY_CREATE = "ZaloPay/create";
+    public static final String ZALOPAY_CALLBACK = "ZaloPay/callback";
+    public static final String ZALOPAY_QUERY = "ZaloPay/query/{orderId}";
+    public static final String CONFIRM_PAYMENT = "Payments/confirm/{orderId}";
+
+    // Order
+    public static final String CREATE_ORDER_FROM_CART = "Orders/create-from-cart";
+    public static final String GET_MY_ORDERS = "Orders";
+    public static final String GET_ORDER_BY_ID = "Orders/{orderId}";
+    public static final String CANCEL_ORDER = "Orders/{orderId}/cancel";
 }
