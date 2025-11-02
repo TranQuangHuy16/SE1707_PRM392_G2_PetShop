@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.se1707_prm392_g2_petshop.R;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 
 public class AdminOrdersFragment extends Fragment implements AdminOrdersContract.View {
 
@@ -24,6 +25,10 @@ public class AdminOrdersFragment extends Fragment implements AdminOrdersContract
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.applySystemBarInsets(view);
+
         new AdminOrdersPresenter(this);
         mPresenter.start();
     }

@@ -31,6 +31,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.ChatRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
 
 import java.util.ArrayList;
@@ -56,6 +57,11 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_chat);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
         setupPresenter();
         String id = JwtUtil.getSubFromToken(this);

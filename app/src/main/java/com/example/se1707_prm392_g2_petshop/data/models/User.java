@@ -11,6 +11,8 @@ public class User {
     private String email;
     private String phone;
     private String imgUrl;
+    private boolean isActive;     // trạng thái hoạt động
+    private String createdAt;     // ngày tạo tài khoản (ISO string từ API)
 
     public User(String username, String password, String fullName, String email, String phone, String imgAvatarl) {
         this.username = username;
@@ -91,4 +93,10 @@ public class User {
     public void setImgAvatarl(String imgAvatarl) {
         this.imgUrl = imgAvatarl;
     }
+
+    public boolean isActive() { return isActive; }
+    public void setActive(boolean active) { isActive = active; }
+
+    public String getCreatedAt() { return createdAt; }
+    public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }
 }

@@ -27,6 +27,7 @@ import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ConfirmPaymentRe
 import com.example.se1707_prm392_g2_petshop.data.models.Order;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.repositories.OrderRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -55,6 +56,11 @@ public class OrderDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_detail);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
         orderId = getIntent().getIntExtra("orderId", -1);
         

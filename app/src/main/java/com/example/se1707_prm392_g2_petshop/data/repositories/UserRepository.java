@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.se1707_prm392_g2_petshop.data.api.ChatApi;
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateUserRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.UserDetailResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
@@ -53,6 +55,46 @@ public class UserRepository {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
+                data.setValue(null);
+            }
+        });
+        return data;
+    }
+
+    public LiveData<UserDetailResponse> getUserDetail(int userId) {
+        MutableLiveData<UserDetailResponse> data = new MutableLiveData<>();
+        userApi.getUserDetail(userId).enqueue(new Callback<UserDetailResponse>() {
+            @Override
+            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
+                data.setValue(null);
+            }
+        });
+        return data;
+    }
+
+    public LiveData<UserDetailResponse> updateUser(int userId, UpdateUserRequest request) {
+        MutableLiveData<UserDetailResponse> data = new MutableLiveData<>();
+        userApi.updateUser(userId, request).enqueue(new Callback<UserDetailResponse>() {
+            @Override
+            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
                 data.setValue(null);
             }
         });

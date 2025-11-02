@@ -51,7 +51,7 @@
 
     <fragment
         android:id="@+id/nav_admin_users"
-        android:name="com.example.se1707_prm392_g2_petshop.ui.admin.users.AdminUsersFragment"
+        android:name="com.example.se1707_prm392_g2_petshop.ui.admin.users.list.AdminUsersFragment"
         android:label="Users"
         tools:layout="@layout/fragment_admin_users" />
 

@@ -12,6 +12,9 @@ public interface ProductManageContract {
         void showProductDetail(Product product);
         void showSuccessMessage(String s);
         void showErrorMessage(String s);
+        void showUploadProgress(boolean isUploading);
+        void onImageUploadSuccess(String imageUrl);
+        void onImageUploadError(String error);
     }
     interface Presenter {
         LiveData<List<Category>> loadCategories();

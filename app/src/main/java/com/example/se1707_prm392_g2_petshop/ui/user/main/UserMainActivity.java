@@ -1,6 +1,8 @@
 package com.example.se1707_prm392_g2_petshop.ui.user.main;
 
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityUserMainBinding;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.google.android.material.navigation.NavigationView;
 
 public class UserMainActivity extends AppCompatActivity {
@@ -22,6 +25,11 @@ public class UserMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityUserMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
 //        // ✅ Gắn Toolbar làm ActionBar
         setSupportActionBar(binding.toolbar);

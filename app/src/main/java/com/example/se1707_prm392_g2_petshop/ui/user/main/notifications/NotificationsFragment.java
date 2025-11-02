@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.se1707_prm392_g2_petshop.R;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 
 public class NotificationsFragment extends Fragment {
 
@@ -19,6 +20,9 @@ public class NotificationsFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.applySystemBarInsets(root);
 
         return root;
     }

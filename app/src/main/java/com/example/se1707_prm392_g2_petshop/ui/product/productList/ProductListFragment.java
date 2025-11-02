@@ -14,6 +14,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.se1707_prm392_g2_petshop.data.adapter.ProductAdapter;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProductListBinding;
 
 public class ProductListFragment extends Fragment {
@@ -26,6 +27,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProductListBinding.inflate(inflater, container, false);
+
         viewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
 
         setupRecyclerView();
@@ -44,6 +46,10 @@ public class ProductListFragment extends Fragment {
             viewModel.loadProductsByCategory(categoryId);
 
         observeViewModel();
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho RecyclerView
+        WindowInsetsUtil.applySystemBarInsets(binding.rvProducts);
+        
         return binding.getRoot();
     }
 

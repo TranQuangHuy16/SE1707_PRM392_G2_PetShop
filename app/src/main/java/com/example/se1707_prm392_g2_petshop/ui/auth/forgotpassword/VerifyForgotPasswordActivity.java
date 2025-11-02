@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 
 public class VerifyForgotPasswordActivity extends AppCompatActivity implements VerifyForgotPasswordContract.View {
 
@@ -39,6 +41,11 @@ public class VerifyForgotPasswordActivity extends AppCompatActivity implements V
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_verify_forgot_password);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
         email = getIntent().getStringExtra("email");
 
