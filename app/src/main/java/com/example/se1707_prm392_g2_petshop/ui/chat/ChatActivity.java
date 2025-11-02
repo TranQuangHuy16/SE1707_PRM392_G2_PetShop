@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity implements ChatContract.View {
-
+    public static boolean isVisible = false;
     private ChatPresenter presenter;
     private ChatAdapter adapter;
     private RecyclerView recyclerChat;
@@ -200,18 +200,21 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     @Override
     protected void onResume() {
         super.onResume();
+        isVisible = true;
         startMessageRefresh();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        isVisible = false;
         handler.removeCallbacksAndMessages(null);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isVisible = false;
         handler.removeCallbacksAndMessages(null);
     }
 }

@@ -3,7 +3,6 @@ plugins {
 //    alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
-    id("com.android.application")
     id("com.google.gms.google-services")
 }
 
@@ -57,7 +56,7 @@ dependencies {
     implementation("com.mapbox.maps:android-ndk27:11.15.3")
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
-
+    implementation("com.google.firebase:firebase-messaging")
 
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)

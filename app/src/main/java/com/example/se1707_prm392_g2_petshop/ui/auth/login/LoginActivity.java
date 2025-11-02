@@ -17,11 +17,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
+import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginFacebookRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginGooleRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.LoginRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.AuthResponse;
 import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
+import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
@@ -40,6 +42,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -197,6 +200,28 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     // ✅ Implement interface LoginContract.View
     @Override
     public void onLoginSuccess(AuthResponse response) {
+        // Lưu JWT token
+        SharedPreferences prefs = getSharedPreferences("auth_prefs", MODE_PRIVATE);
+        JwtUtil.SaveJwtTokenToSharedPreferences(response.getAccessToken(), prefs);
+
+        // Lấy userId từ JWT
+        String idString = JwtUtil.getSubFromToken(this);
+        int userId = idString != null ? Integer.parseInt(idString) : -1;
+        // Lấy token FCM và gửi lên server
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        String fcmToken = task.getResult();
+
+                        // Gọi API cập nhật token
+                        UserRepository repo = new UserRepository(this);
+                        repo.updateFcmToken(userId, fcmToken);
+                    } else {
+                        Log.e("FCM", "Failed to get FCM token", task.getException());
+                    }
+                });
+
+        // Chuyển màn hình
         navigateToNextScreen(response);
     }
 
