@@ -8,6 +8,8 @@ import com.example.se1707_prm392_g2_petshop.data.dtos.responses.SendMessageRespo
 import com.example.se1707_prm392_g2_petshop.data.models.Chat;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 
+import java.util.ArrayList;
+
 public class ChatRepository {
     private ChatApi chatApi;
     public ChatRepository(ChatApi chatApi) {
@@ -16,6 +18,10 @@ public class ChatRepository {
 
     public Call<Chat> getRoomByCustomerId(int customerId) {
         return chatApi.getRoomByCustomerId(customerId);
+    }
+
+    public Call<ArrayList<Chat>> getRoomByAdminId(int adminId) {
+        return chatApi.getRoomByAdminId(adminId);
     }
 
     public Call<SendMessageResponse> sendMessage(SendMessageRequest request) {

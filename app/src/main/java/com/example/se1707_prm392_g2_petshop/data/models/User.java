@@ -7,7 +7,7 @@ public class User {
     private String username;
     private String password;
     private String fullName;
-    private int role;
+    private String role;
     private String email;
     private String phone;
     private String imgUrl;
@@ -21,7 +21,7 @@ public class User {
         this.imgUrl = imgAvatarl;
     }
 
-    public User(int userId, String username, String password, String fullName, int role, String email, String phone, String imgUrl) {
+    public User(int userId, String username, String password, String fullName, String role, String email, String phone, String imgUrl) {
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -32,9 +32,13 @@ public class User {
         this.imgUrl = imgUrl;
     }
 
-    public int getRole() { return role; }
+    public String getRole() {
+        return role;
+    }
 
-    public void setRole(int role) { this.role = role; }
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public int getUserId() {
         return userId;

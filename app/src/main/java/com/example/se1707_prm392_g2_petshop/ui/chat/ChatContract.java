@@ -14,13 +14,12 @@ public interface ChatContract {
 
         void onGetUserByIdSuccess(User user);
         void onGetUserByIdError(String message);
-
         void onFailure(String message);
 
     }
 
     interface Presenter {
-        void getRommByCustomerId(int customerId);
+        void getRoomByCustomerId(int customerId);
         void sendMessage(SendMessageRequest request);
         void getUserById(int id);
         void receiveMessage();

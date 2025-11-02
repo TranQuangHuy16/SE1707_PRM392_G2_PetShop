@@ -3,6 +3,8 @@ plugins {
 //    alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
+    id("com.android.application")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -53,7 +55,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("com.facebook.android:facebook-login:17.0.0")
     implementation("com.mapbox.maps:android-ndk27:11.15.3")
-
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 
     implementation(libs.appcompat)

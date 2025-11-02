@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.cloudinary.android.Utils;
+import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.ui.admin.AdminActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.welcome.WelcomeActivity;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,11 +37,15 @@ public class MainActivity extends AppCompatActivity {
             // Kiểm tra token trong SharedPreferences
             SharedPreferences sharedPref = getSharedPreferences("auth_prefs", Context.MODE_PRIVATE);
             String token = sharedPref.getString("jwt_token", null);
-
+            String role = JwtUtil.getRoleFromToken(token);
             Intent intent;
             if (token != null && !token.isEmpty()) {
                 // Nếu đã có token => chuyển sang HomeActivity
-                intent = new Intent(MainActivity.this, UserMainActivity.class);
+                if (role != null && role.equals("Admin")) {
+                    intent = new Intent(MainActivity.this, AdminActivity.class);
+                } else {
+                    intent = new Intent(MainActivity.this, UserMainActivity.class);
+                }
             } else {
                 // Nếu chưa có token => chuyển sang WelcomeActivity
                 intent = new Intent(MainActivity.this, WelcomeActivity.class);
