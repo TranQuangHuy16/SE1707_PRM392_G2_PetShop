@@ -31,6 +31,13 @@ class AddressListActivity : AppCompatActivity(), AddressListContract.View {
         binding = ActivityAddressListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // =============================================
+        // ✅ THÊM NÚT BACK TẠI ĐÂY
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+        // =============================================
+
         val repo = UserAddressRepository.getInstance(this)
         presenter = AddressListPresenter(this, repo, this)
 

@@ -7,14 +7,37 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- 🗺️ Khu vực bản đồ + FAB (70%) -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent">
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Add / Edit Address"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
     <FrameLayout
         android:id="@+id/mapContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.7">
+        android:layout_weight="0.6">
 
-        <!-- Mapbox -->
         <com.mapbox.maps.MapView
             android:id="@+id/mapView"
             android:layout_width="match_parent"
@@ -23,7 +46,6 @@
             app:mapbox_cameraTargetLat="10.762622"
             app:mapbox_cameraTargetLng="106.660172" />
 
-        <!-- 🔘 Nút xác định vị trí GPS (góc phải dưới bản đồ) -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabLocate"
             android:layout_width="wrap_content"
@@ -32,16 +54,16 @@
             android:layout_margin="16dp"
             android:contentDescription="Xác định vị trí hiện tại"
             android:src="@android:drawable/ic_menu_mylocation"
-            app:backgroundTint="#FFFF6B35"
-            app:maxImageSize="40dp"
-            android:elevation="8dp" />
+            app:backgroundTint="@color/orange"
+            android:elevation="8dp"
+            app:fabSize="mini"
+            app:maxImageSize="24dp" />
     </FrameLayout>
 
-    <!-- 📋 Form nhập địa chỉ (30%) -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.3"
+        android:layout_weight="0.4"
         android:fillViewport="true">
 
         <LinearLayout
@@ -52,16 +74,6 @@
             android:padding="20dp"
             android:background="@drawable/bg_glass_card_white"
             android:elevation="12dp">
-
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Add / Edit Address"
-                android:textColor="#FFFF6B35"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="12dp" />
 
             <EditText
                 android:id="@+id/etAddressLine"
@@ -133,24 +145,24 @@
                     android:id="@+id/switchDefault"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:thumbTint="#FFFF6B35"
+                    android:thumbTint="@color/orange"
                     android:trackTint="#33FF6B35" />
             </LinearLayout>
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Save Address"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:backgroundTint="#FFFF6B35"
+                android:backgroundTint="@color/orange"
+                android:background="@drawable/bg_button_orange"
                 android:layout_marginTop="12dp"
                 android:elevation="6dp" />
         </LinearLayout>
     </ScrollView>
 
-    <!-- ⏳ Loading overlay -->
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleLarge"

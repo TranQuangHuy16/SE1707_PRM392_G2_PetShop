@@ -11,5 +11,5 @@ public class Constant {
     // public static final String BASE_URL = "http://192.168.1.x:5044/api/";
 
     // For Real Device - use HoangNMSE180324 PC's local IP address
-    public static final String BASE_URL = "http://172.20.10.12:5044/api/";
+    public static final String BASE_URL = "http://192.168.0.100:5044/api/";
 }

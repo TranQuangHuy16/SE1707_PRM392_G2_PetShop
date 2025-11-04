@@ -39,6 +39,8 @@ public class UserMainActivity extends AppCompatActivity {
         // Handle drawer menu item clicks
         drawerNavView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
+
+            // Handle Order menu items
             if (id == R.id.nav_my_order) {
                 android.content.Intent intent = new android.content.Intent(this, 
                     com.example.se1707_prm392_g2_petshop.ui.order.OrderListActivity.class);
@@ -46,6 +48,16 @@ public class UserMainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
+
+            // Handle Address menu item
+            if (id == R.id.nav_address) {
+                android.content.Intent intent = new android.content.Intent(this,
+                        com.example.se1707_prm392_g2_petshop.ui.address.list.AddressListActivity.class);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
             // Let NavigationUI handle other items
             boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
             if (handled) {

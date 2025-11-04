@@ -9,6 +9,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.UserAddressReposit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.math.roundToInt
 
 class MapPresenter(
     private val repository: UserAddressRepository // Sử dụng Repository (Java) đã có
@@ -104,30 +105,40 @@ class MapPresenter(
     // --- HÀM CŨ (loadRoute) ---
     // Hàm này giờ chỉ chịu trách nhiệm gọi API 'getRouteAddress'
     override fun loadRoute(startLat: Double, startLng: Double, endLat: Double, endLng: Double) {
-        // (Hàm này không cần gọi view?.showLoading() nữa, vì đã gọi ở trên)
-
-        // 1. Tạo request (ĐÃ SỬA để gọi constructor Java)
         val request = RouteRequest(
             startLat,
             startLng,
             endLat,
             endLng
         )
-
-        // Lấy LifecycleOwner từ View (Activity)
         val lifecycleOwner = view?.getLifecycleOwner() ?: return
-
-        // Hủy observer cũ nếu có
         routeObserver?.let { obs ->
             routeLiveData?.removeObserver(obs)
         }
 
-        // 2. Tạo observer mới
+        // <-- THÊM MỚI: Ẩn thông tin cũ (nếu có)
+        view?.hideRouteInfo()
+
+        // Tạo observer mới
         routeObserver = Observer { response ->
-            view?.hideLoading() // <--- Ẩn loading khi có kết quả cuối cùng
-            if (response?.coordinates != null && response.coordinates.isNotEmpty()) {
+            view?.hideLoading()
+
+            // <-- SỬA ĐỔI: Lấy thêm dữ liệu từ response
+            val coordinates = response?.coordinates
+            val distance = response?.distance // (đơn vị: mét)
+            val duration = response?.duration // (đơn vị: giây)
+
+            if (coordinates != null && coordinates.isNotEmpty()) {
                 // 3. Nếu thành công, ra lệnh cho View vẽ
-                view?.drawRoute(response.coordinates)
+                view?.drawRoute(coordinates)
+
+                // <-- THÊM MỚI: Kiểm tra và hiển thị thông tin
+                if (distance != null && duration != null) {
+                    val formattedDistance = formatDistance(distance)
+                    val formattedDuration = formatDuration(duration)
+                    view?.showRouteInfo(formattedDistance, formattedDuration)
+                }
+
             } else {
                 // 4. Nếu thất bại, ra lệnh cho View báo lỗi
                 view?.showError("Không tìm thấy lộ trình.")
@@ -138,6 +149,32 @@ class MapPresenter(
         routeLiveData = repository.getRouteAddress(request)
         routeLiveData?.observe(lifecycleOwner, routeObserver!!)
     }
+    private fun formatDistance(meters: Double): String {
+        return if (meters >= 1000) {
+            val kilometers = meters / 1000
+            // Sử dụng "%.1f" để lấy 1 số sau dấu phẩy
+            String.format("%.1f km", kilometers)
+        } else {
+            String.format("%.0f m", meters)
+        }
+    }
+
+    /**
+     * Chuyển đổi giây sang phút hoặc giờ
+     * (vd: 1520.0 -> "25 phút")
+     */
+    private fun formatDuration(seconds: Double): String {
+        val totalMinutes = (seconds / 60).roundToInt()
+
+        return if (totalMinutes < 60) {
+            "$totalMinutes phút"
+        } else {
+            val hours = totalMinutes / 60
+            val minutes = totalMinutes % 60
+            "$hours giờ $minutes phút"
+        }
+    }
+
 
     override fun detachView() {
         routeObserver?.let { obs ->

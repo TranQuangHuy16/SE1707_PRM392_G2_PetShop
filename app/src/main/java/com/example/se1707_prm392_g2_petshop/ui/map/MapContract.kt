@@ -28,6 +28,10 @@ interface MapContract {
          * @param lng Kinh độ
          */
         fun showEndMarker(lat: Double, lng: Double)
+        fun showRouteInfo(distance: String, duration: String)
+
+        /** Ẩn khung thông tin tuyến đường */
+        fun hideRouteInfo()
     }
 
     interface Presenter {

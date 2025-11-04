@@ -9,31 +9,52 @@
     tools:context=".ui.address.list.AddressListActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"> <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            app:tint="@color/black" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="My Addresses"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:visibility="gone"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAddresses"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:padding="8dp"
             android:clipToPadding="false"
             android:contentDescription="List of saved addresses"
+            android:padding="8dp"
             tools:listitem="@layout/item_address" />
-
 
     </LinearLayout>
 
@@ -41,11 +62,10 @@
         android:id="@+id/fabAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
         android:contentDescription="Add Address"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="@color/orange"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp" />
-
+        app:backgroundTint="@color/orange" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

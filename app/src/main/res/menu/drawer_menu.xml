@@ -11,7 +11,7 @@
             android:title="My Profile" />
         <item
             android:id="@+id/nav_address"
-            android:icon="@drawable/ic_location"
+            android:icon="@drawable/ic_address"
             android:title="Delivery Address" />
         <item
             android:id="@+id/nav_payment"

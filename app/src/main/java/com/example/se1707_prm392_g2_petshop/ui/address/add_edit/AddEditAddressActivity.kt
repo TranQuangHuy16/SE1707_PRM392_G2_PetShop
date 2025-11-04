@@ -69,6 +69,13 @@ class AddEditAddressActivity : AppCompatActivity(), AddEditAddressContract.View 
         binding = ActivityAddEditAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // =============================================
+        // ✅ THÊM NÚT BACK TẠI ĐÂY
+        binding.btnBack.setOnClickListener {
+            finish()// Hoặc finish()
+        }
+        // =============================================
+
         presenter = AddEditAddressPresenter(
             this,
             UserAddressRepository.getInstance(this),
@@ -81,14 +88,14 @@ class AddEditAddressActivity : AppCompatActivity(), AddEditAddressContract.View 
         binding.btnSave.setOnClickListener { saveAddress() }
         binding.fabLocate.setOnClickListener { requestPermissionIfNeeded() }
 
-        if (currentAddress != null) {
-            // chế độ sửa: chỉ hiển thị marker có sẵn
-            hideLocationPuck()
-            showAddress(currentAddress!!)
-        } else {
-            // chế độ thêm: khởi tạo puck (nếu có quyền)
-            requestPermissionIfNeeded()
-        }
+//        if (currentAddress != null) {
+//            // chế độ sửa: chỉ hiển thị marker có sẵn
+//            hideLocationPuck()
+//            showAddress(currentAddress!!)
+//        } else {
+//            // chế độ thêm: khởi tạo puck (nếu có quyền)
+//            requestPermissionIfNeeded()
+//        }
     }
 
     private fun initMap() {
@@ -115,6 +122,15 @@ class AddEditAddressActivity : AppCompatActivity(), AddEditAddressContract.View 
                 moveCamera(selectedLat, selectedLon)
                 drawMarker(selectedLat, selectedLon)
                 true
+            }
+
+            if (currentAddress != null) {
+                // chế độ sửa: chỉ hiển thị marker có sẵn
+                hideLocationPuck()
+                showAddress(currentAddress!!)
+            } else {
+                // chế độ thêm: khởi tạo puck (nếu có quyền)
+                requestPermissionIfNeeded()
             }
         }
     }
