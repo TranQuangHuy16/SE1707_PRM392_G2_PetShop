@@ -22,8 +22,12 @@ public class ConstantApi {
     public static final String GET_ROOMS = "Chat/messages/{chatRoomId}";
 
     // User Address
+    public static final String CREATE_USER_ADDRESS = "UserAddress";
+    public static final String UPDATE_USER_ADDRESS = "UserAddress/{id}";
     public static final String GET_USER_ADDRESSES = "UserAddress/default/{userId}";
+    public static final String GET_ADMIN_ADDRESSES = "UserAddress/admin";
     public static final String GET_ALL_USER_ADDRESSES = "UserAddress";
+    public static final String ROUTE_ADDRESS = "UserAddress/route";
 
     //Category
     public static final String GET_ALL_CATEGORIES = "Categories";

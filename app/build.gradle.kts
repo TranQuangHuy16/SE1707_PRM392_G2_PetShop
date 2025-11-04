@@ -53,6 +53,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("com.facebook.android:facebook-login:17.0.0")
     implementation("com.mapbox.maps:android-ndk27:11.15.3")
+    // RxJava
+    implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
+
 
 
 
@@ -69,6 +73,7 @@ dependencies {
     implementation(libs.scenecore)
     implementation(libs.play.services.maps)
     implementation(libs.core.ktx)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
