@@ -8,6 +8,7 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +27,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
 import com.example.se1707_prm392_g2_petshop.ui.admin.AdminActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.forgotpassword.ForgotPasswordActivity;
@@ -75,6 +77,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         super.onCreate(savedInstanceState);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
         setupPresenter();
         setupGoogleSignIn();

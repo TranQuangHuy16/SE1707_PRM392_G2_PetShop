@@ -28,6 +28,7 @@ import com.example.se1707_prm392_g2_petshop.data.models.UserAddress;
 import com.example.se1707_prm392_g2_petshop.data.repositories.CartRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.OrderRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.UserAddressRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.ui.order.OrderDetailActivity;
 
 import java.text.NumberFormat;
@@ -58,6 +59,11 @@ public class CheckoutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
         initViews();
         loadCart();

@@ -17,6 +17,7 @@ import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.adapter.OrderAdapter;
 import com.example.se1707_prm392_g2_petshop.data.models.Order;
 import com.example.se1707_prm392_g2_petshop.data.repositories.OrderRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 
 import java.util.List;
 
@@ -34,6 +35,11 @@ public class OrderListActivity extends AppCompatActivity implements OrderAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
 
         initViews();
         setupRecyclerView();

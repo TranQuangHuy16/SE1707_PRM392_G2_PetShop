@@ -22,6 +22,7 @@ import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivitySignUpBinding;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginActivity;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
@@ -55,6 +56,10 @@ public class SignUpActivity extends AppCompatActivity implements SignUpContract.
         EdgeToEdge.enable(this);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        WindowInsetsUtil.applySystemBarInsets(binding.getRoot());
 
         setupPresenter();
         setupGoogleSignIn();

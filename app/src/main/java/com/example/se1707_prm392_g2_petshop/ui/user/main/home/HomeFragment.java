@@ -25,6 +25,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.ChatRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.ChatUtils;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentHomeBinding;
 import com.example.se1707_prm392_g2_petshop.ui.chat.ChatActivity;
 import com.example.se1707_prm392_g2_petshop.ui.map.MapActivity;
@@ -48,6 +49,12 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // ✅ Fix notch & navigation bar - Áp dụng cho NestedScrollView
+        View nestedScroll = root.findViewById(R.id.nested_scroll_home);
+        if (nestedScroll != null) {
+            WindowInsetsUtil.applySystemBarInsets(nestedScroll);
+        }
 
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 

@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator_product_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,9 +17,13 @@
         android:elevation="4dp" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll_product_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="80dp"> <LinearLayout
+        android:clipToPadding="false"
+        android:layout_marginBottom="80dp">
+        
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"

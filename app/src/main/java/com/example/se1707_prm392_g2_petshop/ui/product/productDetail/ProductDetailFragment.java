@@ -17,6 +17,7 @@ import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.AddToCartRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.repositories.CartRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProductDetailBinding;
 
 public class ProductDetailFragment extends Fragment {
@@ -35,6 +36,12 @@ public class ProductDetailFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
         cartRepository = CartRepository.getInstance(requireContext());
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho NestedScrollView
+        View nestedScroll = root.findViewById(R.id.nested_scroll_product_detail);
+        if (nestedScroll != null) {
+            WindowInsetsUtil.applySystemBarInsets(nestedScroll);
+        }
 
         if (getArguments() != null) {
             int productId = ProductDetailFragmentArgs.fromBundle(getArguments()).getProductId();

@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -19,6 +21,7 @@ import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityUserMainBinding;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.google.android.material.navigation.NavigationView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,6 +39,12 @@ public class UserMainActivity extends AppCompatActivity {
         binding = ActivityUserMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.setupEdgeToEdge(this);
+        View rootView = findViewById(android.R.id.content);
+        WindowInsetsUtil.applySystemBarInsets(rootView);
+
+//        // ✅ Gắn Toolbar làm ActionBar
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -58,6 +67,7 @@ public class UserMainActivity extends AppCompatActivity {
                 drawerLayout.closeDrawer(GravityCompat.START);
                 return true;
             }
+            // Let NavigationUI handle other items
             boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
             if (handled) {
                 drawerLayout.closeDrawer(GravityCompat.START);

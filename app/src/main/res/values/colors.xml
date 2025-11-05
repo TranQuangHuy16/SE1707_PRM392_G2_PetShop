@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_button_orange_light">#FFFAF0E6</color>
     <color name="orange">#FFFF6B35</color>
+    <color name="colorPrimaryDark">#FFE55A2B</color>
     <color name="gray">#FF9E9E9E</color>
     <color name="light_gray">#FFE0E0E0</color>
     <color name="bg_light">#FFF5F5F5</color>

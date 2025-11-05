@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.se1707_prm392_g2_petshop.R;
+
 import com.example.se1707_prm392_g2_petshop.data.adapter.AdminChatAdapter;
 import com.example.se1707_prm392_g2_petshop.data.models.Chat;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
@@ -26,7 +27,6 @@ import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.ui.chat.ChatActivity;
 
 import java.util.ArrayList;
-
 public class AdminChatFragment extends Fragment implements AdminChatContract.View {
 
     private AdminChatContract.Presenter mPresenter;

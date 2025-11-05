@@ -30,9 +30,12 @@ import com.example.se1707_prm392_g2_petshop.data.models.Category;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.repositories.CategoryRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.ProductRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.CloudinaryStorage;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,6 +50,7 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
 
     private ImageView ivProductImage;
     private TextInputEditText txtProductName, txtProductDescription, txtProductPrice, txtQuantityInStock;
+    private TextInputLayout category_TextLayout;
     private AutoCompleteTextView autoCompleteCategory;
     private MaterialButton btnChangeImage, btnEditProduct, btnSaveProduct, btnDeleteProduct;
     private SwitchMaterial switchProductStatus;
@@ -67,6 +71,7 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
     private ActivityResultLauncher<String> requestCameraPermissionLauncher;
     private Uri tempImageUri;
     private Uri selectedImageUri;
+    private String uploadedImageUrl; // URL sau khi upload lên Cloudinary
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +92,13 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
         setupViews(view);
         setupPresenter();
         setupListeners();
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
+        View scrollView = view.findViewById(R.id.scroll_view_manage_product);
+        if (scrollView != null) {
+            WindowInsetsUtil.applySystemBarInsets(scrollView);
+        }
+        
         loadCategories();
         setProductId();
     }
@@ -97,6 +109,8 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
             if (uri != null) {
                 selectedImageUri = uri;
                 Glide.with(requireContext()).load(uri).into(ivProductImage);
+                // Upload ảnh lên Cloudinary ngay sau khi chọn
+                uploadImageToCloudinary(uri);
             } else {
                 showErrorMessage("No image selected.");
             }
@@ -107,6 +121,8 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
             if (success) {
                 selectedImageUri = tempImageUri;
                 Glide.with(requireContext()).load(tempImageUri).into(ivProductImage);
+                // Upload ảnh lên Cloudinary ngay sau khi chụp
+                uploadImageToCloudinary(tempImageUri);
             } else {
                 showErrorMessage("Failed to capture image.");
             }
@@ -129,6 +145,7 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
         txtProductDescription = view.findViewById(R.id.edit_text_product_description);
         txtProductPrice = view.findViewById(R.id.edit_text_product_price);
         txtQuantityInStock = view.findViewById(R.id.edit_text_quantity_in_stock);
+        category_TextLayout = view.findViewById(R.id.category_TextLayout);
         autoCompleteCategory = view.findViewById(R.id.autocomplete_text_view_category);
         btnChangeImage = view.findViewById(R.id.button_change_image);
         btnEditProduct = view.findViewById(R.id.button_edit_product);
@@ -170,8 +187,14 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
         // Save product
         btnSaveProduct.setOnClickListener(v -> {
             try {
-                // Check if all fields are filled
-                String imageUrl = (currentProduct != null) ? currentProduct.getImageUrl() : null;
+                // Sử dụng URL đã upload lên Cloudinary
+                String imageUrl = uploadedImageUrl != null ? uploadedImageUrl : 
+                                 (currentProduct != null ? currentProduct.getImageUrl() : null);
+
+                if (imageUrl == null || imageUrl.isEmpty()) {
+                    showErrorMessage("Please select and upload an image first!");
+                    return;
+                }
 
                 Product product = new Product(
                         currentProduct == null ? 0 : currentProduct.getProductId(),
@@ -180,8 +203,8 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
                         txtProductName.getText().toString(),
                         txtProductDescription.getText().toString(),
                         Double.parseDouble(txtProductPrice.getText().toString()),
-                        Integer.parseInt(txtQuantityInStock.getText().toString()), // Corrected this line
-                        imageUrl,
+                        Integer.parseInt(txtQuantityInStock.getText().toString()),
+                        imageUrl, // Sử dụng URL từ Cloudinary
                         switchProductStatus.isChecked()
                 );
                 mPresenter.saveProduct(product);
@@ -245,6 +268,64 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
     }
 
 
+    // ✅ Upload ảnh lên Cloudinary
+    private void uploadImageToCloudinary(Uri imageUri) {
+        if (imageUri == null) {
+            showErrorMessage("No image to upload.");
+            return;
+        }
+
+        showUploadProgress(true);
+
+        CloudinaryStorage.uploadImage(requireContext().getContentResolver(), imageUri, 
+            new CloudinaryStorage.CloudinaryCallback() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    requireActivity().runOnUiThread(() -> {
+                        uploadedImageUrl = imageUrl;
+                        onImageUploadSuccess(imageUrl);
+                    });
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    requireActivity().runOnUiThread(() -> {
+                        onImageUploadError(e.getMessage());
+                    });
+                }
+            });
+    }
+
+    // ----- View interface methods -----
+
+    @Override
+    public void showUploadProgress(boolean isUploading) {
+        if (isUploading) {
+            progressBar.setVisibility(View.VISIBLE);
+            btnChangeImage.setEnabled(false);
+            btnSaveProduct.setEnabled(false);
+            Toast.makeText(requireContext(), "Uploading image...", Toast.LENGTH_SHORT).show();
+        } else {
+            progressBar.setVisibility(View.GONE);
+            btnChangeImage.setEnabled(true);
+            btnSaveProduct.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void onImageUploadSuccess(String imageUrl) {
+        showUploadProgress(false);
+        Toast.makeText(requireContext(), "Image uploaded successfully!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onImageUploadError(String error) {
+        showUploadProgress(false);
+        showErrorMessage("Image upload failed: " + error);
+        uploadedImageUrl = null; // Reset URL khi upload thất bại
+    }
+
+
     private void toggleEditMode(boolean enable) {
         isEditMode = enable;
 
@@ -252,6 +333,7 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
         txtProductDescription.setEnabled(enable);
         txtProductPrice.setEnabled(enable);
         txtQuantityInStock.setEnabled(enable);
+        category_TextLayout.setEnabled(enable);
         autoCompleteCategory.setEnabled(enable);
         switchProductStatus.setEnabled(enable);
         switchProductStatus.setVisibility(View.VISIBLE);
@@ -262,8 +344,6 @@ public class ProductManageFragment extends Fragment implements ProductManageCont
         btnDeleteProduct.setVisibility(enable ? View.VISIBLE : View.GONE);
         btnEditProduct.setVisibility(enable ? View.GONE : View.VISIBLE);
     }
-
-    // ----- View interface methods -----
 
     @Override
     public void showProductDetail(Product product) {

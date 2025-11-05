@@ -25,6 +25,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProfileBinding;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginActivity;
@@ -48,6 +49,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
         setupPresenter();
         setupMenuItems();
         setupListeners();
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
+        View scrollView = binding.getRoot().findViewById(R.id.scroll_view_profile);
+        if (scrollView != null) {
+            WindowInsetsUtil.applySystemBarInsets(scrollView);
+        }
 
         String id = JwtUtil.getSubFromToken(requireContext());
         int userId = id != null ? Integer.parseInt(id) : -1;

@@ -1,5 +1,6 @@
 package com.example.se1707_prm392_g2_petshop.ui.admin.dashboard;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
@@ -37,44 +38,33 @@ public class AdminDashboardPresenter implements AdminDashboardContract.Presenter
     @Override
     public void loadDashboardData() {
         mView.showLoading();
+        final int[] completedTasks = {0}; // Biến đếm tác vụ hoàn thành
 
-        userRepo.getAllUser().observeForever(new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                if (users != null) {
-                    mView.showTotalUsers(users.size());
-                } else {
-                    mView.showError("Failed to load users");
-                }
+        userRepo.getAllUser().observe((LifecycleOwner) mView, users -> {
+            if (users != null) {
+                mView.showTotalUsers(users.size());
+            } else {
+                mView.showError("Failed to load users");
+            }
+            completedTasks[0]++;
+            if (completedTasks[0] == 2) { // Nếu cả 2 tác vụ đã xong
                 mView.hideLoading();
             }
         });
 
-        productRepo.getAllProducts().observeForever(new Observer<List<Product>>() {
-            @Override
-            public void onChanged(List<Product> products) {
-                if (products != null) {
-                    mView.showTotalProducts(products.size());
-                } else {
-                    mView.showError("Failed to load products");
-                }
+        productRepo.getAllProducts().observe((LifecycleOwner) mView, products -> {
+            if (products != null) {
+                mView.showTotalProducts(products.size());
+            } else {
+                mView.showError("Failed to load products");
+            }
+            completedTasks[0]++;
+            if (completedTasks[0] == 2) { // Nếu cả 2 tác vụ đã xong
                 mView.hideLoading();
             }
         });
-
-//        orderRepo.getAllOrders().observeForever(new Observer<List<Order>>() {
-//            @Override
-//            public void onChanged(List<Product> orders) {
-//                if (products != null) {
-//                    mView.showTotalOrders(orders.size());
-//                } else {
-//                    mView.showError("Failed to load products");
-//                }
-//                mView.hideLoading();
-//            }
-//        }
-
     }
+
 
     @Override
     public void onManageProductsClicked() {

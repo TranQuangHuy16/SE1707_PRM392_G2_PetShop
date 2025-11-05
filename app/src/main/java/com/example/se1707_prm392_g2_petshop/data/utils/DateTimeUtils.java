@@ -35,4 +35,38 @@ public class DateTimeUtils {
         }
     }
 
+    /**
+     * Chuyển đổi một chuỗi timestamp có định dạng "yyyy-MM-dd HH:mm:ss.SSSSSSS"
+     * sang định dạng "dd/MM/yyyy HH:mm".
+     *
+     * @param inputTimestamp Chuỗi thời gian đầu vào, ví dụ: "2025-10-30 08:37:20.2913405"
+     * @return Một chuỗi định dạng "dd/MM/yyyy HH:mm", ví dụ: "30/10/2025 08:37",
+     * hoặc null nếu có lỗi parse.
+     */
+    public static String formatDisplayDateTime(String inputTimestamp) {
+        if (inputTimestamp == null || inputTimestamp.isEmpty()) {
+            return null;
+        }
+
+        try {
+            // Định dạng của chuỗi đầu vào. Dấu cách ' ' được sử dụng thay vì 'T'.
+            // Chúng ta cần xử lý phần microsecond/nanosecond một cách linh hoạt.
+            // 'SSSSSSS' không phải là pattern chuẩn, ta sẽ cắt chuỗi trước khi parse.
+            String parsableTimestamp = inputTimestamp.replace(' ', 'T');
+            if (parsableTimestamp.contains(".")) {
+                // Cắt bỏ phần micro giây/nano giây vì LocalDateTime.parse mặc định xử lý được
+            }
+
+            LocalDateTime dateTime = LocalDateTime.parse(parsableTimestamp);
+
+            // Định dạng đầu ra mong muốn
+            DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            return dateTime.format(outputFormatter);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return null; // Hoặc trả về chuỗi gốc để debug
+        }
+    }
+
+
 }

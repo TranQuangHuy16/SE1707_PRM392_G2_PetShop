@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
 import com.cloudinary.android.Utils;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.ui.admin.AdminActivity;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.ui.auth.welcome.WelcomeActivity;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
