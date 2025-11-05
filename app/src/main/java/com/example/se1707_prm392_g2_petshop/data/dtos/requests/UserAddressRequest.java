@@ -1,11 +1,6 @@
-package com.example.se1707_prm392_g2_petshop.data.models;
+package com.example.se1707_prm392_g2_petshop.data.dtos.requests;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Objects;
-
-public class UserAddress implements Serializable{
-    private int addressId;
+public class UserAddressRequest {
     private int userId;
     private String addressLine;
     private String city;
@@ -16,14 +11,7 @@ public class UserAddress implements Serializable{
     private double latitude;
     private double longitude;
 
-    // Navigation properties
-    private User user;
-    private List<Order> orders;
-
-    public UserAddress(int addressId, int userId,
-                       String addressLine, String city, String district, String ward, String postalCode,
-                       boolean isDefault, double latitude, double longitude) {
-        this.addressId = addressId;
+    public UserAddressRequest(int userId, String addressLine, String city, String district, String ward, String postalCode, boolean isDefault, double latitude, double longitude) {
         this.userId = userId;
         this.addressLine = addressLine;
         this.city = city;
@@ -33,14 +21,6 @@ public class UserAddress implements Serializable{
         this.isDefault = isDefault;
         this.latitude = latitude;
         this.longitude = longitude;
-    }
-
-    public int getAddressId() {
-        return addressId;
-    }
-
-    public void setAddressId(int addressId) {
-        this.addressId = addressId;
     }
 
     public int getUserId() {
@@ -114,28 +94,4 @@ public class UserAddress implements Serializable{
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserAddress)) return false;
-        UserAddress that = (UserAddress) o;
-        return addressId == that.addressId &&
-                userId == that.userId &&
-                isDefault == that.isDefault &&
-                Double.compare(that.latitude, latitude) == 0 &&
-                Double.compare(that.longitude, longitude) == 0 &&
-                Objects.equals(addressLine, that.addressLine) &&
-                Objects.equals(city, that.city) &&
-                Objects.equals(district, that.district) &&
-                Objects.equals(ward, that.ward) &&
-                Objects.equals(postalCode, that.postalCode);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(addressId, userId, addressLine, city, district, ward, postalCode,
-                isDefault, latitude, longitude);
-    }
 }
-

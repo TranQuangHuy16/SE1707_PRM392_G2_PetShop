@@ -48,6 +48,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
         initView();
         setupPresenter();
         setupMenuItems();
+        setupAddressItems();
         setupListeners();
         
         // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
@@ -73,6 +74,11 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
         binding.itemOrder.imgIcon.setImageResource(R.drawable.ic_order);
     }
 
+    private void setupAddressItems() {
+        binding.itemAddress.tvTitle.setText("My Address");
+        binding.itemAddress.imgIcon.setImageResource(R.drawable.ic_address);
+    }
+
     private void setupPresenter() {
         AuthApi authApi = RetrofitClient.getAuthApi(requireContext());
         UserApi userApi = RetrofitClient.getUserApi(requireContext());
@@ -93,6 +99,19 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
                 Log.d("ProfileFragment", "OrderListActivity started");
             } catch (Exception e) {
                 Log.e("ProfileFragment", "Error starting OrderListActivity", e);
+                Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        binding.itemAddress.getRoot().setOnClickListener(v -> {;
+            Log.d("ProfileFragment", "My Address clicked!");
+            try {
+                Intent intent = new Intent(requireContext(),
+                    com.example.se1707_prm392_g2_petshop.ui.address.list.AddressListActivity.class);
+                startActivity(intent);
+                Log.d("ProfileFragment", "UserAddressListActivity started");
+            } catch (Exception e) {
+                Log.e("ProfileFragment", "Error starting UserAddressListActivity", e);
                 Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

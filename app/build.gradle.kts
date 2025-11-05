@@ -58,6 +58,12 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
     implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
+    // RxJava
+    implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")
+
+
+
 
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)
@@ -72,6 +78,7 @@ dependencies {
     implementation(libs.scenecore)
     implementation(libs.play.services.maps)
     implementation(libs.core.ktx)
+    implementation(libs.play.services.location)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
