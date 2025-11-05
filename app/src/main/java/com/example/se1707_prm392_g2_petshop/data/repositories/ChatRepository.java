@@ -2,6 +2,8 @@ package com.example.se1707_prm392_g2_petshop.data.repositories;
 
 
 import retrofit2.Call;
+import retrofit2.Response;
+
 import com.example.se1707_prm392_g2_petshop.data.api.ChatApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.SendMessageRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.SendMessageResponse;
@@ -31,4 +33,17 @@ public class ChatRepository {
     public Call<User> getUserById(int userId) {
         return chatApi.getUserById(userId);
     }
+
+    public Chat getRoomByCustomerIdSync(int customerId) {
+        try {
+            Response<Chat> response = chatApi.getRoomByCustomerId(customerId).execute();
+            if (response.isSuccessful()) {
+                return response.body();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

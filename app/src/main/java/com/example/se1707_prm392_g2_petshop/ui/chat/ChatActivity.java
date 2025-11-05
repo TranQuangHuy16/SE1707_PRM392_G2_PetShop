@@ -1,6 +1,8 @@
 package com.example.se1707_prm392_g2_petshop.ui.chat;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +26,8 @@ import com.example.se1707_prm392_g2_petshop.data.models.Message;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.repositories.ChatRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
+import com.example.se1707_prm392_g2_petshop.data.utils.ChatUtils;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
-import com.example.se1707_prm392_g2_petshop.ui.admin.chat.AdminChatFragment;
 import com.example.se1707_prm392_g2_petshop.ui.user.main.UserMainActivity;
 
 import java.util.ArrayList;
@@ -41,8 +43,8 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     private ImageView btnBack, imgAvatar;
     private TextView tvName;
 
-    private int currentUserId;  // người đang đăng nhập
-    private int targetUserId;   // người đối phương
+    private int currentUserId;
+    private int targetUserId;
     private boolean isAdmin = false;
     private Chat currentChat;
 
@@ -55,33 +57,32 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_chat);
 
+        int chatRoomId = getIntent().getIntExtra("CHAT_ROOM_ID", 0);
+        int lastMessageId = getIntent().getIntExtra("LAST_MSG_ID", 0);
+
+        if (chatRoomId != 0 && lastMessageId != 0) {
+            ChatUtils.markAsRead(this, chatRoomId, lastMessageId);
+        }
+
         setupPresenter();
         setupUI();
 
-        // Lấy userId hiện tại từ JWT
         String id = JwtUtil.getSubFromToken(this);
         if (id != null) currentUserId = Integer.parseInt(id);
 
-        // Lấy targetUserId từ intent (admin mở chat với customer)
         targetUserId = getIntent().getIntExtra("customerId", -1);
 
         int meId = currentUserId;
-        int otherId = targetUserId != -1 ? targetUserId : 0; // nếu user thì target = adminId sẽ set sau
-
         adapter = new ChatAdapter(this, meId);
         recyclerChat.setAdapter(adapter);
 
-        // Lấy room
         if (targetUserId != -1) {
-            // admin mở chat với customer
             isAdmin = true;
             presenter.getRoomByCustomerId(targetUserId);
         } else {
-            // user tự chat với admin
             presenter.getRoomByCustomerId(currentUserId);
         }
     }
-
 
     private void setupUI() {
         recyclerChat = findViewById(R.id.recyclerChat);
@@ -97,15 +98,12 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
         btnBack.setOnClickListener(view -> {
             if (isAdmin) {
-                // Quay về Admin main activity
-                startActivity(new Intent(ChatActivity.this, AdminChatFragment.class));
+                finish();
             } else {
-                // Quay về User main activity
                 startActivity(new Intent(ChatActivity.this, UserMainActivity.class));
+                finish();
             }
-            finish();
         });
-
 
         btnSend.setOnClickListener(view -> sendMessage());
     }
@@ -128,15 +126,18 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
         presenter.sendMessage(request);
 
-        // Cập nhật ngay lên UI
+        // tạo message local tạm
         Message newMessage = new Message();
         newMessage.setChatRoomId(currentChat.getChatRoomId());
         newMessage.setSenderId(currentUserId);
         newMessage.setMessageText(text);
+        newMessage.setMessageId((int) System.currentTimeMillis()); // tránh trùng id null
 
         adapter.addMessage(newMessage);
         recyclerChat.smoothScrollToPosition(adapter.getItemCount() - 1);
         edtMessage.setText("");
+
+        markChatAsRead(); // gửi thì đánh dấu đã đọc luôn
     }
 
     @Override
@@ -147,11 +148,11 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         adapter.setMessages(messages);
         recyclerChat.scrollToPosition(messages.size() - 1);
 
-        // Xác định người đối phương
+        markChatAsRead();
+
         int otherId = isAdmin ? chat.getCustomerId() : chat.getAdminId();
         presenter.getUserById(otherId);
     }
-
 
     @Override
     public void onGetRoomByCustomerIdError(String message) {
@@ -160,9 +161,16 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
     @Override
     public void onSendMessageSuccess(String message) {}
-
     @Override
     public void onSendMessageError(String message) {}
+    @Override
+    public void onGetUserByIdError(String message) {
+        Log.d("ChatActivity", "User error: " + message);
+    }
+    @Override
+    public void onFailure(String message) {
+        Log.d("ChatActivity", "Failure: " + message);
+    }
 
     @Override
     public void onGetUserByIdSuccess(User user) {
@@ -173,16 +181,6 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
                 .error(R.drawable.ic_profile)
                 .circleCrop()
                 .into(imgAvatar);
-    }
-
-    @Override
-    public void onGetUserByIdError(String message) {
-        Log.d("ChatActivity", "User error: " + message);
-    }
-
-    @Override
-    public void onFailure(String message) {
-        Log.d("ChatActivity", "Failure: " + message);
     }
 
     private void startMessageRefresh() {
@@ -208,6 +206,7 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     protected void onPause() {
         super.onPause();
         isVisible = false;
+        saveLastMessageId();
         handler.removeCallbacksAndMessages(null);
     }
 
@@ -216,5 +215,27 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         super.onDestroy();
         isVisible = false;
         handler.removeCallbacksAndMessages(null);
+    }
+
+    private void markChatAsRead() {
+        if (currentChat != null && currentChat.getMessages() != null && !currentChat.getMessages().isEmpty()) {
+            Message lastMessage = currentChat.getMessages().get(currentChat.getMessages().size() - 1);
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("chat_prefs", Context.MODE_PRIVATE);
+            Log.d("ChatActivity", "Saving messageId = " + lastMessage.getMessageId());
+            preferences.edit()
+                    .putString(String.valueOf(currentChat.getChatRoomId()), String.valueOf(lastMessage.getMessageId()))
+                    .commit(); // commit đồng bộ
+        }
+    }
+
+    private void saveLastMessageId() {
+        if (currentChat != null && currentChat.getMessages() != null && !currentChat.getMessages().isEmpty()) {
+            Message lastMessage = currentChat.getMessages().get(currentChat.getMessages().size() - 1);
+            SharedPreferences preferences = getApplicationContext().getSharedPreferences("chat_prefs", Context.MODE_PRIVATE);
+            Log.d("ChatActivity", "Save onPause messageId = " + lastMessage.getMessageId());
+            preferences.edit()
+                    .putString(String.valueOf(currentChat.getChatRoomId()), String.valueOf(lastMessage.getMessageId()))
+                    .commit();
+        }
     }
 }

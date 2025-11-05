@@ -2,17 +2,60 @@ package com.example.se1707_prm392_g2_petshop.data.models;
 
 public class ModelEnums {
     public enum UserRoleEnum {
-        Customer(0),
-        Admin(1);
+        Customer("Customer"),
+        Admin("Admin");
 
-        private final int value;
+        private final String value;
 
-        UserRoleEnum(int value) {
+        UserRoleEnum(String value) {
             this.value = value;
         }
 
-        public int getValue() {
+        public String getValue() {
             return value;
+        }
+
+        /** 🔹 Chuyển từ chuỗi ("Admin") sang Enum */
+        public static UserRoleEnum fromString(String value) {
+            for (UserRoleEnum role : values()) {
+                if (role.value.equalsIgnoreCase(value)) return role;
+            }
+            return Customer; // default nếu không khớp
+        }
+
+        /** 🔹 Lấy danh sách tất cả giá trị chuỗi ("Customer", "Admin") */
+        public static String[] getValues() {
+            UserRoleEnum[] roles = values();
+            String[] values = new String[roles.length];
+            for (int i = 0; i < roles.length; i++) {
+                values[i] = roles[i].getValue();
+            }
+            return values;
+        }
+
+        /**
+         * Nếu bạn dùng int mapping (0 = Customer, 1 = Admin)
+         * thì cần chuyển từ int sang Enum
+         * */
+        public static UserRoleEnum fromInt(int value) {
+            switch (value) {
+                case 1:
+                    return Admin;
+                case 0:
+                default:
+                    return Customer;
+            }
+        }
+
+        /** 🔹 Nếu bạn cần int để lưu trong DB hoặc API */
+        public int toInt() {
+            switch (this) {
+                case Admin:
+                    return 1;
+                case Customer:
+                default:
+                    return 0;
+            }
         }
     }
 

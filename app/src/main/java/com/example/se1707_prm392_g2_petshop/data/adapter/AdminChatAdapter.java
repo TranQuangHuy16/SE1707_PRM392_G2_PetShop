@@ -1,5 +1,6 @@
 package com.example.se1707_prm392_g2_petshop.data.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,13 @@ import com.example.se1707_prm392_g2_petshop.data.models.Chat;
 import com.example.se1707_prm392_g2_petshop.data.models.Message;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 
+import org.threeten.bp.Duration;
+import org.threeten.bp.LocalDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
+
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AdminChatAdapter extends RecyclerView.Adapter<AdminChatAdapter.ChatViewHolder> {
 
@@ -47,12 +54,12 @@ public class AdminChatAdapter extends RecyclerView.Adapter<AdminChatAdapter.Chat
         return new ChatViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Chat chat = chatList.get(position);
         User user = (userList.size() > position) ? userList.get(position) : null;
 
-        // User info
         if (user != null) {
             holder.tvChatName.setText(user.getFullName() != null ? user.getFullName() : "Unknown");
             String avatarUrl = user.getImgAvatarl();
@@ -70,20 +77,23 @@ public class AdminChatAdapter extends RecyclerView.Adapter<AdminChatAdapter.Chat
             holder.ivAvatar.setImageResource(R.drawable.ic_profile);
         }
 
-        // Last message
+        // Tin nhắn cuối
         if (chat != null && chat.getMessages() != null && !chat.getMessages().isEmpty()) {
             Message lastMessage = chat.getMessages().get(chat.getMessages().size() - 1);
-            holder.tvLastMessage.setText(lastMessage.getMessageText() != null ? lastMessage.getMessageText() : "Chưa có tin nhắn");
-            holder.tvTime.setText(lastMessage.getSendAt() != null ? lastMessage.getSendAt() : "");
+            holder.tvLastMessage.setText(lastMessage.getMessageText() != null ? lastMessage.getMessageText() : "Chưa có tin nhắn");
+
+            String relativeTime = getRelativeTime(lastMessage.getSendAt());
+            holder.tvTime.setText(relativeTime);
         } else {
-            holder.tvLastMessage.setText("Chưa có tin nhắn");
+            holder.tvLastMessage.setText("Chưa có tin nhắn");
             holder.tvTime.setText("");
         }
 
+        // Hiển thị chấm xanh nếu có tin nhắn chưa đọc
+        holder.viewUnreadDot.setVisibility(chat.isHasUnread() ? View.VISIBLE : View.GONE);
+
         holder.itemView.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onItemClick(chat, user);
-            }
+            if (listener != null) listener.onItemClick(chat, user);
         });
     }
 
@@ -95,6 +105,7 @@ public class AdminChatAdapter extends RecyclerView.Adapter<AdminChatAdapter.Chat
     static class ChatViewHolder extends RecyclerView.ViewHolder {
         ImageView ivAvatar;
         TextView tvChatName, tvLastMessage, tvTime;
+        View viewUnreadDot;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,6 +113,47 @@ public class AdminChatAdapter extends RecyclerView.Adapter<AdminChatAdapter.Chat
             tvChatName = itemView.findViewById(R.id.tvChatName);
             tvLastMessage = itemView.findViewById(R.id.tvLastMessage);
             tvTime = itemView.findViewById(R.id.tvTime);
+            viewUnreadDot = itemView.findViewById(R.id.viewUnreadDot);
+        }
+    }
+
+    /**
+     * Chuyển đổi thời gian ISO sang dạng "x phút trước", "x giờ trước", "Hôm qua", "x ngày trước".
+     */
+    private String getRelativeTime(String sendAt) {
+        if (sendAt == null || sendAt.isEmpty()) return "";
+
+        try {
+            // Parse ISO 8601 time (ví dụ: "2025-11-04T13:45:12.123")
+            LocalDateTime messageTime = LocalDateTime.parse(sendAt, DateTimeFormatter.ISO_DATE_TIME);
+            LocalDateTime now = LocalDateTime.now();
+
+            Duration duration = Duration.between(messageTime, now);
+
+            long seconds = duration.getSeconds();
+            long minutes = seconds / 60;
+            long hours = minutes / 60;
+            long days = hours / 24;
+
+            if (seconds < 60) {
+                return "Vừa xong";
+            } else if (minutes < 60) {
+                return minutes + " phút trước";
+            } else if (hours < 24) {
+                return hours + " giờ trước";
+            } else if (days == 1) {
+                return "Hôm qua";
+            } else if (days < 7) {
+                return days + " ngày trước";
+            } else {
+                // Hiển thị ngày/tháng khi quá 1 tuần
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.getDefault());
+                return messageTime.format(formatter);
+            }
+
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return "";
         }
     }
 }

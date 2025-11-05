@@ -57,6 +57,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
 
     implementation(libs.appcompat)
     implementation(libs.appcompat.resources)

@@ -41,6 +41,11 @@ public class ProductDetailFragment extends Fragment {
             viewModel.loadProduct(productId);
         }
 
+        binding.toolbarProductDetail.setNavigationOnClickListener(v -> {
+            requireActivity().onBackPressed(); // 🔙 Cách đơn giản nhất
+        });
+
+
         setupQuantityControls();
         setupAddToCartButton();
         observeProductDetails();
@@ -93,10 +98,10 @@ public class ProductDetailFragment extends Fragment {
             binding.btnAddToCart.setText("Add To Cart");
 
             if (cart != null) {
-                Toast.makeText(getContext(), 
-                    String.format("Added %d %s to cart", quantity, currentProduct.getProductName()), 
+                Toast.makeText(getContext(),
+                    String.format("Added %d %s to cart", quantity, currentProduct.getProductName()),
                     Toast.LENGTH_SHORT).show();
-                
+
                 // Reset quantity after adding to cart
                 quantity = 1;
                 updateQuantityDisplay();
@@ -110,7 +115,7 @@ public class ProductDetailFragment extends Fragment {
         viewModel.getProductDetails().observe(getViewLifecycleOwner(), product -> {
             if (product != null) {
                 currentProduct = product;
-                
+
                 binding.tvProductNameDetail.setText(product.getProductName());
                 binding.tvProductPriceDetail.setText(String.format("$ %.2f", product.getPrice()));
                 binding.tvProductDescription.setText(product.getDescription());
