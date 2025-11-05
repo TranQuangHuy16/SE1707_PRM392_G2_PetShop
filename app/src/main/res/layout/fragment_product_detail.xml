@@ -6,6 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar_product_detail"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:title="Product Detail"
+        app:titleTextColor="@color/black"
+        android:elevation="4dp" />
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_product_detail"
         android:layout_width="match_parent"

@@ -22,6 +22,9 @@ public interface UserApi {
     @GET(ConstantApi.GET_ALL_USERS)
     Call<List<User>> getAllUsers();
 
+    @PUT("users/{id}/fcm-token")
+    Call<Void> updateFcmToken(@Path("id") int id, @Body String fcmToken);
+
     @GET(ConstantApi.GET_USER_DETAIL)
     Call<UserDetailResponse> getUserDetail(@Path("id") int userId);
 

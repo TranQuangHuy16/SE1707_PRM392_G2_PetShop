@@ -9,6 +9,15 @@ public class Chat {
     private String createdAt;
     private boolean isActive;
     private ArrayList<Message> messages;
+    private boolean hasUnread;
+
+    public boolean isHasUnread() {
+        return hasUnread;
+    }
+
+    public void setHasUnread(boolean hasUnread) {
+        this.hasUnread = hasUnread;
+    }
 
     public Chat(int chatRoomId, int customerId, int adminId, String createAt, boolean isActive, ArrayList<Message> messages) {
         this.chatRoomId = chatRoomId;

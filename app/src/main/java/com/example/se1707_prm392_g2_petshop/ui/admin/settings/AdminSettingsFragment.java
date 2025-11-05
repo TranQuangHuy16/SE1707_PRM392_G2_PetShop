@@ -144,14 +144,15 @@ public class AdminSettingsFragment extends Fragment implements AdminSettingsCont
     @Override
     public void navigateToLogin() {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-        getActivity().finish();
     }
 
     @Override
     public void onLogoutFailure(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     @Override

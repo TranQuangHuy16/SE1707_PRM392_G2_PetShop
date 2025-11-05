@@ -1,6 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -59,6 +60,20 @@ public class UserRepository {
             }
         });
         return data;
+    }
+
+    public void updateFcmToken(int userId, String fcmToken) {
+        userApi.updateFcmToken(userId, fcmToken).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("FCM", "Token updated successfully");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("FCM", "Failed to update token", t);
+            }
+        });
     }
 
     public LiveData<UserDetailResponse> getUserDetail(int userId) {
