@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.adapter.CartAdapter;
 import com.example.se1707_prm392_g2_petshop.data.models.Cart;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentCartBinding;
 
 public class CartFragment extends Fragment implements CartContract.View {
@@ -28,6 +29,9 @@ public class CartFragment extends Fragment implements CartContract.View {
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentCartBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // ✅ Fix notch & navigation bar
+        WindowInsetsUtil.applySystemBarInsets(root);
 
         presenter = new CartPresenter(this, requireContext());
 

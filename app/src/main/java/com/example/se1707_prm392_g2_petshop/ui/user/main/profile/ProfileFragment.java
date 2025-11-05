@@ -8,17 +8,24 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.api.AuthApi;
+import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
+import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.repositories.AuthRepository;
+import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProfileBinding;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginActivity;
@@ -28,6 +35,8 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
 
     private FragmentProfileBinding binding;
     private ProfilePresenter presenter;
+    private TextView tvUserName, tvEmail;
+    private ImageView imgAvatar;
 
     @Nullable
     @Override
@@ -36,12 +45,28 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
                              @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
+        initView();
         setupPresenter();
         setupMenuItems();
         setupAddressItems();
         setupListeners();
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
+        View scrollView = binding.getRoot().findViewById(R.id.scroll_view_profile);
+        if (scrollView != null) {
+            WindowInsetsUtil.applySystemBarInsets(scrollView);
+        }
 
+        String id = JwtUtil.getSubFromToken(requireContext());
+        int userId = id != null ? Integer.parseInt(id) : -1;
+        presenter.getUserProfile(userId);
         return binding.getRoot();
+    }
+
+    private void initView() {
+        tvUserName = binding.tvUserName;
+        tvEmail = binding.tvEmail;
+        imgAvatar = binding.imgAvatar;
     }
 
     private void setupMenuItems() {
@@ -56,8 +81,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
 
     private void setupPresenter() {
         AuthApi authApi = RetrofitClient.getAuthApi(requireContext());
+        UserApi userApi = RetrofitClient.getUserApi(requireContext());
         AuthRepository authRepository = new AuthRepository(authApi);
-        presenter = new ProfilePresenter(this, authRepository);
+        UserRepository userRepository = new UserRepository(requireContext());
+        presenter = new ProfilePresenter(this, authRepository, userRepository);
     }
 
 
@@ -114,6 +141,29 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
 
     @Override
     public void onLogoutError(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onGetUserProfileSuccess(User user) {
+        tvUserName.setText(user.getFullName());
+        tvEmail.setText(user.getEmail());
+        Glide.with(this)
+                .load(user.getImgAvatarl())
+                .placeholder(R.drawable.ic_profile)
+                .error(R.drawable.ic_profile)
+                .circleCrop()
+                .into(imgAvatar);    }
+
+    @Override
+    public void onGetUserProfileFailure(String message) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onGetUserProfileError(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
 
     }

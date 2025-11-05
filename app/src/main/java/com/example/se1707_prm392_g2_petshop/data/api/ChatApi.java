@@ -8,6 +8,8 @@ import com.example.se1707_prm392_g2_petshop.data.dtos.responses.SendMessageRespo
 import com.example.se1707_prm392_g2_petshop.data.models.Chat;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,6 +22,9 @@ public interface ChatApi {
 
     @GET(ConstantApi.GET_ROOM_BY_CUSTOMER_ID)
     Call<Chat> getRoomByCustomerId(@Path("customerId") int customerId);
+
+    @GET(ConstantApi.GET_ROOM_BY_ADMIN_ID)
+    Call<ArrayList<Chat>> getRoomByAdminId(@Path("adminId") int adminId);
 
     @POST(ConstantApi.SEND_MESSAGE)
     Call<SendMessageResponse> sendMessage(@Body SendMessageRequest request);

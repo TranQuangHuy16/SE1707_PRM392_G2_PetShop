@@ -17,6 +17,7 @@ import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.AddToCartRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.repositories.CartRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProductDetailBinding;
 
 public class ProductDetailFragment extends Fragment {
@@ -35,11 +36,22 @@ public class ProductDetailFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(ProductDetailViewModel.class);
         cartRepository = CartRepository.getInstance(requireContext());
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho NestedScrollView
+        View nestedScroll = root.findViewById(R.id.nested_scroll_product_detail);
+        if (nestedScroll != null) {
+            WindowInsetsUtil.applySystemBarInsets(nestedScroll);
+        }
 
         if (getArguments() != null) {
             int productId = ProductDetailFragmentArgs.fromBundle(getArguments()).getProductId();
             viewModel.loadProduct(productId);
         }
+
+        binding.toolbarProductDetail.setNavigationOnClickListener(v -> {
+            requireActivity().onBackPressed(); // 🔙 Cách đơn giản nhất
+        });
+
 
         setupQuantityControls();
         setupAddToCartButton();
@@ -93,10 +105,10 @@ public class ProductDetailFragment extends Fragment {
             binding.btnAddToCart.setText("Add To Cart");
 
             if (cart != null) {
-                Toast.makeText(getContext(), 
-                    String.format("Added %d %s to cart", quantity, currentProduct.getProductName()), 
+                Toast.makeText(getContext(),
+                    String.format("Added %d %s to cart", quantity, currentProduct.getProductName()),
                     Toast.LENGTH_SHORT).show();
-                
+
                 // Reset quantity after adding to cart
                 quantity = 1;
                 updateQuantityDisplay();
@@ -110,7 +122,7 @@ public class ProductDetailFragment extends Fragment {
         viewModel.getProductDetails().observe(getViewLifecycleOwner(), product -> {
             if (product != null) {
                 currentProduct = product;
-                
+
                 binding.tvProductNameDetail.setText(product.getProductName());
                 binding.tvProductPriceDetail.setText(String.format("$ %.2f", product.getPrice()));
                 binding.tvProductDescription.setText(product.getDescription());

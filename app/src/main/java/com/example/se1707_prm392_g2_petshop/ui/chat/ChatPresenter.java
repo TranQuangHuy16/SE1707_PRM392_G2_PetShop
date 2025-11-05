@@ -1,5 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.ui.chat;
 
+import android.util.Log;
+
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.SendMessageRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.SendMessageResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Chat;
@@ -20,7 +22,7 @@ public class ChatPresenter implements ChatContract.Presenter {
     }
 
     @Override
-    public void getRommByCustomerId(int customerId) {
+    public void getRoomByCustomerId(int customerId) {
         repository.getRoomByCustomerId(customerId).enqueue(new Callback<Chat>() {
             @Override
             public void onResponse(Call<Chat> call, Response<Chat> response) {
@@ -63,6 +65,7 @@ public class ChatPresenter implements ChatContract.Presenter {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Chat123", "API response: " + response.body());
                     view.onGetUserByIdSuccess(response.body());
                 } else {
                     view.onGetUserByIdError("Get user failed");

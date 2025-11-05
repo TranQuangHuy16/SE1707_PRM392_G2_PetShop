@@ -3,6 +3,7 @@ plugins {
 //    alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -53,6 +54,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("com.facebook.android:facebook-login:17.0.0")
     implementation("com.mapbox.maps:android-ndk27:11.15.3")
+    implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-messaging")
+    implementation("com.jakewharton.threetenabp:threetenabp:1.4.6")
     // RxJava
     implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
     implementation ("io.reactivex.rxjava3:rxandroid:3.0.2")

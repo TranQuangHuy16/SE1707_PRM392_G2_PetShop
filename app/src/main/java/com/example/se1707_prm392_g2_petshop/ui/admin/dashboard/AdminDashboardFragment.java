@@ -20,6 +20,7 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.ProductRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.OrderRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.google.android.material.card.MaterialCardView;
 
 public class AdminDashboardFragment extends Fragment implements AdminDashboardContract.View {
@@ -42,6 +43,13 @@ public class AdminDashboardFragment extends Fragment implements AdminDashboardCo
         setupPresenter();
         // Khởi tạo các thành phần giao diện
         setupViews(view);
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
+        View scrollView = view.findViewById(R.id.scroll_view_dashboard);
+        if (scrollView != null) {
+            WindowInsetsUtil.applySystemBarInsets(scrollView);
+        }
+        
         // Thiết lập các sự kiện click cho các nút
         setupListeners();
         // Bắt đầu hoạt động của Presenter

@@ -1,12 +1,15 @@
 package com.example.se1707_prm392_g2_petshop.data.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.se1707_prm392_g2_petshop.data.api.ChatApi;
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateUserRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.UserDetailResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
@@ -53,6 +56,60 @@ public class UserRepository {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
+                data.setValue(null);
+            }
+        });
+        return data;
+    }
+
+    public void updateFcmToken(int userId, String fcmToken) {
+        userApi.updateFcmToken(userId, fcmToken).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d("FCM", "Token updated successfully");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("FCM", "Failed to update token", t);
+            }
+        });
+    }
+
+    public LiveData<UserDetailResponse> getUserDetail(int userId) {
+        MutableLiveData<UserDetailResponse> data = new MutableLiveData<>();
+        userApi.getUserDetail(userId).enqueue(new Callback<UserDetailResponse>() {
+            @Override
+            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
+                data.setValue(null);
+            }
+        });
+        return data;
+    }
+
+    public LiveData<UserDetailResponse> updateUser(int userId, UpdateUserRequest request) {
+        MutableLiveData<UserDetailResponse> data = new MutableLiveData<>();
+        userApi.updateUser(userId, request).enqueue(new Callback<UserDetailResponse>() {
+            @Override
+            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
                 data.setValue(null);
             }
         });

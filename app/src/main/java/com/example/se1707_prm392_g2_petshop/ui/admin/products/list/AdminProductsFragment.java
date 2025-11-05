@@ -24,6 +24,7 @@ import com.example.se1707_prm392_g2_petshop.data.models.Category;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.repositories.CategoryRepository;
 import com.example.se1707_prm392_g2_petshop.data.repositories.ProductRepository;
+import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Dictionary;
@@ -55,11 +56,19 @@ public class AdminProductsFragment extends Fragment implements AdminProductsCont
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         setupPresenter();
 
         setupViews(view);
         setupRecyclerView();
         setupCategorySpinner();
+        
+        // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
+        View scrollView = view.findViewById(R.id.scroll_view_admin_products);
+        if (scrollView != null) {
+            WindowInsetsUtil.applySystemBarInsets(scrollView);
+        }
+        
         setupListeners();
 
         mPresenter.start();
