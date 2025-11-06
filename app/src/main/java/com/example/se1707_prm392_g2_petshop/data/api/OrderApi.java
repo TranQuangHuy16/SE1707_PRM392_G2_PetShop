@@ -12,11 +12,15 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface OrderApi {
     
     @POST(ConstantApi.CREATE_ORDER_FROM_CART)
     Call<Order> createOrderFromCart(@Body CreateOrderRequest request);
+
+    @GET(ConstantApi.GET_ALL)
+    Call<List<Order>> getAllOrders(@Query("status") String status);
 
     @GET(ConstantApi.GET_MY_ORDERS)
     Call<List<Order>> getMyOrders();

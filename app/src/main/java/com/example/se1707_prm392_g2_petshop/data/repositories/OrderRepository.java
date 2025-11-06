@@ -110,6 +110,43 @@ public class OrderRepository {
         return orderLiveData;
     }
 
+    public LiveData<List<Order>> getAllOrders(String status) {
+        MutableLiveData<List<Order>> ordersLiveData = new MutableLiveData<>();
+
+        Call<List<Order>> call;
+
+        // ✅ Nếu không có status, gọi API không truyền param
+        if (status == null || status.trim().isEmpty()) {
+            call = orderApi.getAllOrders(null);  // Retrofit sẽ KHÔNG gửi ?status=
+        } else {
+            call = orderApi.getAllOrders(status);
+        }
+
+        Log.d("OrderRepository", "Gọi API lấy danh sách đơn hàng, status = " + status);
+
+        call.enqueue(new Callback<List<Order>>() {
+            @Override
+            public void onResponse(Call<List<Order>> call, Response<List<Order>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("OrderRepository", "Tải thành công " + response.body().size() + " đơn hàng");
+                    ordersLiveData.postValue(response.body());
+                } else {
+                    Log.e("OrderRepository", "getAllOrders failed: HTTP " + response.code());
+                    ordersLiveData.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Order>> call, Throwable t) {
+                Log.e("OrderRepository", "Network error in getAllOrders", t);
+                ordersLiveData.postValue(null);
+            }
+        });
+
+        return ordersLiveData;
+    }
+
+
     public LiveData<Boolean> cancelOrder(int orderId) {
         MutableLiveData<Boolean> resultLiveData = new MutableLiveData<>();
         
