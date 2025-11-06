@@ -12,12 +12,9 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.se1707_prm392_g2_petshop.data.api.OrderApi;
-import com.example.se1707_prm392_g2_petshop.data.dtos.CreateOrderRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreateOrderRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Order;
-import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;

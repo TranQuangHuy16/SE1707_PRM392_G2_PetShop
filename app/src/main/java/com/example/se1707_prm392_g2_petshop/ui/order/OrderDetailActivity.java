@@ -17,9 +17,9 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.petshop.dto.ZaloPayCreateRequest;
-import com.example.petshop.dto.ZaloPayCreateResponse;
-import com.example.petshop.dto.ZaloPayQueryResponse;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.ZaloPayCreateRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ZaloPayCreateResponse;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ZaloPayQueryResponse;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.adapter.OrderDetailAdapter;
 import com.example.se1707_prm392_g2_petshop.data.api.PaymentApi;

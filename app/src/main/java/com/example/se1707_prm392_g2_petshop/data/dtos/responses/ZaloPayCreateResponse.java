@@ -1,4 +1,4 @@
-package com.example.petshop.dto;
+package com.example.se1707_prm392_g2_petshop.data.dtos.responses;
 
 public class ZaloPayCreateResponse {
     private int returnCode;

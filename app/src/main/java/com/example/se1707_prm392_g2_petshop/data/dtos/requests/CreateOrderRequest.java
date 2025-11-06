@@ -1,4 +1,4 @@
-package com.example.se1707_prm392_g2_petshop.data.dtos;
+package com.example.se1707_prm392_g2_petshop.data.dtos.requests;
 
 public class CreateOrderRequest {
     private Integer addressId;

@@ -1,7 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.api;
 
 import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
-import com.example.se1707_prm392_g2_petshop.data.dtos.CreateOrderRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreateOrderRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Order;
 
 import java.util.List;

@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.adapter.CartAdapter;
-import com.example.se1707_prm392_g2_petshop.data.dtos.CreateOrderRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreateOrderRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Cart;
 import com.example.se1707_prm392_g2_petshop.data.models.CartItem;
 import com.example.se1707_prm392_g2_petshop.data.models.Order;

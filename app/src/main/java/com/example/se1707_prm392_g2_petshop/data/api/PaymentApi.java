@@ -1,8 +1,8 @@
 package com.example.se1707_prm392_g2_petshop.data.api;
 
-import com.example.petshop.dto.ZaloPayCreateRequest;
-import com.example.petshop.dto.ZaloPayCreateResponse;
-import com.example.petshop.dto.ZaloPayQueryResponse;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.ZaloPayCreateRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ZaloPayCreateResponse;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ZaloPayQueryResponse;
 import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreatePaymentRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ConfirmPaymentResponse;
