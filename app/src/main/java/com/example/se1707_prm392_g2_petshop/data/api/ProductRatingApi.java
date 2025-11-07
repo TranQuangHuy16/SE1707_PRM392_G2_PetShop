@@ -13,11 +13,11 @@ import retrofit2.http.Path;
 
 public interface ProductRatingApi {
 
-    // 🟢 Lấy danh sách đánh giá của sản phẩm
+    // Lấy danh sách đánh giá của sản phẩm
     @GET("products/{productId}/ratings")
     Call<List<ProductRating>> getRatings(@Path("productId") int productId);
 
-    // 🔵 Gửi đánh giá mới
+    //  Gửi đánh giá mới
     @POST("products/{productId}/ratings")
     Call<Void> addRating(@Path("productId") int productId, @Body ProductRatingRequest request);
 }
