@@ -1,5 +1,8 @@
 package com.example.se1707_prm392_g2_petshop.ui.user.main;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -7,6 +10,8 @@ import android.widget.TextView;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -18,6 +23,7 @@ import com.example.se1707_prm392_g2_petshop.R;
 
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
 import com.example.se1707_prm392_g2_petshop.data.models.User;
+import com.example.se1707_prm392_g2_petshop.data.repositories.CartRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityUserMainBinding;
@@ -28,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UserMainActivity extends AppCompatActivity {
-
+    private static boolean cartNotificationSent = false;
     private ActivityUserMainBinding binding;
     private AppBarConfiguration mAppBarConfiguration;
     private UserApi userApi;
@@ -109,6 +115,10 @@ public class UserMainActivity extends AppCompatActivity {
         String id = JwtUtil.getSubFromToken(this);
         int userId = id != null ? Integer.parseInt(id) : -1;
         loadUserInfo(userId, drawerNavView);
+        if (!cartNotificationSent) {
+            cartNotificationSent = true;
+            checkCartAndNotify();
+        }
     }
 
     private void loadUserInfo(int userId, NavigationView drawerNavView) {
@@ -137,6 +147,42 @@ public class UserMainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<User> call, Throwable t) {
                 t.printStackTrace();
+            }
+        });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channelId = "cart_channel";
+            CharSequence name = "Cart Notifications";
+            String description = "Thông báo giỏ hàng";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void checkCartAndNotify() {
+        createNotificationChannel();
+        CartRepository cartRepository = CartRepository.getInstance(this);
+
+        // Lấy dữ liệu giỏ hàng hiện tại 1 lần
+        cartRepository.getMyCart().observe(this, cart -> {
+            if (cart != null && cart.getCartItems() != null && !cart.getCartItems().isEmpty()) {
+                int count = cart.getCartItems().size();
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "cart_channel")
+                        .setSmallIcon(R.drawable.ic_cart)
+                        .setContentTitle("Giỏ hàng của bạn")
+                        .setContentText("Bạn có " + count + " sản phẩm trong giỏ hàng. Hãy hoàn tất đơn hàng nhé!")
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setAutoCancel(true);
+
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+                notificationManager.notify(1001, builder.build());
             }
         });
     }

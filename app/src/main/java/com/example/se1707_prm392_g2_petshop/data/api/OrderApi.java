@@ -2,6 +2,7 @@ package com.example.se1707_prm392_g2_petshop.data.api;
 
 import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreateOrderRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateOrderStatusRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Order;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface OrderApi {
     
@@ -26,4 +28,10 @@ public interface OrderApi {
 
     @PUT(ConstantApi.CANCEL_ORDER)
     Call<Void> cancelOrder(@Path("orderId") int orderId);
+
+    @PUT(ConstantApi.UPDATE_ORDER_STATUS)
+    Call<Void> updateOrderStatus(@Body UpdateOrderStatusRequest request);
+
+    @GET(ConstantApi.GET_ALL)
+    Call<List<Order>> getAllOrders(@Query("status") String status);
 }

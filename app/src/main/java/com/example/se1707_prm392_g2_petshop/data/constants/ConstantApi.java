@@ -78,6 +78,10 @@ public class ConstantApi {
     // Order
     public static final String CREATE_ORDER_FROM_CART = "Orders/create-from-cart";
     public static final String GET_MY_ORDERS = "Orders";
+    public static final String GET_ALL = "Orders/all";
     public static final String GET_ORDER_BY_ID = "Orders/{orderId}";
     public static final String CANCEL_ORDER = "Orders/{orderId}/cancel";
+    // Order
+    public static final String UPDATE_ORDER_STATUS = "Orders/status";
+
 }

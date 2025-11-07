@@ -177,7 +177,7 @@ public class CheckoutActivity extends AppCompatActivity {
     }
 
     private void displayCart(Cart cart) {
-        // Setup RecyclerView với CartAdapter (readonly mode)
+        // Setup RecyclerView với CartAdapter trong readonly mode (không cho chỉnh sửa)
         CartAdapter adapter = new CartAdapter(new CartAdapter.OnCartItemClickListener() {
             @Override
             public void onIncreaseClick(CartItem cartItem) {
@@ -193,7 +193,7 @@ public class CheckoutActivity extends AppCompatActivity {
             public void onRemoveClick(CartItem cartItem) {
                 // Do nothing in checkout mode
             }
-        });
+        }, true); // true = readonly mode
         adapter.submitList(cart.getCartItems());
         rvCartItems.setLayoutManager(new LinearLayoutManager(this));
         rvCartItems.setAdapter(adapter);

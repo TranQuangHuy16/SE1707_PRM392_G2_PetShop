@@ -98,6 +98,10 @@ public class Order {
                 return "Đã thanh toán";
             case "Cancelled":
                 return "Đã hủy";
+            case "Shipping":
+                return "Đang giao hàng";
+            case "Delivered":
+                return "Đã nhận hàng";
             default:
                 return status;
         }
