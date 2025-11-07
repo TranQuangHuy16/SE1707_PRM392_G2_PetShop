@@ -3,7 +3,7 @@ plugins {
 //    alias(libs.plugins.kotlin.android)
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
-    id("com.google.gms.google-services")
+//    id("com.google.gms.google-services")
 }
 
 android {
