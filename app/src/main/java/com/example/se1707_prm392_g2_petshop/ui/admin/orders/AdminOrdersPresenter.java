@@ -84,4 +84,22 @@ public class AdminOrdersPresenter implements AdminOrdersContract.Presenter {
         mView.showSuccessMessage("Bạn đã chọn đơn hàng #" + order.getOrderId());
     }
 
+    @Override
+    public void onUpdateStatusClicked(Order order, String newStatus) {
+        if (mView == null) return;
+
+        mView.showLoading();
+
+        mOrderRepository.updateOrderStatus(order.getOrderId(), newStatus)
+                .observe(mLifecycleOwner, success -> {
+                    mView.hideLoading();
+                    if (success != null && success) {
+                        mView.showSuccessMessage("Cập nhật trạng thái thành công.");
+                        loadAllOrders(); // reload danh sách
+                    } else {
+                        mView.showError("Cập nhật trạng thái thất bại.");
+                    }
+                });
+    }
+
 }

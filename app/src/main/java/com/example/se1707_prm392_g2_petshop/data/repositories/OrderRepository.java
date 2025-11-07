@@ -3,6 +3,7 @@ package com.example.se1707_prm392_g2_petshop.data.repositories;
 import android.content.Context;
 
 import com.example.se1707_prm392_g2_petshop.data.api.OrderApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateOrderStatusRequest;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 
 
@@ -146,6 +147,24 @@ public class OrderRepository {
         return ordersLiveData;
     }
 
+    public LiveData<Boolean> updateOrderStatus(int orderId, String status) {
+        MutableLiveData<Boolean> resultLiveData = new MutableLiveData<>();
+        UpdateOrderStatusRequest request = new UpdateOrderStatusRequest(orderId, status);
+
+        orderApi.updateOrderStatus(request).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                resultLiveData.postValue(response.isSuccessful());
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                resultLiveData.postValue(false);
+            }
+        });
+
+        return resultLiveData;
+    }
 
     public LiveData<Boolean> cancelOrder(int orderId) {
         MutableLiveData<Boolean> resultLiveData = new MutableLiveData<>();

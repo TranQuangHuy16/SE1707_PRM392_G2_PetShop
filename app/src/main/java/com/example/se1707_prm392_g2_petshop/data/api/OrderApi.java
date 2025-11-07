@@ -2,6 +2,7 @@ package com.example.se1707_prm392_g2_petshop.data.api;
 
 import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.CreateOrderRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateOrderStatusRequest;
 import com.example.se1707_prm392_g2_petshop.data.models.Order;
 
 import java.util.List;
@@ -30,4 +31,7 @@ public interface OrderApi {
 
     @PUT(ConstantApi.CANCEL_ORDER)
     Call<Void> cancelOrder(@Path("orderId") int orderId);
+
+    @PUT(ConstantApi.UPDATE_ORDER_STATUS)
+    Call<Void> updateOrderStatus(@Body UpdateOrderStatusRequest request);
 }

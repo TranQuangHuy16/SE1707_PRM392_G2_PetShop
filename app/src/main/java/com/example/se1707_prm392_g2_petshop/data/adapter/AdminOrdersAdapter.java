@@ -1,4 +1,4 @@
-package com.example.se1707_prm392_g2_petshop.ui.admin.orders;
+package com.example.se1707_prm392_g2_petshop.data.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -25,6 +25,7 @@ public class AdminOrdersAdapter extends RecyclerView.Adapter<AdminOrdersAdapter.
     // ✅ Interface callback
     public interface OnOrderClickListener {
         void onOrderClick(Order order);
+        void onStatusClick(Order order);
     }
 
     // ✅ Constructor có listener
@@ -37,7 +38,7 @@ public class AdminOrdersAdapter extends RecyclerView.Adapter<AdminOrdersAdapter.
     @Override
     public OrderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_order, parent, false);
+                .inflate(R.layout.item_admin_order, parent, false);
         return new OrderViewHolder(view);
     }
 
@@ -54,6 +55,9 @@ public class AdminOrdersAdapter extends RecyclerView.Adapter<AdminOrdersAdapter.
         // ✅ Gắn sự kiện click
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) listener.onOrderClick(order);
+        });
+        holder.tvStatus.setOnClickListener(v -> {
+            if (listener != null) listener.onStatusClick(order);
         });
     }
 

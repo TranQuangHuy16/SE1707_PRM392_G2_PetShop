@@ -20,6 +20,7 @@ public interface AdminOrdersContract {
         void loadAllOrders();
         void onFilterSelected(String status);
         void onCancelOrderClicked(int orderId);
+        void onUpdateStatusClicked(Order order, String newStatus);
         void onOrderClicked(Order order);
     }
 }
