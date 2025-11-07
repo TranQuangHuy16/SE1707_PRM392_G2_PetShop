@@ -36,7 +36,7 @@ public class ProductListFragment extends Fragment {
 
         setupRecyclerView();
 
-        // 🟢 Lấy categoryId và categoryName từ arguments
+        //  Lấy categoryId và categoryName từ arguments
         int categoryIdTemp = -1;
         String categoryName = "All Products";
 
