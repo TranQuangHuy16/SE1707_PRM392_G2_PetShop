@@ -186,7 +186,7 @@ public class ProductDetailFragment extends Fragment {
                 return;
             }
 
-            // ✅ Lấy userId sau khi đăng nhập
+            //  Lấy userId sau khi đăng nhập
             SharedPreferences prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
             int userId = prefs.getInt("user_id", -1);
 
