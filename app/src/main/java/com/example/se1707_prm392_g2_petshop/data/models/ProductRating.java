@@ -8,12 +8,12 @@ public class ProductRating {
     private int productId;
     private int stars;
     private String comment;
-    private Date createdAt; // ✅ thêm trường này
+    private Date createdAt; 
 
-    // ✅ Constructor mặc định
+    //  Constructor mặc định
     public ProductRating() {}
 
-    // ✅ Constructor đầy đủ
+    //  Constructor đầy đủ
     public ProductRating(int ratingId, int userId, int productId, int stars, String comment, Date createdAt) {
         this.ratingId = ratingId;
         this.userId = userId;
@@ -23,7 +23,7 @@ public class ProductRating {
         this.createdAt = createdAt;
     }
 
-    // ✅ Getter & Setter
+    //  Getter & Setter
     public int getRatingId() {
         return ratingId;
     }
