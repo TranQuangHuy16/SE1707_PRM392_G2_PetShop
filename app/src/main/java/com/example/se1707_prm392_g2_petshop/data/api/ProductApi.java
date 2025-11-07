@@ -43,7 +43,7 @@ public interface ProductApi {
     @GET(ConstantApi.GET_PRODUCTS_BY_CATEGORY_ID_NOT_ACTIVE)
     Call<List<Product>> getProductsByCategoryIdNotActive(@Path("categoryId") int categoryId);
 
-    // 🔍 Search sản phẩm
+    // Search sản phẩm
     @GET(ConstantApi.SEARCH_PRODUCTS)
     Call<List<Product>> searchProducts(
             @Query("keyword") String keyword,
