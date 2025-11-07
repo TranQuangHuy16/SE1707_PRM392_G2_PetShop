@@ -1,6 +1,8 @@
 package com.example.se1707_prm392_g2_petshop.ui.product.productList;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,31 +27,55 @@ public class ProductListFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         binding = FragmentProductListBinding.inflate(inflater, container, false);
 
         viewModel = new ViewModelProvider(this).get(ProductListViewModel.class);
 
         setupRecyclerView();
 
-        int categoryId = -1;
+        //  Lấy categoryId và categoryName từ arguments
+        int categoryIdTemp = -1;
         String categoryName = "All Products";
 
         if (getArguments() != null) {
-            categoryId = ProductListFragmentArgs.fromBundle(getArguments()).getCategoryId();
+            categoryIdTemp = ProductListFragmentArgs.fromBundle(getArguments()).getCategoryId();
             if (ProductListFragmentArgs.fromBundle(getArguments()).getCategoryName() != null) {
                 categoryName = ProductListFragmentArgs.fromBundle(getArguments()).getCategoryName();
             }
         }
-            requireActivity().setTitle(categoryName);
 
-            viewModel.loadProductsByCategory(categoryId);
+        final int categoryId = categoryIdTemp;
+        requireActivity().setTitle(categoryName);
+
+        viewModel.loadProductsByCategory(categoryId);
 
         observeViewModel();
-        
-        // ✅ Fix notch & navigation bar - Áp dụng cho RecyclerView
+
+        // Tìm kiếm sản phẩm theo từ khóa người dùng nhập
+        binding.edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String keyword = s.toString().trim();
+                if (keyword.length() >= 2) {
+                    viewModel.searchProducts(keyword); // Gọi API tìm kiếm
+                } else if (keyword.isEmpty()) {
+                    viewModel.loadProductsByCategory(categoryId); // Reset danh sách
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        //  Fix notch & navigation bar cho RecyclerView
         WindowInsetsUtil.applySystemBarInsets(binding.rvProducts);
-        
+
         return binding.getRoot();
     }
 
