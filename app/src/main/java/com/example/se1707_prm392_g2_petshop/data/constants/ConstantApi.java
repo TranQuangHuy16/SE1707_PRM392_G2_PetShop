@@ -49,9 +49,9 @@ public class ConstantApi {
     public static final String DELETE_PRODUCT = "Products/{id}";
     public static final String GET_PRODUCTS_BY_CATEGORY_ID = "Products/category/{categoryId}";
     public static final String GET_PRODUCTS_BY_CATEGORY_ID_NOT_ACTIVE = "Products/category/notactive/{categoryId}";
-    public static final String SEARCH_PRODUCTS = "api/products/search";
-    public static final String GET_PRODUCT_RATINGS = "api/products/{productId}/ratings";
-    public static final String ADD_PRODUCT_RATING = "api/products/{productId}/ratings";
+    public static final String SEARCH_PRODUCTS = "products/search";
+    public static final String GET_PRODUCT_RATINGS = "products/{productId}/ratings";
+    public static final String ADD_PRODUCT_RATING = "products/{productId}/ratings";
 
     //Orders
 

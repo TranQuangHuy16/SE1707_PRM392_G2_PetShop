@@ -4,6 +4,7 @@ import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreateProductRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateProductRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.ProductRatingRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ProductRatingResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.models.ProductRating;
 
@@ -54,10 +55,10 @@ public interface ProductApi {
     );
 
     // Đánh giá sản phẩm
-    @GET(ConstantApi.GET_PRODUCT_RATINGS)
-    Call<List<ProductRating>> getProductRatings(@Path("productId") int productId);
+    @GET("products/{id}/ratings")
+    Call<ProductRatingResponse> getProductRatings(@Path("id") int productId);
 
-    @POST("api/products/{productId}/ratings")
+    @POST(ConstantApi.ADD_PRODUCT_RATING)
     Call<Void> addProductRating(
             @Path("productId") int productId,
             @Body ProductRatingRequest request

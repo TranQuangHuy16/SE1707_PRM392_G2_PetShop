@@ -46,6 +46,7 @@ public class ProductRatingAdapter extends RecyclerView.Adapter<ProductRatingAdap
     @Override
     public void onBindViewHolder(@NonNull RatingViewHolder holder, int position) {
         ProductRating rating = ratings.get(position);
+
         holder.tvUserName.setText("User ID: " + rating.getUserId());
         holder.tvStars.setText("⭐ " + rating.getStars() + " sao");
         holder.tvComment.setText(rating.getComment());
