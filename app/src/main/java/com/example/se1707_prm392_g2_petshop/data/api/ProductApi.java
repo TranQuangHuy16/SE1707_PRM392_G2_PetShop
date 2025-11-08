@@ -1,10 +1,12 @@
 package com.example.se1707_prm392_g2_petshop.data.api;
 
-import com.example.se1707_prm392_g2_petshop.data.constants.Constant;
 import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.CreateProductRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateProductRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.ProductRatingRequest;
+import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ProductRatingResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
+import com.example.se1707_prm392_g2_petshop.data.models.ProductRating;
 
 import java.util.List;
 
@@ -15,6 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ProductApi {
     @GET(ConstantApi.GET_ALL_PRODUCTS)
@@ -40,4 +43,24 @@ public interface ProductApi {
 
     @GET(ConstantApi.GET_PRODUCTS_BY_CATEGORY_ID_NOT_ACTIVE)
     Call<List<Product>> getProductsByCategoryIdNotActive(@Path("categoryId") int categoryId);
+
+    // Search sản phẩm
+    @GET(ConstantApi.SEARCH_PRODUCTS)
+    Call<List<Product>> searchProducts(
+            @Query("keyword") String keyword,
+            @Query("category") String category,
+            @Query("brand") String brand,
+            @Query("minPrice") Double minPrice,
+            @Query("maxPrice") Double maxPrice
+    );
+
+    // Đánh giá sản phẩm
+    @GET("products/{id}/ratings")
+    Call<ProductRatingResponse> getProductRatings(@Path("id") int productId);
+
+    @POST(ConstantApi.ADD_PRODUCT_RATING)
+    Call<Void> addProductRating(
+            @Path("productId") int productId,
+            @Body ProductRatingRequest request
+    );
 }

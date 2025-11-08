@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Thanh toolbar -->
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar_product_detail"
         android:layout_width="match_parent"
@@ -16,113 +17,217 @@
         app:titleTextColor="@color/black"
         android:elevation="4dp" />
 
+    <!-- Nội dung chính -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nested_scroll_product_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
         android:layout_marginBottom="80dp">
-        
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
-
-        <ImageView
-            android:id="@+id/img_product_detail"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:src="@drawable/product_img" />
-
-        <TextView
-            android:id="@+id/tv_product_name_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Ollie Baked Beef Dish with Sweet Potatoes Dry Dog Food, 5 lbs."
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginTop="16dp"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:layout_marginTop="8dp">
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- Ảnh -->
+            <ImageView
+                android:id="@+id/img_product_detail"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/product_img" />
+
+            <!-- Tên -->
             <TextView
-                android:id="@+id/tv_stock"
-                android:layout_width="wrap_content"
+                android:id="@+id/tv_product_name_detail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(239)"/>
-        </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <TextView
-                android:id="@+id/tv_product_price_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="$ 39.99"
-                android:textSize="24sp"
+                android:text="Ollie Baked Beef Dish with Sweet Potatoes Dry Dog Food, 5 lbs."
+                android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_centerVertical="true"/>
+                android:layout_marginTop="16dp" />
 
+            <!-- Tồn kho -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:gravity="center_vertical">
-
-                <Button
-                    android:id="@+id/btn_decrease"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="#FFA726"
-                    android:text="-"/>
-
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp">
                 <TextView
-                    android:id="@+id/tv_quantity"
+                    android:id="@+id/tv_stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="02"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:layout_marginHorizontal="16dp"/>
-
-                <Button
-                    android:id="@+id/btn_increase"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:backgroundTint="#FFA726"
-                    android:text="+"/>
+                    android:text="(239)" />
             </LinearLayout>
 
-        </RelativeLayout>
+            <!-- Giá + Số lượng -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
-        <TextView
-            android:id="@+id/tv_product_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Ollie's gently baked Beef Dish with Sweet Potatoes is made with high-quality, 100% human-grade ingredients..."
-            android:lineSpacingExtra="4dp"/>
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_category"
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Dog Food"/>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_product_price_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$ 39.99"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true" />
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:gravity="center_vertical">
+
+                    <Button
+                        android:id="@+id/btn_decrease"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="#FFA726"
+                        android:text="-" />
+
+                    <TextView
+                        android:id="@+id/tv_quantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="02"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginHorizontal="16dp" />
+
+                    <Button
+                        android:id="@+id/btn_increase"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:backgroundTint="#FFA726"
+                        android:text="+" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <!-- Mô tả -->
+            <TextView
+                android:id="@+id/tv_product_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Ollie's gently baked Beef Dish with Sweet Potatoes is made with high-quality, 100% human-grade ingredients..."
+                android:lineSpacingExtra="4dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_category"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Dog Food" />
+
+            <!-- PHẦN ĐÁNH GIÁ -->
+            <TextView
+                android:id="@+id/tvRatingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Đánh giá sản phẩm"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="24dp"
+                android:padding="4dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutAverageRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp">
+                <TextView
+                    android:id="@+id/tvAverageRating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="⭐ 0.0"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <!-- Danh sách đánh giá -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRatings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:padding="4dp" />
+
+            <!-- FORM GỬI ĐÁNH GIÁ -->
+            <TextView
+                android:id="@+id/tvAddRatingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thêm đánh giá của bạn"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:padding="4dp" />
+
+            <LinearLayout
+                android:id="@+id/layoutAddRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="@drawable/bg_glass_card_white">
+
+                <EditText
+                    android:id="@+id/edtComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập nhận xét của bạn..."
+                    android:inputType="textMultiLine"
+                    android:lines="3"
+                    android:gravity="top|start"
+                    android:background="@drawable/bg_edittext_rounded_soft"
+                    android:padding="8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="8dp">
+
+                    <EditText
+                        android:id="@+id/edtStars"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="⭐"
+                        android:inputType="number"
+                        android:maxLength="1"
+                        android:textAlignment="center"
+                        android:background="@drawable/bg_edittext_rounded_soft"
+                        android:padding="8dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSubmitRating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Gửi đánh giá"
+                        android:backgroundTint="#FFA726"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="16dp"
+                        app:cornerRadius="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Nút thêm vào giỏ -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_add_to_cart"
         android:layout_width="match_parent"
@@ -133,7 +238,5 @@
         app:icon="@drawable/ic_cart"
         app:iconGravity="textStart"
         app:cornerRadius="16dp"
-        android:backgroundTint="#FFA726"/>
-
-
+        android:backgroundTint="#FFA726" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
