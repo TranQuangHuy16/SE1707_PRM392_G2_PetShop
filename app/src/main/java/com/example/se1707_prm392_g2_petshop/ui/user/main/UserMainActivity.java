@@ -2,6 +2,9 @@ package com.example.se1707_prm392_g2_petshop.ui.user.main;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -28,6 +31,8 @@ import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.ActivityUserMainBinding;
 import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
+import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginActivity;
+import com.example.se1707_prm392_g2_petshop.ui.chat.ChatActivity;
 import com.google.android.material.navigation.NavigationView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -85,6 +90,14 @@ public class UserMainActivity extends AppCompatActivity {
                 return true;
             }
 
+            if (id == R.id.nav_chat) {
+                android.content.Intent intent = new android.content.Intent(this,
+                        ChatActivity.class);
+                startActivity(intent);
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return true;
+            }
+
             // Let NavigationUI handle other items
             boolean handled = NavigationUI.onNavDestinationSelected(item, navController);
             if (handled) {
@@ -109,6 +122,13 @@ public class UserMainActivity extends AppCompatActivity {
         });
 
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        binding.btnLogout.setOnClickListener(v -> {
+            SharedPreferences prefs = this.getSharedPreferences("auth_prefs", (int) Context.MODE_PRIVATE);
+            JwtUtil.RemoveJwtTokenFromSharedPreferences(prefs);
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        });
 
         // ✅ Gọi API để lấy thông tin user
         userApi = RetrofitClient.getUserApi(this);

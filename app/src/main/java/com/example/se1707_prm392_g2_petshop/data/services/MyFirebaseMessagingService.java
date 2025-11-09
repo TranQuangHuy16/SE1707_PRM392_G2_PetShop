@@ -49,10 +49,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        // Nếu đang ở trong ChatActivity thì không hiện thông báo
+        // Nếu đang ở trong ChatActivity thì không hiện thông báo chat
         if (ChatActivity.isVisible) return;
 
-        // 🔹 Lấy ID hiện tại từ JWT
+        // 🔹 Kiểm tra nếu đây là thông báo chỉ có title & body (không có receiverId)
+        if (remoteMessage.getData() == null || !remoteMessage.getData().containsKey("receiverId")) {
+            showSimpleNotification(remoteMessage);
+            return;
+        }
+
+        // 🔹 Nếu có receiverId => xử lý như cũ
         String idString = JwtUtil.getSubFromToken(this);
         if (idString == null) {
             Log.w(TAG, "Không thể lấy userId từ JWT, bỏ qua thông báo");
@@ -61,9 +67,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         int currentUserId = Integer.parseInt(idString);
 
-        // 🔹 Lấy dữ liệu từ payload
         String receiverIdStr = remoteMessage.getData().get("receiverId");
-
         int receiverId = -1;
         try {
             if (receiverIdStr != null) receiverId = Integer.parseInt(receiverIdStr);
@@ -72,15 +76,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             return;
         }
 
-        // 🔹 Chỉ hiển thị nếu user hiện tại là receiver
         if (receiverId == -1 || currentUserId != receiverId) {
             Log.d(TAG, "User hiện tại (" + currentUserId + ") không phải người nhận (" + receiverId + "), bỏ qua thông báo");
             return;
         }
 
-        Log.d(TAG, "Hiển thị thông báo cho userId=" + currentUserId + " - receiverId=" + receiverId);
-
-        // 🔹 Hiển thị thông báo
+        Log.d(TAG, "Hiển thị thông báo chat cho userId=" + currentUserId);
+        showChatNotification(remoteMessage);
+    }
+    private void showChatNotification(RemoteMessage remoteMessage) {
         String title = "Tin nhắn mới";
         String body = remoteMessage.getNotification() != null
                 ? remoteMessage.getNotification().getBody()
@@ -88,6 +92,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Intent intent = new Intent(this, ChatActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE
@@ -106,6 +111,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             NotificationChannel channel = new NotificationChannel(
                     "chat_channel",
                     "Chat Notifications",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            manager.createNotificationChannel(channel);
+        }
+
+        manager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+    private void showSimpleNotification(RemoteMessage remoteMessage) {
+        String title = remoteMessage.getNotification() != null
+                ? remoteMessage.getNotification().getTitle()
+                : remoteMessage.getData().get("title");
+
+        String body = remoteMessage.getNotification() != null
+                ? remoteMessage.getNotification().getBody()
+                : remoteMessage.getData().get("body");
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "general_channel")
+                .setSmallIcon(R.drawable.ic_notifications)
+                .setContentTitle(title != null ? title : "Thông báo")
+                .setContentText(body != null ? body : "")
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "general_channel",
+                    "General Notifications",
                     NotificationManager.IMPORTANCE_HIGH
             );
             manager.createNotificationChannel(channel);

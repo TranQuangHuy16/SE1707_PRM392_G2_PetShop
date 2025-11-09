@@ -55,67 +55,68 @@
         android:layout_marginTop="4dp" />
 
     <!-- Menu items -->
+
+    <!-- Log out button -->
     <LinearLayout
         android:id="@+id/layoutMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:orientation="vertical"
-        android:layout_marginTop="24dp"
-        app:layout_constraintTop_toBottomOf="@id/tvEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/tvEmail">
 
         <!-- My Order -->
-        <include layout="@layout/item_menu"
-            android:id="@+id/itemOrder"
+        <include
+            android:id="@+id/itemProfile"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
 
         <!-- My Profile -->
-        <include layout="@layout/item_menu"
+        <include
             android:id="@+id/itemAddress"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
 
         <!-- Delivery Address -->
-        <include layout="@layout/item_menu"
-            android:id="@+id/itemProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Payment methods -->
-        <include layout="@layout/item_menu"
-            android:id="@+id/itemPayment"
+        <include
+            android:id="@+id/itemOrder"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
 
         <!-- Contact us -->
-        <include layout="@layout/item_menu"
-            android:id="@+id/itemContact"
+        <include
+            android:id="@+id/itemChat"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
 
         <!-- Settings -->
-        <include layout="@layout/item_menu"
-            android:id="@+id/itemSettings"
+        <include
+            android:id="@+id/itemContact"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
 
         <!-- Helps & FAQs -->
-        <include layout="@layout/item_menu"
+        <include
             android:id="@+id/itemHelp"
+            layout="@layout/item_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp" />
     </LinearLayout>
 
-    <!-- Log out button -->
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="match_parent"

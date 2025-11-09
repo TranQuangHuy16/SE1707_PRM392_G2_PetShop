@@ -18,11 +18,13 @@ import com.bumptech.glide.Glide;
 import com.example.se1707_prm392_g2_petshop.R;
 import com.example.se1707_prm392_g2_petshop.data.adapter.ProductRatingAdapter;
 import com.example.se1707_prm392_g2_petshop.data.api.ProductApi;
+import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.AddToCartRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.ProductRatingRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.ProductRatingResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
 import com.example.se1707_prm392_g2_petshop.data.models.ProductRating;
+import com.example.se1707_prm392_g2_petshop.data.models.User;
 import com.example.se1707_prm392_g2_petshop.data.repositories.CartRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
@@ -30,7 +32,9 @@ import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProductDetailBinding;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +49,7 @@ public class ProductDetailFragment extends Fragment {
     private Product currentProduct;
     private int productId;
     private int quantity = 1;
+    private Map<Integer, String> userMap = new HashMap<>();
 
     // ================== LIFECYCLE ==================
     @Nullable
@@ -140,44 +145,53 @@ public class ProductDetailFragment extends Fragment {
 
     private void loadRatings() {
         ProductApi productApi = RetrofitClient.getProductApi(requireContext());
-//        productApi.getProductRatings(productId).enqueue(new Callback<List<ProductRating>>() {
-//            @Override
-//            public void onResponse(Call<List<ProductRating>> call, Response<List<ProductRating>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    List<ProductRating> ratings = response.body();
-//                    ratingAdapter.setRatings(ratings);
-//
-//                    double sum = 0;
-//                    for (ProductRating r : ratings) sum += r.getStars();
-//                    double avg = ratings.isEmpty() ? 0 : sum / ratings.size();
-//
-//                    binding.tvAverageRating.setText(String.format("⭐ %.1f / 5.0 (%d đánh giá)", avg, ratings.size()));
-//                } else {
-//                    binding.tvAverageRating.setText("⭐ Chưa có đánh giá");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<ProductRating>> call, Throwable t) {
-//                Toast.makeText(getContext(),  t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        UserApi userApi = RetrofitClient.getUserApi(requireContext());
 
         productApi.getProductRatings(productId).enqueue(new Callback<ProductRatingResponse>() {
             @Override
             public void onResponse(Call<ProductRatingResponse> call, Response<ProductRatingResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ProductRatingResponse data = response.body();
-
-                    // Lấy danh sách đánh giá
-                    List<ProductRating> ratings = data.getRatings();
+                    List<ProductRating> ratings = response.body().getRatings();
                     ratingAdapter.setRatings(ratings);
 
-                    // Hiển thị trung bình và số lượng
-                    binding.tvAverageRating.setText(
-                            String.format("⭐ %.1f / 5.0 (%d đánh giá)",
-                                    data.getAverageStars(), data.getCount())
-                    );
+                    // ===== Tính trung bình =====
+                    double sum = 0;
+                    for (ProductRating r : ratings) {
+                        sum += r.getStars();
+                    }
+                    double avg = ratings.isEmpty() ? 0 : sum / ratings.size();
+
+                    // Hiển thị
+                    if (!ratings.isEmpty()) {
+                        binding.tvAverageRating.setText(
+                                String.format("⭐ %.1f / 5.0 (%d đánh giá)", avg, ratings.size())
+                        );
+                    } else {
+                        binding.tvAverageRating.setText("⭐ Chưa có đánh giá");
+                    }
+
+                    // ===== Load tên user từng rating =====
+                    for (ProductRating rating : ratings) {
+                        int userId = rating.getUserId();
+                        if (!userMap.containsKey(userId)) {
+                            userApi.getUserById(userId).enqueue(new Callback<User>() {
+                                @Override
+                                public void onResponse(Call<User> call, Response<User> userResponse) {
+                                    if (userResponse.isSuccessful() && userResponse.body() != null) {
+                                        String userName = userResponse.body().getFullName();
+                                        userMap.put(userId, userName);
+                                        ratingAdapter.setUserMap(userMap);
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<User> call, Throwable t) {
+                                    // nếu fail, để mặc định hiển thị userId
+                                }
+                            });
+                        }
+                    }
+
                 } else {
                     binding.tvAverageRating.setText("⭐ Chưa có đánh giá");
                 }
@@ -188,8 +202,8 @@ public class ProductDetailFragment extends Fragment {
                 Toast.makeText(getContext(), "Lỗi mạng: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
+
 
     // ================== SUBMIT RATING ==================
     private void setupSubmitRatingButton() {

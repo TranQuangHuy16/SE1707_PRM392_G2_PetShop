@@ -7,6 +7,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
+
+    <!-- MAIN CONTENT -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
@@ -20,6 +22,7 @@
             android:background="@color/white"
             android:layout_marginTop="15dp"
             app:elevation="0dp">
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -45,8 +48,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Deliver to"
-                        android:textSize="12sp"
-                        />
+                        android:textSize="12sp" />
+
                     <TextView
                         android:id="@+id/tv_delivery_address"
                         android:layout_width="wrap_content"
@@ -64,9 +67,7 @@
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginEnd="16dp"
                     android:src="@drawable/avt"/>
-
             </androidx.appcompat.widget.Toolbar>
-
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
@@ -75,51 +76,71 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!-- ✅ Dùng FragmentContainerView để chứa NavHost -->
-        <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/nav_host_fragment_activity_user_main"
-            android:name="androidx.navigation.fragment.NavHostFragment"
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/nav_host_fragment_activity_user_main"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                app:defaultNavHost="true"
+                app:navGraph="@navigation/user_nav_graph" />
+
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/nav_view"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_bottom_nav"
+                android:elevation="10dp"
+                app:menu="@menu/bottom_nav_menu"
+                app:itemIconTint="@color/nav_item_color"
+                app:itemTextColor="@color/nav_item_color"
+                app:labelVisibilityMode="unlabeled"
+                app:itemRippleColor="@android:color/transparent"
+                app:itemActiveIndicatorStyle="@null"
+                android:clipToOutline="true"
+                android:outlineProvider="background"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="12dp" />
+        </LinearLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <!-- 🔹 DRAWER MENU (Navigation Drawer + Log Out Button) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#FFF8E1"
+        android:layout_gravity="start"
+        android:paddingBottom="5dp">
+
+        <!-- NavigationView chứa header + menu -->
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/drawer_nav_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:defaultNavHost="true"
-            app:navGraph="@navigation/user_nav_graph" />
+            app:headerLayout="@layout/nav_header_main"
+            app:menu="@menu/drawer_menu"
+            app:itemTextColor="@color/black"
+            app:itemIconTint="@color/black"
+            android:backgroundTint="@color/white" />
 
-        <!-- ✅ Bottom Navigation -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/nav_view"
+        <!-- 🔹 Log Out Button đẹp, giống mẫu bạn gửi -->
+        <Button
+            android:id="@+id/btnLogout"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_margin="16dp"
-            android:background="@drawable/bg_bottom_nav"
-            android:elevation="10dp"
-            app:menu="@menu/bottom_nav_menu"
-            app:itemIconTint="@color/nav_item_color"
-            app:itemTextColor="@color/nav_item_color"
-            app:labelVisibilityMode="unlabeled"
-            app:itemRippleColor="@android:color/transparent"
-            app:itemActiveIndicatorStyle="@null"
-            android:clipToOutline="true"
-            android:outlineProvider="background"
-            android:paddingHorizontal="20dp"
-            android:paddingTop="12dp" />
-
-
-
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="#FFA726"
+            android:drawableStart="@drawable/ic_logout"
+            android:drawablePadding="8dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Log Out"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
     </LinearLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.google.android.material.navigation.NavigationView
-        android:backgroundTint="@color/white"
-        android:id="@+id/drawer_nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="#FFF8E1"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/drawer_menu"
-        app:itemTextColor="@color/black"
-        app:itemIconTint="@color/black"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

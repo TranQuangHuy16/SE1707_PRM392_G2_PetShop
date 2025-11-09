@@ -30,6 +30,8 @@ import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProfileBinding;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginActivity;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginPresenter;
+import com.example.se1707_prm392_g2_petshop.ui.chat.ChatActivity;
+import com.example.se1707_prm392_g2_petshop.ui.user.main.cart.CartFragment;
 
 public class ProfileFragment extends Fragment implements ProfileContract.View{
 
@@ -72,6 +74,14 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
     private void setupMenuItems() {
         binding.itemOrder.tvTitle.setText("My Orders");
         binding.itemOrder.imgIcon.setImageResource(R.drawable.ic_order);
+        binding.itemProfile.tvTitle.setText("My Profile");
+        binding.itemProfile.imgIcon.setImageResource(R.drawable.ic_profile);
+        binding.itemChat.tvTitle.setText("My Chats");
+        binding.itemChat.imgIcon.setImageResource(R.drawable.ic_chat);
+        binding.itemContact.tvTitle.setText("Contact Us");
+        binding.itemContact.imgIcon.setImageResource(R.drawable.ic_contact);
+        binding.itemHelp.tvTitle.setText("Help & FAQs");
+        binding.itemHelp.imgIcon.setImageResource(R.drawable.ic_help);
     }
 
     private void setupAddressItems() {
@@ -115,6 +125,17 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
                 Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        binding.itemChat.getRoot().setOnClickListener(v -> {
+            try {
+                Intent intent = new Intent(requireContext(),
+                        ChatActivity.class);
+                startActivity(intent);
+            } catch (Exception e) {
+                Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         binding.btnLogout.setOnClickListener(v -> {
             SharedPreferences prefs = requireContext().getSharedPreferences("auth_prefs", (int) Context.MODE_PRIVATE);

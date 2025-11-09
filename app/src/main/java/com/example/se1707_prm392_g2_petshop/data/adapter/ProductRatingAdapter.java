@@ -15,17 +15,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class ProductRatingAdapter extends RecyclerView.Adapter<ProductRatingAdapter.RatingViewHolder> {
 
     private List<ProductRating> ratings;
+    private Map<Integer, String> userMap; // userId -> userName
 
-    //  Constructor mặc định (thêm mới)
     public ProductRatingAdapter() {
         this.ratings = new ArrayList<>();
     }
 
-    //  Constructor có danh sách (vẫn giữ nguyên)
     public ProductRatingAdapter(List<ProductRating> ratings) {
         this.ratings = ratings != null ? ratings : new ArrayList<>();
     }
@@ -33,6 +33,12 @@ public class ProductRatingAdapter extends RecyclerView.Adapter<ProductRatingAdap
     public void setRatings(List<ProductRating> ratings) {
         this.ratings = ratings != null ? ratings : new ArrayList<>();
         notifyDataSetChanged();
+    }
+
+    // Set map userId -> userName
+    public void setUserMap(Map<Integer, String> userMap) {
+        this.userMap = userMap;
+        notifyDataSetChanged(); // cập nhật lại tên user
     }
 
     @NonNull
@@ -47,7 +53,12 @@ public class ProductRatingAdapter extends RecyclerView.Adapter<ProductRatingAdap
     public void onBindViewHolder(@NonNull RatingViewHolder holder, int position) {
         ProductRating rating = ratings.get(position);
 
-        holder.tvUserName.setText("User ID: " + rating.getUserId());
+        // Nếu có map userName thì hiển thị, nếu không thì hiển thị userId
+        String userName = (userMap != null && userMap.containsKey(rating.getUserId()))
+                ? userMap.get(rating.getUserId())
+                : "User ID: " + rating.getUserId();
+        holder.tvUserName.setText(userName);
+
         holder.tvStars.setText("⭐ " + rating.getStars() + " sao");
         holder.tvComment.setText(rating.getComment());
 
