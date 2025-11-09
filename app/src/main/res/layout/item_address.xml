@@ -7,55 +7,77 @@
     app:cardElevation="3dp"
     app:cardCornerRadius="12dp"
     app:cardUseCompatPadding="true"
-    app:cardBackgroundColor="@android:color/white"
-    android:foreground="?attr/selectableItemBackground"
-    android:clickable="true"
-    android:focusable="true">
+    app:cardBackgroundColor="@android:color/white">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:padding="16dp"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvAddressLine"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/layoutAddressInfo"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="123 Example Street"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="#1A1A1A" />
+            android:layout_toStartOf="@+id/btnDeleteAddress"
+            android:layout_alignParentStart="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <TextView
-            android:id="@+id/tvCity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ward, District, City"
-            android:textColor="#555555"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/tvAddressLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="123 Example Street"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#1A1A1A" />
 
-        <TextView
-            android:id="@+id/tvPostalCode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Postal code: 12345"
-            android:textColor="#777777"
-            android:textSize="13sp"
-            android:layout_marginTop="2dp"/>
+            <TextView
+                android:id="@+id/tvCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ward, District, City"
+                android:textColor="#555555"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"/>
 
-        <TextView
-            android:id="@+id/tvIsDefault"
+            <TextView
+                android:id="@+id/tvPostalCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Postal code: 12345"
+                android:textColor="#777777"
+                android:textSize="13sp"
+                android:layout_marginTop="2dp"/>
+
+            <TextView
+                android:id="@+id/tvIsDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🏠 Default Address"
+                android:textColor="#0D47A1"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg_default_label"
+                android:padding="4dp"/>
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/btnDeleteAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="🏠 Default Address"
-            android:textColor="#0D47A1"
-            android:textStyle="bold"
-            android:textSize="13sp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_default_label"
-            android:padding="4dp"/>
-    </LinearLayout>
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="@android:color/holo_red_dark"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="16dp"
+            android:contentDescription="Xóa địa chỉ"
+            android:padding="8dp"/>
+
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

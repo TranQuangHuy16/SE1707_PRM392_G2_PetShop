@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -58,15 +59,30 @@ class AddressListActivity : AppCompatActivity(), AddressListContract.View {
     }
 
     private fun setupRecyclerView() {
-        adapter = AddressListAdapter { address ->
-            val intent = Intent(this, AddEditAddressActivity::class.java)
-            intent.putExtra("address", address)
-            addressResultLauncher.launch(intent)
-        }
+        adapter = AddressListAdapter(
+            onItemClick = { address ->
+                val intent = Intent(this, AddEditAddressActivity::class.java)
+                intent.putExtra("address", address)
+                addressResultLauncher.launch(intent)
+            },
+            onDeleteClick = { address ->
+                showDeleteConfirmationDialog(address)
+            }
+        )
         binding.rvAddresses.layoutManager = LinearLayoutManager(this)
         binding.rvAddresses.adapter = adapter
     }
 
+    private fun showDeleteConfirmationDialog(address: UserAddress) {
+        AlertDialog.Builder(this)
+            .setTitle("Xác nhận xóa")
+            .setMessage("Bạn có chắc chắn muốn xóa địa chỉ này không?")
+            .setPositiveButton("Xóa") { _, _ ->
+                presenter.deleteAddress(address)
+            }
+            .setNegativeButton("Hủy", null)
+            .show()
+    }
 
     override fun showAddresses(addresses: List<UserAddress>) {
         adapter.submitList(addresses)
@@ -78,6 +94,10 @@ class AddressListActivity : AppCompatActivity(), AddressListContract.View {
 
     override fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    override fun showDeleteSuccess(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        presenter.loadAddresses()
     }
 
     override fun onDestroy() {

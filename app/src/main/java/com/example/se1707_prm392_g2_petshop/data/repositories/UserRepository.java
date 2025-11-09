@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.se1707_prm392_g2_petshop.data.api.ChatApi;
 import com.example.se1707_prm392_g2_petshop.data.api.UserApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateUserDetailsRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateUserRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.UserDetailResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
@@ -99,6 +100,26 @@ public class UserRepository {
     public LiveData<UserDetailResponse> updateUser(int userId, UpdateUserRequest request) {
         MutableLiveData<UserDetailResponse> data = new MutableLiveData<>();
         userApi.updateUser(userId, request).enqueue(new Callback<UserDetailResponse>() {
+            @Override
+            public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                } else {
+                    data.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserDetailResponse> call, Throwable t) {
+                data.setValue(null);
+            }
+        });
+        return data;
+    }
+
+    public LiveData<UserDetailResponse> updateUserDetails(int userId, UpdateUserDetailsRequest request) {
+        MutableLiveData<UserDetailResponse> data = new MutableLiveData<>();
+        userApi.updateUserDetails(userId, request).enqueue(new Callback<UserDetailResponse>() {
             @Override
             public void onResponse(Call<UserDetailResponse> call, Response<UserDetailResponse> response) {
                 if (response.isSuccessful()) {

@@ -1,6 +1,7 @@
 package com.example.se1707_prm392_g2_petshop.data.api;
 
 import com.example.se1707_prm392_g2_petshop.data.constants.ConstantApi;
+import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateUserDetailsRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.requests.UpdateUserRequest;
 import com.example.se1707_prm392_g2_petshop.data.dtos.responses.UserDetailResponse;
 import com.example.se1707_prm392_g2_petshop.data.models.Product;
@@ -33,4 +34,7 @@ public interface UserApi {
 
     @DELETE(ConstantApi.DELETE_USER)
     Call<Void> deleteUser(@Path("id") int userId);
+
+    @PUT(ConstantApi.UPDATE_USER_DETAIL)
+    Call<UserDetailResponse> updateUserDetails(@Path("id") int userId, @Body UpdateUserDetailsRequest updatedUserDetails);
 }

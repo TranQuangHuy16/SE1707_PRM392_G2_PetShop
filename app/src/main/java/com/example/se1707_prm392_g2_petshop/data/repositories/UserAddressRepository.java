@@ -113,6 +113,28 @@ public class UserAddressRepository {
         return result;
     }
 
+    public LiveData<UserAddress> deleteUserAddress(int id) {
+        MutableLiveData<UserAddress> result = new MutableLiveData<>();
+
+        userAddressApi.deleteUserAddress(id).enqueue(new Callback<UserAddress>() {
+            @Override
+            public void onResponse(Call<UserAddress> call, Response<UserAddress> response) {
+                if (response.isSuccessful()) {
+                    result.postValue(response.body());
+                } else {
+                    result.postValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UserAddress> call, Throwable t) {
+                result.postValue(null);
+            }
+        });
+
+        return result;
+    }
+
     // Get admin address
     public Call<UserAddress> getAdminAddresses() {
         return userAddressApi.getAdminAddresses();

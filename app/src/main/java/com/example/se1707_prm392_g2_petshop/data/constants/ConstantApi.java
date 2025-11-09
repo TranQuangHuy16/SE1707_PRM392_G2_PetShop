@@ -15,6 +15,7 @@ public class ConstantApi {
     public static final String GET_USER_BY_ID = "Users/{id}";
     public static final String GET_ALL_USERS = "Users/all";
     public static final String GET_USER_DETAIL = "Users/detail/{id}";
+    public static final String UPDATE_USER_DETAIL = "Users/detail/{id}";
     public static final String UPDATE_USER = "Users/{id}";
     public static final String DELETE_USER = "Users/{id}";
 
@@ -28,6 +29,7 @@ public class ConstantApi {
     // User Address
     public static final String CREATE_USER_ADDRESS = "UserAddress";
     public static final String UPDATE_USER_ADDRESS = "UserAddress/{id}";
+    public static final String DELETE_USER_ADDRESS = "UserAddress/{id}";
     public static final String GET_USER_ADDRESSES = "UserAddress/default/{userId}";
     public static final String GET_ADMIN_ADDRESSES = "UserAddress/admin";
     public static final String GET_ALL_USER_ADDRESSES = "UserAddress";

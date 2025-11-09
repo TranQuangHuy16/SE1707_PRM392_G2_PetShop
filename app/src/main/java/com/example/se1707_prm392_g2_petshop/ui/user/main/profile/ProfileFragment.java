@@ -1,5 +1,6 @@
 package com.example.se1707_prm392_g2_petshop.ui.user.main.profile;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,19 +29,20 @@ import com.example.se1707_prm392_g2_petshop.data.repositories.UserRepository;
 import com.example.se1707_prm392_g2_petshop.data.retrofit.RetrofitClient;
 import com.example.se1707_prm392_g2_petshop.data.utils.JwtUtil;
 import com.example.se1707_prm392_g2_petshop.data.utils.WindowInsetsUtil;
-import com.example.se1707_prm392_g2_petshop.databinding.ActivityLoginBinding;
 import com.example.se1707_prm392_g2_petshop.databinding.FragmentProfileBinding;
 import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginActivity;
-import com.example.se1707_prm392_g2_petshop.ui.auth.login.LoginPresenter;
 import com.example.se1707_prm392_g2_petshop.ui.chat.ChatActivity;
-import com.example.se1707_prm392_g2_petshop.ui.user.main.cart.CartFragment;
+import com.example.se1707_prm392_g2_petshop.ui.userdetail.UserDetailActivity;
 
-public class ProfileFragment extends Fragment implements ProfileContract.View{
+public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     private FragmentProfileBinding binding;
     private ProfilePresenter presenter;
     private TextView tvUserName, tvEmail;
     private ImageView imgAvatar;
+
+    // 1. Thêm ActivityResultLauncher
+    private ActivityResultLauncher<Intent> userDetailLauncher;
 
     @Nullable
     @Override
@@ -51,18 +55,48 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
         setupPresenter();
         setupMenuItems();
         setupAddressItems();
-        setupListeners();
-        
-        // ✅ Fix notch & navigation bar - Áp dụng cho ScrollView
+
+        // 2. Đăng ký launcher TRƯỚC khi setup listeners
+        registerUserDetailLauncher();
+
+        setupListeners(); // 3. Gọi setupListeners (sau khi đăng ký)
+
+        // Fix notch & navigation bar - Áp dụng cho ScrollView
         View scrollView = binding.getRoot().findViewById(R.id.scroll_view_profile);
         if (scrollView != null) {
             WindowInsetsUtil.applySystemBarInsets(scrollView);
         }
 
+        // Tải thông tin user
         String id = JwtUtil.getSubFromToken(requireContext());
         int userId = id != null ? Integer.parseInt(id) : -1;
         presenter.getUserProfile(userId);
+
         return binding.getRoot();
+    }
+
+    // 4. Thêm hàm mới để đăng ký launcher
+    private void registerUserDetailLauncher() {
+        userDetailLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    // Hàm này sẽ được gọi khi UserDetailActivity đóng lại
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        // Nếu kết quả là OK (do UserDetailActivity set)
+                        Log.d("ProfileFragment", "Returned from UserDetailActivity with RESULT_OK. Reloading profile...");
+
+                        // Tải lại thông tin profile
+                        String id = JwtUtil.getSubFromToken(requireContext());
+                        int userId = id != null ? Integer.parseInt(id) : -1;
+                        if (userId != -1) {
+                            presenter.getUserProfile(userId);
+                        }
+                    } else {
+                        // Nếu người dùng chỉ bấm Back (RESULT_CANCELLED)
+                        Log.d("ProfileFragment", "Returned from UserDetailActivity without changes.");
+                    }
+                }
+        );
     }
 
     private void initView() {
@@ -98,13 +132,28 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
     }
 
 
-
     private void setupListeners() {
+        binding.itemProfile.getRoot().setOnClickListener(v -> {
+            Log.d("ProfileFragment", "My Profile clicked!");
+            try {
+                Intent intent = new Intent(requireContext(),
+                        UserDetailActivity.class);
+
+                // 5. Dùng LAUNCHER thay vì startActivity
+                userDetailLauncher.launch(intent); // <-- THAY BẰNG DÒNG NÀY
+
+                Log.d("ProfileFragment", "UserDetailActivity started for result");
+            } catch (Exception e) {
+                Log.e("ProfileFragment", "Error starting UserDetailActivity", e);
+                Toast.makeText(requireContext(), "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         binding.itemOrder.getRoot().setOnClickListener(v -> {
             Log.d("ProfileFragment", "My Orders clicked!");
             try {
-                Intent intent = new Intent(requireContext(), 
-                    com.example.se1707_prm392_g2_petshop.ui.order.OrderListActivity.class);
+                Intent intent = new Intent(requireContext(),
+                        com.example.se1707_prm392_g2_petshop.ui.order.OrderListActivity.class);
                 startActivity(intent);
                 Log.d("ProfileFragment", "OrderListActivity started");
             } catch (Exception e) {
@@ -113,11 +162,12 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
             }
         });
 
-        binding.itemAddress.getRoot().setOnClickListener(v -> {;
+        binding.itemAddress.getRoot().setOnClickListener(v -> {
+            ;
             Log.d("ProfileFragment", "My Address clicked!");
             try {
                 Intent intent = new Intent(requireContext(),
-                    com.example.se1707_prm392_g2_petshop.ui.address.list.AddressListActivity.class);
+                        com.example.se1707_prm392_g2_petshop.ui.address.list.AddressListActivity.class);
                 startActivity(intent);
                 Log.d("ProfileFragment", "UserAddressListActivity started");
             } catch (Exception e) {
@@ -139,9 +189,6 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
 
         binding.btnLogout.setOnClickListener(v -> {
             SharedPreferences prefs = requireContext().getSharedPreferences("auth_prefs", (int) Context.MODE_PRIVATE);
-//            SharedPreferences.Editor editor = prefs.edit();
-//            editor.remove(getString(R.string.jwt_token_name));
-//            editor.apply();
             JwtUtil.RemoveJwtTokenFromSharedPreferences(prefs);
             // Hiển thị thông báo và chuyển
             presenter.logout();
@@ -151,41 +198,43 @@ public class ProfileFragment extends Fragment implements ProfileContract.View{
     @Override
     public void onLogoutSuccess(String message) {
         Intent intent = new Intent(requireContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
     @Override
     public void onLogoutFailure(String message) {
         Intent intent = new Intent(requireContext(), LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
     @Override
     public void onLogoutError(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onGetUserProfileSuccess(User user) {
         tvUserName.setText(user.getFullName());
         tvEmail.setText(user.getEmail());
+
+        // ✅ SỬ DỤNG getImgAvatarl() THEO YÊU CẦU CỦA BẠN
         Glide.with(this)
-                .load(user.getImgAvatarl())
+                .load(user.getImgAvatarl()) // <-- Đã dùng tên hàm bạn xác nhận
                 .placeholder(R.drawable.ic_profile)
                 .error(R.drawable.ic_profile)
                 .circleCrop()
-                .into(imgAvatar);    }
+                .into(imgAvatar);
+    }
 
     @Override
     public void onGetUserProfileFailure(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     public void onGetUserProfileError(String message) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-
     }
 }

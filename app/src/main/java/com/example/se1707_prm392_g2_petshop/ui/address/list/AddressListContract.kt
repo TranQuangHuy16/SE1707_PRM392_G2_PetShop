@@ -7,10 +7,12 @@ interface AddressListContract {
         fun showAddresses(addresses: List<UserAddress>)
         fun showLoading(isLoading: Boolean)
         fun showError(message: String)
+        fun showDeleteSuccess(message: String)
     }
 
     interface Presenter {
         fun loadAddresses()
+        fun deleteAddress(address: UserAddress)
         fun onDestroy()
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -21,6 +22,9 @@ public interface UserAddressApi {
 
     @PUT(ConstantApi.UPDATE_USER_ADDRESS)
     Call<UserAddress> updateUserAddress(@Path("id") int id, @Body UserAddressRequest request);
+
+    @DELETE(ConstantApi.DELETE_USER_ADDRESS)
+    Call<UserAddress> deleteUserAddress(@Path("id") int id);
 
     @GET(ConstantApi.GET_ADMIN_ADDRESSES)
     Call<UserAddress> getAdminAddresses();

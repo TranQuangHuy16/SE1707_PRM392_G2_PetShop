@@ -10,7 +10,8 @@ import com.example.se1707_prm392_g2_petshop.databinding.ItemAddressBinding
 import com.example.se1707_prm392_g2_petshop.data.models.UserAddress
 
 class AddressListAdapter(
-    private val onItemClick: (UserAddress) -> Unit
+    private val onItemClick: (UserAddress) -> Unit,
+    private val onDeleteClick: (UserAddress) -> Unit
 ) : ListAdapter<UserAddress, AddressListAdapter.AddressViewHolder>(AddressDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AddressViewHolder {
@@ -55,6 +56,7 @@ class AddressListAdapter(
             }
 
             binding.root.setOnClickListener { onItemClick(address) }
+            binding.btnDeleteAddress.setOnClickListener { onDeleteClick(address) }
         }
     }
     // ================================================================
