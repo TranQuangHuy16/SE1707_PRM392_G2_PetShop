@@ -298,7 +298,6 @@ public class UserMainActivity extends AppCompatActivity {
         });
     }
 
-    // Hàm xử lý nút Up (Back) trên toolbar
     @Override
     public boolean onSupportNavigateUp() {
         // Dùng biến toàn cục

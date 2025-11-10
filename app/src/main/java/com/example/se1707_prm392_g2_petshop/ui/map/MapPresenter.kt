@@ -102,8 +102,7 @@ class MapPresenter(
     }
 
 
-    // --- HÀM CŨ (loadRoute) ---
-    // Hàm này giờ chỉ chịu trách nhiệm gọi API 'getRouteAddress'
+
     override fun loadRoute(startLat: Double, startLng: Double, endLat: Double, endLng: Double) {
         val request = RouteRequest(
             startLat,
@@ -120,19 +119,20 @@ class MapPresenter(
         view?.hideRouteInfo()
 
         // Tạo observer mới
-        routeObserver = Observer { response ->
+        // ======================== PHẦN SỬA LỖI ========================
+        routeObserver = Observer { response: RouteResponse? ->
             view?.hideLoading()
 
-            // <-- SỬA ĐỔI: Lấy thêm dữ liệu từ response
-            val coordinates = response?.coordinates
-            val distance = response?.distance // (đơn vị: mét)
-            val duration = response?.duration // (đơn vị: giây)
+            // [FIX 2] KIỂM TRA NULL TRƯỚC TIÊN
+            if (response != null && response.coordinates != null && response.coordinates.isNotEmpty()) {
 
-            if (coordinates != null && coordinates.isNotEmpty()) {
-                // 3. Nếu thành công, ra lệnh cho View vẽ
-                view?.drawRoute(coordinates)
+                // --- Khối xử lý THÀNH CÔNG ---
+                // 'response' không null VÀ 'coordinates' cũng có dữ liệu
+                view?.drawRoute(response.coordinates)
 
                 // <-- THÊM MỚI: Kiểm tra và hiển thị thông tin
+                val distance = response.distance
+                val duration = response.duration
                 if (distance != null && duration != null) {
                     val formattedDistance = formatDistance(distance)
                     val formattedDuration = formatDuration(duration)
@@ -140,10 +140,20 @@ class MapPresenter(
                 }
 
             } else {
-                // 4. Nếu thất bại, ra lệnh cho View báo lỗi
-                view?.showError("Không tìm thấy lộ trình.")
+                // --- Khối xử lý THẤT BẠI ---
+                // 'response' là null (do lỗi 500, 404, hoặc mất mạng)
+                // HOẶC 'response.coordinates' là rỗng (API trả về nhưng không có đường đi)
+
+                // (Tùy chọn) Bạn có thể kiểm tra cụ thể hơn:
+                if (response == null) {
+                    view?.showError("Lỗi: Không thể tìm đường. (Tuyến đường có thể quá dài hoặc có lỗi mạng)")
+                } else {
+                    // API chạy thành công nhưng không trả về tọa độ
+                    view?.showError("Không tìm thấy lộ trình hợp lệ.")
+                }
             }
         }
+
 
         // 5. Gọi repository và observe LiveData
         routeLiveData = repository.getRouteAddress(request)
