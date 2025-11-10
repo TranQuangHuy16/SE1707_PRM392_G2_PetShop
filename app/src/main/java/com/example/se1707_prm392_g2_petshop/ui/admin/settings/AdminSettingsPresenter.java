@@ -2,6 +2,7 @@ package com.example.se1707_prm392_g2_petshop.ui.admin.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
 
@@ -34,8 +35,10 @@ public class AdminSettingsPresenter implements AdminSettingsContract.Presenter {
 
     @Override
     public void loadAdminInfo() {
-        // Lấy userId từ JWT token
-        String userIdStr = JwtUtil.getUserIdFromToken(context);
+        // Lấy userId từ JWT token (sử dụng claim "sub")
+        String userIdStr = JwtUtil.getSubFromToken(context);
+        
+        Log.d("AdminSettingsPresenter", "Loading admin info, userId from token: " + userIdStr);
         
         if (userIdStr == null) {
             mView.showLoadingError("Cannot get user information");
@@ -52,9 +55,6 @@ public class AdminSettingsPresenter implements AdminSettingsContract.Presenter {
                 } else {
                     mView.showLoadingError("Failed to load admin information");
                 }
-                
-                // Gỡ bỏ observer
-                userRepository.getUserDetail(userId).removeObservers((LifecycleOwner) mView);
             });
             
         } catch (NumberFormatException e) {
