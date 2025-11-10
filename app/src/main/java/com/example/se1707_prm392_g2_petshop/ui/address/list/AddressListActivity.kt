@@ -66,7 +66,11 @@ class AddressListActivity : AppCompatActivity(), AddressListContract.View {
                 addressResultLauncher.launch(intent)
             },
             onDeleteClick = { address ->
-                showDeleteConfirmationDialog(address)
+                if (address.isDefault) {
+                    showError("Vui lòng chọn địa chỉ mặc định khác trước khi xóa")
+                } else {
+                    showDeleteConfirmationDialog(address)
+                }
             }
         )
         binding.rvAddresses.layoutManager = LinearLayoutManager(this)

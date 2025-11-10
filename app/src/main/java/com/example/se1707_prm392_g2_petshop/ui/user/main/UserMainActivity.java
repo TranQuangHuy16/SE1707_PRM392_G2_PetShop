@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -50,8 +51,9 @@ public class UserMainActivity extends AppCompatActivity {
     private UserApi userApi;
     private UserAddressRepository addressRepository;
 
-    // ✅ BƯỚC 1: Biến NavController thành biến toàn cục (class field)
     private NavController navController;
+    private int userId = -1;
+    private NavigationView drawerNavView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,7 @@ public class UserMainActivity extends AppCompatActivity {
         }
 
         DrawerLayout drawerLayout = binding.drawerLayout;
-        NavigationView drawerNavView = binding.drawerNavView;
+        drawerNavView = binding.drawerNavView;
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment_activity_user_main);
@@ -131,9 +133,6 @@ public class UserMainActivity extends AppCompatActivity {
                 R.id.navigation_profile
         ).setOpenableLayout(drawerLayout).build();
 
-        // ✅ BƯỚC 2: THÊM DÒNG NÀY
-        // Dòng này liên kết Toolbar với NavController,
-        // cho phép nó xử lý các sự kiện điều hướng (như tiêu đề, nút Up)
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
 
         // Dòng này liên kết BottomNav với NavController
@@ -155,13 +154,9 @@ public class UserMainActivity extends AppCompatActivity {
         addressRepository = UserAddressRepository.getInstance(this);
 
         String id = JwtUtil.getSubFromToken(this);
-        int userId = id != null ? Integer.parseInt(id) : -1;
+        userId = id != null ? Integer.parseInt(id) : -1;
 
-        // Cập nhật lệnh gọi loadUserInfo (đã bỏ NavController vì nó là biến toàn cục)
-        loadUserInfo(userId, drawerNavView);
-
-        // Gọi hàm mới để tải địa chỉ
-        loadDefaultAddress(userId);
+        loadData();
 
         // Logic thông báo giỏ hàng
         if (!cartNotificationSent) {
@@ -170,8 +165,24 @@ public class UserMainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Tải lại dữ liệu mỗi khi Activity quay lại (ví dụ: sau khi UserDetailActivity đóng)
+        Log.d("UserMainActivity", "onResume: Reloading data for toolbar...");
+        loadData();
+    }
+
+    // ✅ BƯỚC 4: Tạo hàm gom việc tải dữ liệu
+    private void loadData() {
+        if (userId != -1) {
+            loadUserInfo(userId); // Sửa: Bỏ tham số drawerNavView
+            loadDefaultAddress(userId);
+        }
+    }
+
     // Cập nhật hàm (đã bỏ tham số NavController)
-    private void loadUserInfo(int userId, NavigationView drawerNavView) {
+    private void loadUserInfo(int userId) {
         if (userId == -1) return;
 
         Call<User> call = userApi.getUserById(userId);

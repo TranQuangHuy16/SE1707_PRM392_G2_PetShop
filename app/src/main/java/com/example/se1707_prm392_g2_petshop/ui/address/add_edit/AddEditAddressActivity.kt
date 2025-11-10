@@ -212,6 +212,18 @@ class AddEditAddressActivity : AppCompatActivity(), AddEditAddressContract.View 
         binding.etDistrict.setText(address.district)
         binding.etWard.setText(address.ward)
         binding.switchDefault.isChecked = address.isDefault
+        selectedLat = address.latitude
+        selectedLon = address.longitude
+
+        if (address.isDefault) {
+
+            binding.switchDefault.isEnabled = false
+
+        } else {
+
+            binding.switchDefault.isEnabled = true
+        }
+        // ======================================================
 
         updateMap(address.latitude, address.longitude)
     }

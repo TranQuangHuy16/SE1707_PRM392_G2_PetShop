@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     // 1. Thêm ActivityResultLauncher
     private ActivityResultLauncher<Intent> userDetailLauncher;
+    private int userId = -1;
 
     @Nullable
     @Override
@@ -69,10 +70,25 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
         // Tải thông tin user
         String id = JwtUtil.getSubFromToken(requireContext());
-        int userId = id != null ? Integer.parseInt(id) : -1;
-        presenter.getUserProfile(userId);
+        userId = id != null ? Integer.parseInt(id) : -1;
+
+        loadProfileData();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Tải lại dữ liệu mỗi khi Fragment quay lại (sau khi UserDetailActivity đóng)
+        Log.d("ProfileFragment", "onResume: Reloading profile data...");
+        loadProfileData();
+    }
+
+    private void loadProfileData() {
+        if (userId != -1 && presenter != null) {
+            presenter.getUserProfile(userId);
+        }
     }
 
     // 4. Thêm hàm mới để đăng ký launcher
@@ -89,7 +105,7 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
                         String id = JwtUtil.getSubFromToken(requireContext());
                         int userId = id != null ? Integer.parseInt(id) : -1;
                         if (userId != -1) {
-                            presenter.getUserProfile(userId);
+                            loadProfileData();
                         }
                     } else {
                         // Nếu người dùng chỉ bấm Back (RESULT_CANCELLED)
@@ -216,10 +232,10 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     @Override
     public void onGetUserProfileSuccess(User user) {
+        if (getContext() == null) return;
         tvUserName.setText(user.getFullName());
         tvEmail.setText(user.getEmail());
 
-        // ✅ SỬ DỤNG getImgAvatarl() THEO YÊU CẦU CỦA BẠN
         Glide.with(this)
                 .load(user.getImgAvatarl()) // <-- Đã dùng tên hàm bạn xác nhận
                 .placeholder(R.drawable.ic_profile)
@@ -230,11 +246,13 @@ public class ProfileFragment extends Fragment implements ProfileContract.View {
 
     @Override
     public void onGetUserProfileFailure(String message) {
+        if (getContext() == null) return;
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onGetUserProfileError(String message) {
+        if (getContext() == null) return;
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

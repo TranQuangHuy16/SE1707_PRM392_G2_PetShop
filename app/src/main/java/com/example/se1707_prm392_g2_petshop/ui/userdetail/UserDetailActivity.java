@@ -214,7 +214,7 @@ public class UserDetailActivity extends AppCompatActivity implements UserDetailC
         if (photoFile != null) {
             // Gán Uri cho biến global để launcher có thể dùng
             newLocalImageUri = FileProvider.getUriForFile(this,
-                    getApplicationContext().getPackageName() + ".fileprovider",
+                    getApplicationContext().getPackageName() + ".provider",
                     photoFile);
             takePictureLauncher.launch(newLocalImageUri);
         }
