@@ -61,8 +61,8 @@ public class AdminDashboardFragment extends Fragment implements AdminDashboardCo
         mPresenter = new AdminDashboardPresenter(
                 this,
                 UserRepository.getInstance(requireContext()),
+                OrderRepository.getInstance(requireContext()),
                 ProductRepository.getInstance(requireContext())
-//                ,OrderRepository.getInstance(requireContext())
         );
     }
     private void setupViews(View view) {
@@ -116,7 +116,7 @@ public class AdminDashboardFragment extends Fragment implements AdminDashboardCo
 
     @Override
     public void showTotalOrders(int count) {
-        tvTotalOrders.setText("666");
+        tvTotalOrders.setText(String.valueOf(count));
     }
 
     @Override

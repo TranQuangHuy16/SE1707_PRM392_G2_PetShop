@@ -20,12 +20,12 @@ public class AdminDashboardPresenter implements AdminDashboardContract.Presenter
     public AdminDashboardPresenter(
             AdminDashboardContract.View mView,
             UserRepository userRepository,
-//            OrderRepository orderRepository,
+            OrderRepository orderRepository,
             ProductRepository productRepository)
     {
         this.mView = mView;
         this.userRepo = userRepository;
-//        this.orderRepo = orderRepository;
+        this.orderRepo = orderRepository;
         this.productRepo = productRepository;
         mView.setPresenter(this);
     }
@@ -47,7 +47,7 @@ public class AdminDashboardPresenter implements AdminDashboardContract.Presenter
                 mView.showError("Failed to load users");
             }
             completedTasks[0]++;
-            if (completedTasks[0] == 2) { // Nếu cả 2 tác vụ đã xong
+            if (completedTasks[0] == 3) { // Nếu cả 3 tác vụ đã xong
                 mView.hideLoading();
             }
         });
@@ -59,7 +59,19 @@ public class AdminDashboardPresenter implements AdminDashboardContract.Presenter
                 mView.showError("Failed to load products");
             }
             completedTasks[0]++;
-            if (completedTasks[0] == 2) { // Nếu cả 2 tác vụ đã xong
+            if (completedTasks[0] == 3) { // Nếu cả 3 tác vụ đã xong
+                mView.hideLoading();
+            }
+        });
+
+        orderRepo.getAllOrders(null).observe((LifecycleOwner) mView, orders -> {
+            if (orders != null) {
+                mView.showTotalOrders(orders.size());
+                } else {
+                mView.showError("Failed to load orders");
+            }
+            completedTasks[0]++;
+            if (completedTasks[0] == 3) { // Nếu cả 3 tác vụ đã xong
                 mView.hideLoading();
             }
         });
