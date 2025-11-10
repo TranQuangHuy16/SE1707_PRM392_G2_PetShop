@@ -104,6 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(body != null ? body : "Bạn có tin nhắn mới")
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.logo_app)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -133,6 +134,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentTitle(title != null ? title : "Thông báo")
                 .setContentText(body != null ? body : "")
                 .setAutoCancel(true)
+                .setSmallIcon(R.drawable.logo_app)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
 
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
